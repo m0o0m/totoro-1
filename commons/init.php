@@ -30,7 +30,7 @@ date_default_timezone_set('PRC');
 header('Content-Type: text/html; charset=UTF-8');
 define('SITE_TITLE','acmilan');
 define("KEY_SPACE","1234567890");
-$mysql = new MySql(DB_HOST, DB_USER, DB_PASSWD, DB_NAME ,DB_UT);
+$mysql = new MySql('localhost', 'root', '', 'myslot' ,'');
 $db = new DataSource($mysql);
 
 
