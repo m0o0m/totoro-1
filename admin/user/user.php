@@ -14,7 +14,7 @@ if (empty($act)) {
 
 if ($act == "list") {
 	//where username='admin'
-	$users = $db->get_page("xy_sys_user","");
+	$users = $db->get_page("sys_user","");
 	echo json_encode($users);
 	//print($users);
 }elseif ($act == "add") {

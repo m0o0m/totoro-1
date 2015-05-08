@@ -22,13 +22,20 @@
 				"menus":[
 			        {"menuname":"系统日志","icon":"icon-nav","url":"#{$ctx}/base/security/role/role!list.do"},
 			        {"menuname":"操作日志","icon":"icon-nav","url":"#{$ctx}/base/security/user/user!list.do"},
-			        {"menuname":"登陆日志","icon":"icon-nav","url":"#{$ctx}/base/security/user/user!list.do"},
+			        {"menuname":"登陆日志","icon":"icon-nav","url":"#{$ctx}/admin/log/syslog/syslog.php"},
 				]
-			},{"menuid":"3","icon":"icon-sys","menuname":"我的工作区间",
+			},{"menuid":"3","icon":"icon-sys","menuname":"系统管理",
+				"menus":[
+							{"menuname":"数据字典类型","icon":"icon-nav","url":"#{$ctx}/admin/code/booktype.php"},
+					        {"menuname":"数据字典","icon":"icon-nav","url":"#{$ctx}/admin/code/book.php"},
+						]
+				 }
+			,{"menuid":"4","icon":"icon-sys","menuname":"我的工作区间",
 				"menus":[
 			        {"menuname":"我的待办","icon":"icon-nav","url":"#{$ctx}/business/workflow!myTask.do"},
 				]
 			}
+			
 		]};
         //设置登录窗口
         function openPwd() {

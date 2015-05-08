@@ -1,13 +1,13 @@
 <?php 
 define('IN_ECS', true); 
-require_once dirname(__FILE__).'/../../../commons/init.php';  
+require_once dirname(__FILE__).'/../../commons/init.php';  
 $act = $_REQUEST[act]; 
 if (empty($act)) { 
 	$act = "";	
 }
 
 if ($act == "list") { 
-	$users = $db->get_page("sys_logfile","where 1=1 ");  
+	$users = $db->get_page("sys_booktype "," where 1=1 ");  
 	echo json_encode($users); 
 }elseif ($act == "add") {
 	
@@ -19,7 +19,7 @@ if ($act == "list") {
 	
 }else {
 	try {   
-		  $smarty->display("admin/log/syslog/syslog.html"); 
+		  $smarty->display("admin/code/booktype.html"); 
 	} catch (Exception $e) {   
 		print $e->getMessage();  
 	}   
