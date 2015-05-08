@@ -36,7 +36,7 @@ class DataSource {
 	 * @param $pagesize
 	 * @return unknown_type
 	 */
-	function get_page($table,$where,$order,$pageno,$pagesize)
+	function get_page($table,$where,$order='',$pageno=1,$pagesize=12)
 	{
 		$offset = $pagesize * ($pageno - 1);
 		$sql = "select * from ".DB_PREFIX."$table $where $order limit $offset,$pagesize";
@@ -51,12 +51,12 @@ class DataSource {
 		}
 		$result = array();
 		
-		$result['datas'] = $datas;
+		$result['rows'] = $datas;
 		$sql = "select * from ".DB_PREFIX."$table $where";
 		$query = $this->db->query($sql);
 		//得到总数
 		$sumnum = $this->db->num_rows($query);
-		$result['sumnum'] = $sumnum;
+		$result['total'] = $sumnum;
 		//得到总页数
 		$result['pagenum'] = $sumnum%$pagesize==0 ? $sumnum/$pagesize : (int)($sumnum/$pagesize)+1;
 		return $result;
@@ -71,6 +71,7 @@ class DataSource {
 	function select($table,$where)
 	{
 		$sql = "select * from ".DB_PREFIX."$table $where";
+		echo $sql;
 		return $this->query($sql);
 	}
 	
