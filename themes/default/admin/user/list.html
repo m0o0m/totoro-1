@@ -4,17 +4,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>用户管理</title>
 
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/default.css" />
 	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
 	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/default/easyui.css">
 	
 	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/inti.js"></script>
 	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
 	
 	<script type="text/javascript">
 		$(function(){
-			alert("a");
+		
 			$("#user_list").datagrid({
 				title:"人员列表",
 				url:"#{$ctx}/admin/user/user.php?act=list"
@@ -23,10 +21,17 @@
 	</script>
 </head>
 <body>
-	sssssssssssssss
-	<div id="user_list">
 	
-	</div>
+	<table id="user_list">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:80,checkbox:true" >id</th>
+				<th data-options="field:'username',width:80" >username</th>
+				<th data-options="field:'password',width:180" >password</th>
+				<th data-options="field:'email'" >email</th>
+			</tr> 
+		</thead>
+	</table>
 	
 	
 </body>

@@ -9,6 +9,7 @@ require_once '../commons/init.php';
 
 
 $smarty->display("admin/index.html");
+//$smarty->display("admin/user/list.html");
 
 
 

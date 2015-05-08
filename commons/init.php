@@ -1,5 +1,5 @@
 <?php
-error_reporting(7);
+error_reporting(7);//E_ALL
 ob_start();
 if (!defined('IN_ECS')) {
     die('Hacking attempt');
@@ -8,16 +8,14 @@ if (!defined('IN_ECS')) {
 //echo chdir(dirname(__FILE__)).'<br/>';
 //echo str_replace('includes/init.php', '', str_replace('\\', '/', __FILE__));
 
-define('root',dirname(__FILE__));
+
 //define('ctx',dirname($_SERVER[SCRIPT_NAME]));
 define('ctx',"/totoro");
 
 //echo "<br/>root-->".root."<br/>ctx-->".ctx."<br/>REQUEST_URI-->".$_SERVER['REQUEST_URI'];
 
 define('ONS_ROOT', dirname(__FILE__));
-
-//echo "<br/>ONS_ROOT-->".ONS_ROOT;
-//echo "<br/>".ONS_ROOT.'/smarty/cls_smarty.php';
+define('root',dirname(__FILE__)."/../");
 
 include_once(ONS_ROOT.'/smarty/cls_smarty.php');
 include_once(ONS_ROOT.'/dao/pd_base.php');
