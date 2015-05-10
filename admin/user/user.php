@@ -13,7 +13,7 @@ if (empty($act)) {
 }
 
 if ($act == "list") {
-<<<<<<< HEAD
+
 	
 	$arr = array();
 	$arr['username'] = $_REQUEST['username'];
@@ -24,10 +24,10 @@ if ($act == "list") {
 	}
 	
 	$users = $db->get_page("xy_sys_user",$where);
-=======
+
 	//where username='admin'
 	$users = $db->get_page("sys_user","");
->>>>>>> 0cf1331a2e9fc50ce088904993d42b035a47c7ff
+
 	echo json_encode($users);
 	//print($users);
 }elseif ($act == "add") {
