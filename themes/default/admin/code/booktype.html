@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>字典类型</title>
+
+	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
+	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/default/easyui.css">
+	
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/global.js"></script>
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/easyui_tag.js"></script>
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script>
+	<script type="text/javascript">
+		$(function(){	
+			$("#booktype_datagrid").datagrid({
+				title:"字典类型列表",
+				url:"#{$ctx}/admin/code/booktype.php?act=list",				 
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true,
+				toolbar:easyUi.initButton(
+				[
+					 {name:'add',text:"添加字典类型",handler:addbooktype}, 
+					 {name:'remove',text:"删除用户",handler:deletebooktype},
+					 {name:'edit',text:"编辑用户",handler:updatebooktype},
+				]),
+			}); 
+		});
+		
+		function addbooktype () {
+			$("#booktype_form_dlg").dialog({
+				title : "添加字典类型"
+			}).dialog("open");
+			
+			$('#booktype_form').form('clear');
+		}
+		
+		function saveUser () { 
+			var row = $('#booktype_datagrid').datagrid('getSelected');
+			//var url = "#{$ctx}/admin/code/booktype.php?act="+row.id?'update' : 'save';
+			//alert(url);
+			$('#booktype_form').form('submit',{ 
+				url: "#{$ctx}/admin/code/booktype.php?act=save",
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success : function(data){    
+					var data = eval('('+data+')');  
+					if (data.result == "1") {
+						$.messager.show({
+        					title: '成功',
+        					msg: data.msg
+        				});
+                    	$("#booktype_datagrid").datagrid("reload");
+						$("#booktype_form_dlg").dialog("close");
+                    }
+                    else {  
+                    	$.messager.show({
+        					title: '失败',
+        					msg: data.msg
+        				});
+                    } 
+				}
+			}); 
+		}
+		
+		function deletebooktype() {
+			
+			
+			var row = $('#booktype_datagrid').datagrid('getSelected');
+			
+			var result = easyUi.loadForm("#booktype_form", "#booktype_datagrid", "");
+			if(!result) {
+				return ;
+			} 
+			
+			if (row){
+				$.messager.confirm('Confirm', '确定删除?', function (r) {
+					if (r){
+					     $.post('#{$ctx}/admin/code/booktype.php?act=delete', {id:row.id },function(data){ 
+					    	//var data = eval('('+data+')');  
+					    	if (data.result == "1"){
+								$('#booktype_datagrid').datagrid('reload');	 
+							} else { 
+								$.messager.show({  
+					                title: '删除出错',  
+					                msg: data.msg   
+					            });  
+							}
+						},'json');
+					}
+				});
+			}  
+		}
+		
+		function updatebooktype () {
+			var row = $('#booktype_datagrid').datagrid('getSelected');
+			
+			var result = easyUi.loadForm("#booktype_form", "#booktype_datagrid", "");
+			if(!result) {
+				return ;
+			} 
+			
+			if (row){
+				$("#booktype_form_dlg").dialog({
+    				title : "查看登陆详情", 
+    	        	collapsible : true,     //可折叠，点击窗口右上角折叠图标将内容折叠起来   
+    			}).dialog("open"); 
+            	 
+			    $("#booktype_form").form("load", row);
+			    url = "#{$ctx}/admin/code/booktype.php?act=list?&id=" + row.logfile_id;
+	            //url = "#{$ctx}/admin/code/booktype.php?act=update?id=" + row.ID;
+
+			} 
+		}
+			 
+		function search () {      
+			$('#booktype_datagrid').datagrid('load',{ 
+				lxname: $('#lxname').val(),
+				lxcode: $('#lxcode').val()
+			});
+			 
+	    }
+		
+	</script>
+</head>
+<body>
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table >
+				<tr><td>类型名称</td><td><input id="lxname" value=""/></td><td>类型编码</td><td><input id="lxcode" value=""/></td></tr>
+				<tr><td><a href="javascript:search()" class="easyui-linkbutton">查询</a> 
+			</table>
+		</form>
+	</div>
+	
+	<table id="booktype_datagrid">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:80,checkbox:true" >id</th>
+				<th data-options="field:'booktype_name',width:80" >类型名称</th>
+				<th data-options="field:'booktype_code',width:180" >类型编码</th>
+				<th data-options="field:'booktype_desc',width:180" >描述</th> 
+			</tr> 
+		</thead>
+	</table>
+	
+	<div id="booktype_form_dlg" class="easyui-dialog"  closed="true"
+		style="width:500px; height: 300px; left: 150px; top: 15px; padding: 10px;" >
+		<form id="booktype_form" method="post">
+			<input id="id" name="id" type="hidden"/>
+			<table>
+				<tr class="fitem">
+					<td>类型名称:</td>
+					<td><input class="easyui-validatebox" type="text" name="booktype_name" required=true /></td>
+				</tr>
+				<tr>
+					<td>类型编码:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="booktype_code" required=true  />
+					</td>
+				</tr>
+				<tr>
+					<td>描述:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="booktype_desc" required=true  />
+					</td>
+				</tr>
+			</table>
+		</form>	
+		<div id="booktype_form_dlg_buttons">
+			<a href="javascript:saveUser()" class="easyui-linkbutton" >提交</a>
+			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#booktype_form_dlg').dialog('close')">关闭</a>
+		</div>
+	</div>	
+</body>
+</html>

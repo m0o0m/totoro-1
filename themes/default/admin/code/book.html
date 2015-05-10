@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>数据字典</title>
+
+	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
+	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/default/easyui.css">
+	
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
+	
+	<script type="text/javascript">
+		$(function(){
+		
+			$("#book_list").datagrid({
+				title:"字典列表",
+				url:"#{$ctx}/admin/code/book.php?act=list"
+			}); 
+		});
+	</script>
+</head>
+<body>
+	
+	<table id="book_list">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:80,checkbox:true" >id</th>
+				<th data-options="field:'booktype_name',width:80" >所属类型</th>
+				<th data-options="field:'booktype_code',width:180" >类型编码</th>
+				<th data-options="field:'book_no'" >字典编码</th>
+				<th data-options="field:'book_value'" >字典数值</th>
+			</tr> 
+		</thead>
+	</table>
+	
+	
+</body>
+</html>
