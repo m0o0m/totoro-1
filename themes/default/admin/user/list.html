@@ -9,20 +9,96 @@
 	
 	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
 	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
-	
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/global.js"></script>
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/easyui_tag.js"></script>
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script>
 	<script type="text/javascript">
 		$(function(){
 		
-			$("#user_list").datagrid({
+			$("#user_datagrid").datagrid({
 				title:"人员列表",
-				url:"#{$ctx}/admin/user/user.php?act=list"
+				url:"#{$ctx}/admin/user/user.php?act=list",
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true,
+				toolbar:easyUi.initButton(
+				[
+					 {name:'add',text:"添加用户",handler:addUser},
+					 {name:'edit',text:"编辑用户",handler:updateUser},
+					 {name:'remove',text:"删除用户",handler:deleteUser},
+				]),
 			}); 
 		});
+
+		function addUser () {
+			$("#user_form_dlg").dialog({
+				title : "添加用户"
+			}).dialog("open");
+			
+		}
+		function saveUser () {
+			easyUi.formSubmit({
+				formId : "#user_form",
+				submit : function() {
+				},
+				success : function(data) {
+					msgSuccess(data);
+					$("#user_datagrid").datagrid("reload");
+					$("#user_form_dlg").dialog("close");
+				},
+				prefix : "",
+				params : {"act":"save"}
+			});
+		}
+		function updateUser () {
+
+			var row = easyUi.selectDatagrid("#user_datagrid");
+			var result = easyUi.loadForm("#user_form", "#user_datagrid", "");
+			if(!result) {
+				return ;
+			}
+			$("#user_form_dlg").dialog({
+				title : "编辑用户"
+			}).dialog("open");
+		}
+		function deleteUser () {
+			var url = "#{$ctx}/admin/user/user.php?act=delete";
+			easyUi.del("#user_datagrid", "id", url, function (data){
+				$("#user_datagrid").datagrid("reload");
+				msgSuccess(data);
+			});
+		}
+		function search () {
+			var p = {};
+
+			$("#search_form").find("input").each(function(){
+				p[this.name]=this.value;
+			});
+			
+			$("#user_datagrid").datagrid({
+				queryParams:p
+			});
+		}
+		function cleanSearch () {
+
+		}
 	</script>
 </head>
 <body>
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table >
+				<tr><td>username</td><td><input name="username" value=""/></td></tr>
+				
+				<tr><td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+						<a href="#" class="easyui-linkbutton">清空</a></td></tr>
+			</table>
+		</form>
+	</div>
 	
-	<table id="user_list">
+	
+	<table id="user_datagrid">
 		<thead>
 			<tr>
 				<th data-options="field:'id',width:80,checkbox:true" >id</th>
@@ -33,6 +109,35 @@
 		</thead>
 	</table>
 	
+	<div id="user_form_dlg" class="easyui-dialog"  closed="true"
+		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
+		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
+		<form id="user_form" action="#{$ctx}/admin/user/user.php" method="post" >
+			<input id="user_id" name="userid" type="hidden"/>
+			<table>
+				<tr>
+					<td>用户名:</td>
+					<td><input class="easyui-validatebox" type="text" name="username" data-options="required:true" /></td>
+				</tr>
+				<tr>
+					<td>密码:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="password" data-options="required:true" />
+					</td>
+				</tr>
+				<tr>
+					<td>邮箱:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="email" data-options="required:true" />
+					</td>
+				</tr>
+			</table>
+		</form>	
+		<div id="user_form_dlg_buttons">
+			<a href="javascript:saveUser()" class="easyui-linkbutton" >提交</a>
+			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#user_form_dlg').dialog('close')">关闭</a>
+		</div>
+	</div>	
 	
 </body>
 </html>

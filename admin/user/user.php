@@ -13,26 +13,57 @@ if (empty($act)) {
 }
 
 if ($act == "list") {
-	//where username='admin'
-	$users = $db->get_page("xy_sys_user","");
+	
+	$arr = array();
+	$arr['username'] = $_REQUEST['username'];
+	
+	$where = " 1=1 ";
+	foreach ($arr as $value){
+		//$where.= 
+	}
+	
+	$users = $db->get_page("xy_sys_user",$where);
 	echo json_encode($users);
 	//print($users);
 }elseif ($act == "add") {
 	
 }elseif ($act == "save") {
+	$arr = array();
+	$arr['username'] = $_REQUEST['username'];
+	$arr['password'] = $_REQUEST['password'];
+	$arr['email'] = $_REQUEST['email'];
 	
+	try {
+		$db->insert("xy_sys_user",$arr);
+		$result->result="1";
+		$result->msg="添加用户".$arr['username']."成功。";
+		
+	}catch (Exception $e){
+		$result->result="0";
+		$result->msg="添加用户".$arr['username']."失败。";
+	}
+	echo json_encode($result);	
 }elseif ($act == "update") {
+	$arr = array();
+	$arr['username'] = $_REQUEST['username'];
+	$arr['password'] = $_REQUEST['password'];
+	$arr['email'] = $_REQUEST['email'];
+	$id = $_REQUEST['id'];
+	$db->update("xy_sys_user",$arr,"where id=".$id);
+}elseif ($act == "delete") {
 	
-}elseif ($act == "del") {
-	
+	$id = $_REQUEST['id'];
+	try {
+		//$db->delete("xy_sys_user","where id=".$id);
+		$result->result="1";
+		$result->msg="删除用户".$arr['username']."成功。";
+	}catch (Exception $e){
+		$result->result="0";
+		$result->msg="删除用户".$arr['username']."失败。";
+	}
+	echo json_encode($result);	
 }else {
-	
-
-
 	$smarty->display("admin/user/list.html");
-
-
-
 }
 
 ?>
