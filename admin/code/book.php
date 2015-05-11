@@ -65,7 +65,7 @@ if ($act == "list") {
 	$arr['booktype_code'] = $_REQUEST['booktype_code'];
 	$arr['czdate'] = "sysdate";	
 	$id = $_REQUEST['id'];
-	
+	 
 	try {
 		$db->update("sys_book",$arr,"where id=".$id);
 		$result->result="1";

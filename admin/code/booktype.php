@@ -5,7 +5,7 @@ define('IN_ECS', true);
 
 require_once dirname(__FILE__).'/../../commons/init.php';
 //require_once '../commons/init.php';
-
+ 
 $act = $_REQUEST[act];
 
 if (empty($act)) {
