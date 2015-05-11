@@ -99,7 +99,7 @@ class DataSource {
 		$sql = "update ".DB_PREFIX."$table set ";
 		foreach ($updates as $key => $value)
 		{
-			$sql .= $key . "=" .$value .",";
+			$sql .= $key . "='" .$value ."',";
 		}
 		$sql = substr($sql,0,strlen($sql)-1);
 		$sql .= " $where";
