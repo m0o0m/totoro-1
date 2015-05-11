@@ -18,7 +18,7 @@ if ($act == "list") {
 	$arr = array();
 	$arr['username'] = $_REQUEST['username'];
 	
-	$where = " 1=1 ";
+	$where = "where 1=1 ";
 	foreach ($arr as $value){
 		//$where.= 
 	}
@@ -26,7 +26,7 @@ if ($act == "list") {
 	$users = $db->get_page("xy_sys_user",$where);
 
 	//where username='admin'
-	$users = $db->get_page("sys_user","");
+	//$users = $db->get_page("sys_user",$where);
 
 	echo json_encode($users);
 	//print($users);

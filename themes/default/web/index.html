@@ -14,22 +14,49 @@
 	
 	<script type="text/javascript">
 		var _menus = {"menus":[
-			{"menuid":"1","icon":"icon-sys","menuname":"用户管理",
-				"menus":[
-			        {"menuname":"ssss","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
-				]
-			},{"menuid":"2","icon":"icon-sys","menuname":"日志管理",
-				"menus":[
-			        {"menuname":"系统日志","icon":"icon-nav","url":"#{$ctx}/base/security/role/role!list.do"},
-			        {"menuname":"操作日志","icon":"icon-nav","url":"#{$ctx}/base/security/user/user!list.do"},
-			        {"menuname":"登陆日志","icon":"icon-nav","url":"#{$ctx}/base/security/user/user!list.do"},
-				]
-			},{"menuid":"3","icon":"icon-sys","menuname":"我的工作区间",
-				"menus":[
-			        {"menuname":"我的待办","icon":"icon-nav","url":"#{$ctx}/business/workflow!myTask.do"},
-				]
-			}
-		]};
+  			{"menuid":"1","icon":"icon-sys","menuname":"游戏",
+  				"menus":[
+  			        {"menuname":"游戏记录","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  			        {"menuname":"流水记录","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  				]
+  			},
+  			{"menuid":"1","icon":"icon-sys","menuname":"账户中心",
+  				"menus":[
+  			        {"menuname":"个人信息","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  			        {"menuname":"银行管理","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  			        {"menuname":"登陆日志","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  			        {"menuname":"在线下级","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  				]
+  			},
+  			{"menuid":"1","icon":"icon-sys","menuname":"充值提现",
+  				"menus":[
+  			        {"menuname":"充值管理","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  			        {"menuname":"提现管理","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  			        {"menuname":"转账管理","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  			        {"menuname":"在线下级","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  				]
+  			},
+  			{"menuid":"1","icon":"icon-sys","menuname":"团队管理",
+  				"menus":[
+  			        {"menuname":"下级账号管理","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  			        {"menuname":"团队余额","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  				]
+  			},
+  			{"menuid":"1","icon":"icon-sys","menuname":"报表管理",
+  				"menus":[
+  			        {"menuname":"账变记录","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  			        {"menuname":"分红记录","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  			        {"menuname":"自己盈亏","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  			        {"menuname":"下级盈亏","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  				]
+  			},
+  		]};
+		$(function () {
+			
+			init_notice();
+	
+		});
+		
         //设置登录窗口
         function openPwd() {
             $('#w').window({
@@ -39,7 +66,8 @@
                 shadow: true,
                 closed: true,
                 height: 160,
-                resizable:false
+                resizable:false,
+                
             });
         }
         //关闭登录窗口
@@ -98,6 +126,21 @@
 
             });
         });
+
+        // 公告信息
+        function init_notice() {
+			$("#notice_panel").panel({  
+				title: '公告信息', 
+				collapsible:true,
+				onOpen:function (){
+					var url = "";
+					var p = {};
+					$.post(url,p,function (data){
+						$("#notice_info").html(data.msg);
+					});
+           		}
+			});
+        }
     </script>
 	
 </head>
@@ -133,7 +176,9 @@
 <div id="mainPanle" region="center" style="background: #eee; overflow-y:hidden">
     <div id="tabs" class="easyui-tabs"  fit="true" border="false"  data-options="tools:'#tab-tools'">
 		<div title="欢迎使用" style="padding:20px;overflow:hidden;" id="home">
-			<h1>Welcome to jQuery UI!</h1>
+			<div id="notice_panel" class="easyui-panel" title="公告信息" style="width:100%;height:200px;padding:10px;">
+				<div id="notice_info"></div>
+			</div>
 		</div>
 	</div>
 </div>
