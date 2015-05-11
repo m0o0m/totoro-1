@@ -16,6 +16,10 @@ if ($act == "list") {
 	
 	$arr = array(); 
 	$arr['sys_logfile_logn'] = $_REQUEST['sys_logfile_logn'];
+	$arr['sys_logfile_logdate'] = $_REQUEST['stardate'];
+	$arr['sys_logfile_isonline'] = $_REQUEST['enddate'];
+	
+	
 	$where = " where isdelete = 0 ";
 	foreach ($arr as $ks=>$vs){
 		if(!empty($vs)){
