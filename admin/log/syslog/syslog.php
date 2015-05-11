@@ -1,30 +1,41 @@
 <?php 
-define('IN_ECS', true); 
-require_once dirname(__FILE__).'/../../../commons/init.php';  
-$act = $_REQUEST[act]; 
-if (empty($act)) { 
+define('IN_ECS', true);
+
+//require_once '/totoro/commons/init.php';
+
+require_once dirname(__FILE__).'/../../../commons/init.php';
+//require_once '../commons/init.php';
+
+$act = $_REQUEST[act];
+
+if (empty($act)) {
 	$act = "";	
 }
 
 if ($act == "list") { 
-	$users = $db->get_page("sys_logfile","where 1=1 ");  
+	
+	$arr = array(); 
+	$arr['sys_logfile_logn'] = $_REQUEST['sys_logfile_logn'];
+	$where = " where isdelete = 0 ";
+	foreach ($arr as $ks=>$vs){
+		if(!empty($vs)){
+			$where.= "and $ks = $vs";
+		} 
+	}
+	
+	$users = $db->get_page("sys_logfile ",$where); 
 	echo json_encode($users); 
+	
 }elseif ($act == "add") {
 	
 }elseif ($act == "save") {
-	
-}elseif ($act == "update") {
-	
-}elseif ($act == "del") {
-	
-}else {
-	try {   
-		  $smarty->display("admin/log/syslog/syslog.html"); 
-	} catch (Exception $e) {   
-		print $e->getMessage();  
-	}   
-}
-?>
-	
 	 
+}elseif ($act == "update") {
+	  
+}elseif ($act == "delete") { 
+	 
+}else {
+	$smarty->display("admin/log/syslog/syslog.html");
+}
 
+?>
