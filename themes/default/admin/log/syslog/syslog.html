@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>登陆日志</title>
+
+	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
+	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/default/easyui.css">
+	
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/global.js"></script>
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/easyui_tag.js"></script>
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script>
+	<script type="text/javascript">
+		$(function(){
+		
+			$("#sys_logfile_datagrid").datagrid({
+				title:"登陆日志列表",
+				url:"#{$ctx}/admin/log/syslog/syslog.php?act=list",
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true,
+				toolbar:easyUi.initButton(
+				[
+					 {name:'add',text:"查看详情",handler:seelog} 
+				]),
+			}); 
+		});
+
+		function seelog(){ 
+			var row = easyUi.selectDatagrid("#sys_logfile_datagrid");
+			var result = easyUi.loadForm("#sys_logfile_form", "#sys_logfile_datagrid", "");
+			if(!result) {
+				return ;
+			}
+			
+			$("#sys_logfile_form_dlg").dialog({
+				title : "登录详情"
+			}).dialog("open");
+		}
+		 
+		function search () {
+			var p = {}; 
+			$("#search_form").find("input").each(function(){
+				p[this.name]=this.value;
+			});
+			
+			$("#sys_logfile_datagrid").datagrid({
+				queryParams:p
+			});
+		}
+		function cleanSearch () {
+
+		}
+	</script>
+</head>
+<body>
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table >
+				
+				<tr>
+				<td>开始时间：<input name="stardate" class="easyui-datetimebox" required style="width:200px"></td>
+				<td>结束时间：<input name="enddate"  class="easyui-datetimebox" required style="width:200px"></td>
+				<td>登录名称：</td><td><input name="sys_logfile_logn" value=""/></td></tr>
+				
+				<tr><td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+						<a href="#" class="easyui-linkbutton">清空</a></td></tr>
+			</table>
+		</form>
+	</div>
+	
+	
+	<table id= "sys_logfile_datagrid">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:80,checkbox:true" >id</th>
+				<th data-options="field:'sys_logfile_logn',width:80" >登录名 </th>
+				<th data-options="field:'sys_logfile_ip',width:180" >IP</th>
+				<th data-options="field:'sys_logfile_isonline',width:180" >是否在线</th>
+				<th data-options="field:'sys_logfile_logdate',width:180" >登录时间</th> 
+			</tr> 
+		</thead>
+	</table>
+	
+	<div id="sys_logfile_form_dlg" class="easyui-dialog"  closed="true"
+		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
+		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
+		<form id="sys_logfile_form" action="#{$ctx}/admin/log/syslog/syslog.php" method="post" >
+			<input id="sys_logfile_id" name="id" type="hidden"/>
+			<table>
+				<tr>
+					<td>登录名</td>
+					<td><input class="easyui-validatebox" type="text" name="sys_logfile_logn"  disabled="disabled"/></td>
+				</tr>
+				<tr>
+					<td>登录IP</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="sys_logfile_ip"  disabled="disabled"/>
+					</td>
+				</tr> 
+				<tr>
+					<td>登录时间</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="sys_logfile_logdate"  disabled="disabled"/>
+					</td>
+				</tr> 
+				<tr>
+					<td>退出时间</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="sys_logfile_esctime"  disabled="disabled" />
+					</td>
+				</tr> 
+				<tr>
+					<td>描述</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="sys_logfile_desc"   disabled="disabled"/>
+					</td>
+				</tr> 
+			</table>
+		</form>	 
+	</div>	
+	
+</body>
+</html>
