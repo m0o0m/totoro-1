@@ -77,7 +77,7 @@ if ($act == "list") {
 	 
 	echo json_encode($result);	
 }else {
-	$smarty->display("admin/user/loading.html");
+	$smarty->display("admin/finance/loading.html");
 }
 
 ?>

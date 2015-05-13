@@ -93,7 +93,7 @@ if ($act == "list") {
 	 
 	echo json_encode($result);	
 }else {
-	$smarty->display("admin/user/client.html");
+	$smarty->display("admin/account/client.html");
 }
 
 ?>

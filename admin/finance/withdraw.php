@@ -86,7 +86,7 @@ if ($act == "list") {
 	 
 	echo json_encode($result);	
 }else {
-	$smarty->display("admin/user/withdraw.html");
+	$smarty->display("admin/finance/withdraw.html");
 }
 
 ?>
