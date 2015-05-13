@@ -21,7 +21,7 @@ if ($act == "list") {
 	
 	$where = " where isdelete = 0 ";
 	foreach ($arr as $ks=>$vs){
-		if(!empty($vs)){
+		if($vs != ""){
 			$where.= "and $ks = '$vs'";
 		} 
 	}

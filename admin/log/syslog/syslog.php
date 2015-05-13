@@ -15,7 +15,7 @@ if (empty($act)) {
 if ($act == "list") { 
 	
 	$arr = array(); 
-	$arr['sys_logfile_logn'] = $_REQUEST['sys_logfile_logn']; 
+	$arr['logfile_logn'] = $_REQUEST['logfile_logn']; 
 	$stardate = $_REQUEST['stardate'];
 	$enddate = $_REQUEST['enddate'];
 	
@@ -26,10 +26,10 @@ if ($act == "list") {
 		} 
 	}
 	if($stardate != ''){
-		$where.= " and sys_logfile_logdate >= '$stardate'";
+		$where.= " and logfile_logdate >= '$stardate'";
 	}
 	if($enddate != ''){
-		$where.= " and sys_logfile_logdate <= '$enddate'";
+		$where.= " and logfile_logdate <= '$enddate'";
 	}
 	$users = $db->get_page("sys_logfile ",$where); 
 	echo json_encode($users); 

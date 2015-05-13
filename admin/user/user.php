@@ -12,60 +12,79 @@ if (empty($act)) {
 	$act = "";	
 }
 
-if ($act == "list") {
-
+if ($act == "list") { 
 	
 	$arr = array();
-	$arr['username'] = $_REQUEST['username'];
+	$arr['user_logn'] = $_REQUEST['user_logn'];
+	$arr['user_status'] = $_REQUEST['user_status'];  
+	$where = " where isdelete = 0 ";
 	
-	$where = "where 1=1 ";
-	foreach ($arr as $value){
-		//$where.= 
+	foreach ($arr as $ks=>$vs){
+		if($vs != ""){
+			$where.= "and $ks = '$vs'";
+		} 
 	}
 	
-	$users = $db->get_page("xy_sys_user",$where);
-
-	//where username='admin'
-	//$users = $db->get_page("sys_user",$where);
-
-	echo json_encode($users);
-	//print($users);
+	$result = $db->get_page("sys_user",$where); 
+	echo json_encode($result);	
 }elseif ($act == "add") {
 	
 }elseif ($act == "save") {
 	$arr = array();
-	$arr['username'] = $_REQUEST['username'];
-	$arr['password'] = $_REQUEST['password'];
-	$arr['email'] = $_REQUEST['email'];
+	$arr['user_logn'] = $_REQUEST['user_logn'];
+	$arr['user_pw'] = $_REQUEST['user_pw'];
+	$arr['user_name'] = $_REQUEST['user_name'];
+	$arr['user_email'] = $_REQUEST['user_email'];
+	$arr['user_sex'] = $_REQUEST['user_sex'];
+	$arr['user_mobile'] = $_REQUEST['user_mobile'];
+	$arr['user_status'] = $_REQUEST['user_status'];
+	$arr['user_createdate'] = 'now()';
 	
 	try {
-		$db->insert("xy_sys_user",$arr);
+		$db->insert("sys_user",$arr);
 		$result->result="1";
-		$result->msg="添加用户".$arr['username']."成功。";
+		$result->msg="添加用户".$arr['user_logn']."成功。";
 		
 	}catch (Exception $e){
 		$result->result="0";
-		$result->msg="添加用户".$arr['username']."失败。";
+		$result->msg="添加用户".$arr['user_logn']."失败。";
 	}
 	echo json_encode($result);	
+	
 }elseif ($act == "update") {
 	$arr = array();
-	$arr['username'] = $_REQUEST['username'];
-	$arr['password'] = $_REQUEST['password'];
-	$arr['email'] = $_REQUEST['email'];
+	$arr['user_logn'] = $_REQUEST['user_logn']; 
+	$arr['user_name'] = $_REQUEST['user_name'];
+	$arr['user_email'] = $_REQUEST['user_email'];
+	$arr['user_sex'] = $_REQUEST['user_sex'];
+	$arr['user_mobile'] = $_REQUEST['user_mobile'];
+	$arr['user_status'] = $_REQUEST['user_status'];
 	$id = $_REQUEST['id'];
-	$db->update("xy_sys_user",$arr,"where id=".$id);
-}elseif ($act == "delete") {
-	
-	$id = $_REQUEST['id'];
+
 	try {
-		//$db->delete("xy_sys_user","where id=".$id);
+		$db->update("sys_user",$arr,"where id=".$id);
 		$result->result="1";
-		$result->msg="删除用户".$arr['username']."成功。";
+		$result->msg="修改成功。";
 	}catch (Exception $e){
 		$result->result="0";
-		$result->msg="删除用户".$arr['username']."失败。";
+		$result->msg="修改失败。";
 	}
+	echo json_encode($result);
+	
+}elseif ($act == "delete") { 
+		$arr = array();	
+	$id = $_REQUEST['id'];
+	$arr['isdelete'] = 1; 
+	
+	try {
+		$db->update("sys_user",$arr,"where id=".$id);
+		$result->result="1";
+		$result->msg="删除成功。";
+	}catch (Exception $e){
+		$result->result="0";
+		$result->msg="删除失败。";
+	}
+	 
 	echo json_encode($result);	
 }else {
 	$smarty->display("admin/user/list.html");
