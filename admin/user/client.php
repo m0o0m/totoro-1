@@ -15,16 +15,16 @@ if (empty($act)) {
 if ($act == "list") {
 
 	
-// 	$arr = array(); 
-// 	$arr['client_status'] = $_REQUEST['client_status'];
-// 	$arr['client_logname'] = $_REQUEST['client_logname'];
+	$arr = array(); 
+	$arr['client_status'] = $_REQUEST['client_status'];
+	$arr['client_logname'] = $_REQUEST['client_logname'];
 	
 	$where = " where isdelete = 0 ";
-// 	foreach ($arr as $ks=>$vs){
-// 		if(!empty($vs)){
-// 			$where.= "and $ks = '$vs'";
-// 		} 
-// 	}
+	foreach ($arr as $ks=>$vs){
+		if($vs != ""){
+			$where.= "and $ks = '$vs'";
+		} 
+	}
 	
 	$users = $db->get_page("bns_client",$where); 
 	echo json_encode($users); 
