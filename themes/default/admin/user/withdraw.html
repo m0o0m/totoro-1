@@ -15,16 +15,16 @@
 	<script type="text/javascript">
 		$(function(){
 			   
-			$("#loading_datagrid").datagrid({
-				title:"充值记录",
-				url:"#{$ctx}/admin/user/loading.php?act=list",
+			$("#Withdraw_datagrid").datagrid({
+				title:"提现记录",
+				url:"#{$ctx}/admin/user/Withdraw.php?act=list",
 				fitColumns:true,
 				rownumbers:true,
 				pagination:true,
 				toolbar:easyUi.initButton(
 				[
 					 {name:'add',text:"审核",handler:updateUser}, 
-					 {name:'remove',text:"删除充值记录",handler:deleteUser},
+					 {name:'remove',text:"删除提现记录",handler:deleteUser},
 				]),
 			}); 
 			
@@ -32,44 +32,44 @@
 		});
 
 		function addUser () {
-			$('#loading_form').form('clear');
-			$("#loading_form_dlg").dialog({
+			$('#Withdraw_form').form('clear');
+			$("#Withdraw_form_dlg").dialog({
 				title : "添加账户"
 			}).dialog("open");
 			
 		}
 		function saveUser () { 
-			var act ="update";
-			if($("#loading_id").val() == "" || $("#loading_id").val() == null){
+			var act ="sh";
+			if($("#Withdraw_id").val() == "" || $("#Withdraw_id").val() == null){
 				act ="save"
-			}
+			} 
 			
 			easyUi.formSubmit({
-				formId : "#loading_form",
+				formId : "#Withdraw_form",
 				submit : function() {
 				},
 				success : function(data) {
 					msgSuccess(data);
-					$("#loading_datagrid").datagrid("reload");
-					$("#loading_form_dlg").dialog("close");
+					$("#Withdraw_datagrid").datagrid("reload");
+					$("#Withdraw_form_dlg").dialog("close");
 				},
 				prefix : "",
 				params : {"act":act}
 			});
 		}
-		function updateUser () {
-
-			var row = easyUi.selectDatagrid("#loading_datagrid");
-			var result = easyUi.loadForm("#loading_form", "#loading_datagrid", "");
+		function updateUser () { 
+			var row = easyUi.selectDatagrid("#Withdraw_datagrid");
+			var result = easyUi.loadForm("#Withdraw_form", "#Withdraw_datagrid", "");
 			if(!result) {
 				return ;
 			}
-			$("#loading_form_dlg").dialog({
-				title : "审核"
+			$("#Withdraw_form_dlg").dialog({
+				title : "审核提现"
 			}).dialog("open");
 		}
+		
 		function deleteUser () {
-			var rows = $('#loading_datagrid').datagrid('getSelections');			 
+			var rows = $('#Withdraw_datagrid').datagrid('getSelections');			 
 			var parm = "";
 			$.each(rows, function (i, n) {
 		    if (i == 0) {
@@ -78,9 +78,9 @@
 				  parm += "," + n.id;
 				}
 			}); 
-			var url = "#{$ctx}/admin/user/loading.php?act=delete"; 
-			easyUi.del("#loading_datagrid", "id", url, function (data){
-				$("#loading_datagrid").datagrid("reload");
+			var url = "#{$ctx}/admin/user/Withdraw.php?act=delete"; 
+			easyUi.del("#Withdraw_datagrid", "id", url, function (data){
+				$("#Withdraw_datagrid").datagrid("reload");
 				msgSuccess(data);
 			});
 		}
@@ -90,11 +90,10 @@
 				p[this.name]=this.value;
 			});
 			
-			$("#loading_datagrid").datagrid({
+			$("#Withdraw_datagrid").datagrid({
 				queryParams:p
 			});
-		} 
-		 $("#loading_state  option[value='0'] ").attr("selected",true)
+		}  
 	</script>
 </head>
 <body>
@@ -104,12 +103,13 @@
 			<table > 
 				<tr> 
 				<td>
-					<select id="loading_state" class="easyui-combobox" name="loading_state" style="width:200px;">
+					<select id="Withdraw_fkstate" class="easyui-combobox" name="Withdraw_fkstate" style="width:200px;">
 						<option value="">全部</option>
 						<option value="0">未处理</option>
 						<option value="1">取消</option>
 						<option value="2">成功</option>
 						<option value="3">失败</option>
+						<option value="4">到账</option>
 					</select>
 				</td>
 				<td>账号：</td><td><input name="client_logname" value=""/></td></tr>				
@@ -120,19 +120,18 @@
 	</div>
 	
 	
-	<table id= "loading_datagrid">
+	<table id= "Withdraw_datagrid">
 		<thead>
 			<tr>  
 				<th data-options="field:'id',width:80,checkbox:true" >id</th>				
 				<th data-options="field:'client_logname',width:180" >账户名</th> 
-				<th data-options="field:'loading_amount',width:80" >充值金额</th>
-				<th data-options="field:'loading_sjamount',width:80" >实际金额</th>
-				<th data-options="field:'loading_sxamount',width:80" >手续费</th>
-				<th data-options="field:'loading_date',width:180" >充值时间</th> 
-				<th data-options="field:'loading_bankid',width:180" >充值方式</th> 
-				<th data-options="field:'loading_czaccount',width:180" >收款银行账号</th>  
-				<th data-options="field:'loading_czbankacname',width:180" >收款银行账户名称</th> 
-				<th data-options="field:'loading_state',width:100,
+				<th data-options="field:'Withdraw_account_id',width:180" >编号</th>  
+				<th data-options="field:'Withdraw_amount',width:80" >提现金额</th> 
+				<th data-options="field:'Withdraw_sxamount',width:80" >手续费</th>
+				<th data-options="field:'Withdraw_date',width:180" >提交时间</th> 
+				<th data-options="field:'Withdraw_type',width:180" >提现方式</th>  
+				<th data-options="field:'Withdraw_fkdate',width:80" >处理时间</th> 
+				<th data-options="field:'Withdraw_fkstate',width:100,
 						formatter:function(value,row){
 											if(value==0)
 				                return '未处理';
@@ -145,65 +144,72 @@
 				        }						
 						 ">状态</th>
 			   
-				<th data-options="field:'loading_shuser',width:180" >审核人</th> 
+				<th data-options="field:'Withdraw_shuser',width:180" >审核人</th> 
 			  </tr>  
 		</thead>
 	</table>
 	
-	<div id="loading_form_dlg" class="easyui-dialog"  closed="true"
+	<div id="Withdraw_form_dlg" class="easyui-dialog"  closed="true"
 		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
 		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
-		<form id="loading_form" action="#{$ctx}/admin/user/loading.php" method="post" >
-			<input id="loading_id" name="id" type="hidden"/>
+		<form id="Withdraw_form" action="#{$ctx}/admin/user/Withdraw.php" method="post" >
+			<input id="Withdraw_id" name="id" type="hidden"/>
 			<table> 
 				<tr>
-					<td>充值方式:</td>
+					<td>提现方式:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="loading_bankid"  disabled="disabled"/>
+						<input class="easyui-validatebox" type="text" name="Withdraw_type"  disabled="disabled"/>
 					</td>
 				</tr>  
-			    <tr>
-					<td>充值编号:</td>
-					<td>
-						<input class="easyui-validatebox" type="text" name="loading_yhordernum"  disabled="disabled" />
-					</td>
-				</tr>   
 				<tr>
-					<td>充值金额:</td>
+					<td>提现银行:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="loading_amount"  disabled="disabled" />
+						<input class="easyui-validatebox" type="text" name="account_id"  disabled="disabled" />
 					</td>
 				</tr> 
 				<tr>
-					<td>实际到账金额:</td>
+					<td>提现账号:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="loading_sjamount" data-options="required:true" />
+						<input class="Withdraw_bankaccount" type="text" name="Withdraw_account_id"  disabled="disabled" />
+					</td>
+				</tr> 
+				<tr>
+					<td>提现名称:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="Withdraw_bankacname"  disabled="disabled" />
+					</td>
+				</tr> 
+				<tr>
+					<td>提现金额:</td>
+					<td>
+						<input class="Withdraw_amount" type="text" name="Withdraw_amount"  disabled="disabled" />
 					</td>
 				</tr> 
 				<tr>
 					<td>手续费:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="loading_sxamount" data-options="required:true" />
+						<input class="easyui-validatebox" type="text" name="Withdraw_sxamount" data-options="required:true" />
 					</td>
-				</tr>  
+				</tr> 
+				 
 				<tr>
 					<td>审核:</td>
 					<td> 
-						成功：<input class="easyui-validatebox" type="radio" name="loading_state" value="2" data-options="required:true" />
-						失败：<input class="easyui-validatebox" type="radio" name="loading_state" value="3" data-options="required:true" />
+						成功：<input class="easyui-validatebox" type="radio" name="Withdraw_fkstate" value="2" data-options="required:true" />
+						失败：<input class="easyui-validatebox" type="radio" name="Withdraw_fkstate" value="3" data-options="required:true" />
 					</td>
 				</tr>  
 				<tr>
 					<td>审核说明:</td>
 					<td>
-							<input class="easyui-textbox"  data-options="multiline:true,required:true" name="loading_bonusdesc" style="width:300px;height:100px"> 
+							<input class="Withdraw_remarks"  data-options="multiline:true,required:true" name="Withdraw_bonusdesc" style="width:300px;height:100px"> 
 					</td> 
 				</tr>  
 			</table> 
 		</form>	
 		<div id="user_form_dlg_buttons">
 			<a href="javascript:saveUser()" class="easyui-linkbutton" >提交</a>
-			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#loading_form_dlg').dialog('close')">关闭</a>
+			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#Withdraw_form_dlg').dialog('close')">关闭</a>
 		</div>
 	</div>	
 	 

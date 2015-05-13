@@ -93,8 +93,7 @@
 			$("#client_datagrid").datagrid({
 				queryParams:p
 			});
-		} 
-	 
+		}  
 	</script>
 </head>
 <body>
@@ -104,8 +103,9 @@
 			<table > 
 				<tr> 
 				<td>
-					<select id="state" class="easyui-combobox" name="client_status" style="width:200px;">
-						<option value="o">正常</option>
+					<select id="client_status" class="easyui-combobox" name="client_status" style="width:200px;">
+						<option value="">全部</option>
+						<option value="0">正常</option>
 						<option value="1">冻结</option>
 						<option value="2">注销</option>
 					</select>
@@ -122,7 +122,16 @@
 		<thead>
 			<tr>
 				<th data-options="field:'id',width:80,checkbox:true" >id</th>				
-				<th data-options="field:'client_status',width:180" >状态</th> 
+				<th data-options="field:'client_status',width:180,
+				formatter:function(value,row){
+											if(value==0)
+				                return '正常';
+				       		 else if(value==1)
+				                return '冻结';
+				             else if(value==2)
+				                return '注销'; 
+				        }	
+				" >状态</th> 
 				<th data-options="field:'client_logname',width:80" >登录名</th>
 				<th data-options="field:'client_pw',width:180" >登录密码</th> 
 				<th data-options="field:'client_nickname',width:180" >昵称</th>
@@ -164,17 +173,11 @@
 					<td>
 						<input class="easyui-validatebox" type="text" name="client_nickname" data-options="required:true" />
 					</td>
-				</tr> 
-					<tr>
-					<td>冻结资金:</td>
-					<td>
-						<input class="easyui-validatebox" type="text" name="client_freeze" data-options="required:true" />
-					</td>
-				</tr> 
+				</tr>  
 				<tr>  
 					<td>状态:</td>
 					<td>						
-					<select id="state" class="easyui-combobox" name="client_status" style="width:200px;">
+					<select id="status" class="easyui-combobox" name="client_status" style="width:200px;">						 
 						<option value="0">正常</option>
 						<option value="1">冻结</option>
 						<option value="2">注销</option>
