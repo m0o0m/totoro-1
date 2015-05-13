@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>用户管理</title>
 
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
+		<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
 	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/default/easyui.css">
 	
 	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
@@ -12,6 +12,8 @@
 	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/global.js"></script>
 	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/easyui_tag.js"></script>
 	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script>
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/easyui-lang-zh_CN.js"></script>
+	
 	<script type="text/javascript">
 		$(function(){
 		
@@ -31,12 +33,18 @@
 		});
 
 		function addUser () {
+			$('#user_form').form('clear');
 			$("#user_form_dlg").dialog({
 				title : "添加用户"
 			}).dialog("open");
 			
 		}
-		function saveUser () {
+		function saveUser () { 
+			var act ="update";
+			if($("#user_id").val() == "" || $("#user_id").val() == null){
+				act ="save"
+			} 
+			
 			easyUi.formSubmit({
 				formId : "#user_form",
 				submit : function() {
@@ -47,11 +55,11 @@
 					$("#user_form_dlg").dialog("close");
 				},
 				prefix : "",
-				params : {"act":"save"}
+				params : {"act": act}
 			});
 		}
 		function updateUser () {
-
+			$("#user_pw").hide();
 			var row = easyUi.selectDatagrid("#user_datagrid");
 			var result = easyUi.loadForm("#user_form", "#user_datagrid", "");
 			if(!result) {
@@ -69,8 +77,7 @@
 			});
 		}
 		function search () {
-			var p = {};
-
+			var p = {}; 
 			$("#search_form").find("input").each(function(){
 				p[this.name]=this.value;
 			});
@@ -89,8 +96,17 @@
 		data-options="iconCls:'icon-save',collapsible:true">
 		<form id="search_form" method="post">
 			<table >
-				<tr><td>username</td><td><input name="username" value=""/></td></tr>
-				
+				<tr><td>登陆名</td><td><input name="user_logn" value=""/>
+				<td>状态</td>
+				<td>
+					<select id="user_status" class="easyui-combobox" name="user_status" style="width:200px;">
+						<option value="">全部</option>
+						<option value="0">正常</option>
+						<option value="1">暂停</option>
+						<option value="2">作废</option> 
+					</select>
+				</td>
+				</tr>
 				<tr><td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
 						<a href="#" class="easyui-linkbutton">清空</a></td></tr>
 			</table>
@@ -102,10 +118,20 @@
 		<thead>
 			<tr>
 				<th data-options="field:'id',width:80,checkbox:true" >id</th>
-				<th data-options="field:'sysuser_logn',width:80" >用户名</th>
-				<th data-options="field:'sysuser_pw',width:180" >密码</th>
-				<th data-options="field:'sysuser_email'" >邮箱</th>
-				<th data-options="field:'sysuser_ip'" >ip</th>
+				<th data-options="field:'user_logn',width:80" >登录名</th> 
+				<th data-options="field:'user_name',width:180" >昵称</th> 
+				<th data-options="field:'user_mobile',width:180" >电话</th> 
+				<th data-options="field:'user_email'" >邮箱</th> 
+				<th data-options="field:'user_status',
+						formatter:function(value,row){
+							 if(value == 0)
+				                return '正常';
+				       		 else if(value == 1)
+				                return '暂停';
+				             else
+				             	 return '注销';
+				        }
+				" >状态</th> 
 			</tr> 
 		</thead>
 	</table>
@@ -114,23 +140,50 @@
 		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
 		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
 		<form id="user_form" action="#{$ctx}/admin/user/user.php" method="post" >
-			<input id="user_id" name="userid" type="hidden"/>
+			<input id="user_id" name="id" type="hidden"/>
 			<table>
 				<tr>
 					<td>用户名:</td>
-					<td><input class="easyui-validatebox" type="text" name="username" data-options="required:true" /></td>
+					<td><input class="easyui-validatebox" type="text" name="user_logn" data-options="required:true" /></td>
 				</tr>
 				<tr>
 					<td>密码:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="password" data-options="required:true" />
+						<input class="easyui-validatebox" type="text" id= "user_pw" name="user_pw" data-options="required:true" />
 					</td>
 				</tr>
 				<tr>
+					<td>昵称:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="user_name" data-options="required:true" />
+					</td>
+				</tr>
+				<tr>
+					<td>审核:</td>
+					<td> 
+						男：<input class="easyui-validatebox" type="radio" checked="checked"  name="user_sex" value="0" data-options="required:true" />
+						女：<input class="easyui-validatebox" type="radio" name="user_sex" value="1" data-options="required:true" />
+					</td>
+				</tr>  
+				<tr>
 					<td>邮箱:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="email" data-options="required:true" />
+						<input class="easyui-validatebox" type="text" name="user_email" data-options="required:true" />
 					</td>
+				</tr>
+				<tr>
+					<td>电话:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="user_mobile" data-options="required:true" />
+					</td>
+				</tr>
+				<tr>
+					<td>状态:</td> 
+					<td><select id="status" class="easyui-combobox" name="user_status" required:true style="width:200px;">						 
+						<option value="0">正常</option>
+						<option value="1">暂停</option>
+						<option value="2">作废</option>
+					</select></td>
 				</tr>
 			</table>
 		</form>	
