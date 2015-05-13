@@ -15,10 +15,9 @@ if (empty($act)) {
 if ($act == "list") { 
 	
 	$arr = array(); 
-	$arr['sys_logfile_logn'] = $_REQUEST['sys_logfile_logn'];
-	$arr['sys_logfile_logdate'] = $_REQUEST['stardate'];
-	$arr['sys_logfile_isonline'] = $_REQUEST['enddate'];
-	
+	$arr['sys_logfile_logn'] = $_REQUEST['sys_logfile_logn']; 
+	$stardate = $_REQUEST['stardate'];
+	$enddate = $_REQUEST['enddate'];
 	
 	$where = " where isdelete = 0 ";
 	foreach ($arr as $ks=>$vs){
@@ -26,7 +25,12 @@ if ($act == "list") {
 			$where.= "and $ks = $vs";
 		} 
 	}
-	
+	if($stardate != ''){
+		$where.= " and sys_logfile_logdate >= '$stardate'";
+	}
+	if($enddate != ''){
+		$where.= " and sys_logfile_logdate <= '$enddate'";
+	}
 	$users = $db->get_page("sys_logfile ",$where); 
 	echo json_encode($users); 
 	
