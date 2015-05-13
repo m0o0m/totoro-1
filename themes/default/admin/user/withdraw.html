@@ -11,7 +11,10 @@
 	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/global.js"></script>
 	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/easyui_tag.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script>
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script> 
+	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/easyui-lang-zh_CN.js"></script>
+	
+	
 	<script type="text/javascript">
 		$(function(){
 			   
@@ -94,6 +97,28 @@
 				queryParams:p
 			});
 		}  
+		
+		function formatOper(val,row,index){    
+		    return '<a href="#" onclick="editUser('+row.id+')">审核</a>';  
+		}  
+		
+		function editUser(id){     
+			var row = easyUi.selectDatagrid("#Withdraw_datagrid");
+			var result = easyUi.loadForm("#Withdraw_form", "#Withdraw_datagrid", "");
+			if(!result) {
+				return ;
+			}
+			$("#Withdraw_form_dlg").dialog({
+				title : "审核提现"
+			}).dialog("open");
+		}  
+		 
+		$('#stardate').datetimebox({
+		    value: '3/4/2010 2:3',
+		    required: true,
+		    showSeconds: false
+		});
+
 	</script>
 </head>
 <body>
@@ -111,6 +136,10 @@
 						<option value="3">失败</option>
 						<option value="4">到账</option>
 					</select>
+				</td>
+				<td>
+				<td>开始时间：<input id="stardate" name="stardate" class="easyui-datetimebox"   style="width:150px">
+				结束时间：<input id="enddate" name="enddate" class="easyui-datetimebox"     style="width:150px"></td>
 				</td>
 				<td>账号：</td><td><input name="client_logname" value=""/></td></tr>				
 				<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
@@ -130,7 +159,7 @@
 				<th data-options="field:'Withdraw_sxamount',width:80" >手续费</th>
 				<th data-options="field:'Withdraw_date',width:180" >提交时间</th> 
 				<th data-options="field:'Withdraw_type',width:180" >提现方式</th>  
-				<th data-options="field:'Withdraw_fkdate',width:80" >处理时间</th> 
+				<th data-options="field:'Withdraw_fkdate',width:80" >处理时间</th>				
 				<th data-options="field:'Withdraw_fkstate',width:100,
 						formatter:function(value,row){
 											if(value==0)
@@ -145,7 +174,9 @@
 						 ">状态</th>
 			   
 				<th data-options="field:'Withdraw_shuser',width:180" >审核人</th> 
-			  </tr>  
+				<th data-options="field:'_operate',width:80,align:'center',formatter:formatOper">操作</th> 
+				
+				 </tr>  
 		</thead>
 	</table>
 	
@@ -202,7 +233,7 @@
 				<tr>
 					<td>审核说明:</td>
 					<td>
-							<input class="Withdraw_remarks"  data-options="multiline:true,required:true" name="Withdraw_bonusdesc" style="width:300px;height:100px"> 
+							<input class="Withdraw_remarks"  data-options="multiline:true,required:true" name="Withdraw_remarks" style="width:300px;height:100px"> 
 					</td> 
 				</tr>  
 			</table> 
