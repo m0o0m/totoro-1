@@ -35,12 +35,16 @@
 				 }
 			,{"menuid":"4","icon":"icon-sys","menuname":"财务",
 				"menus":[
-							{"menuname":"账户管理","icon":"icon-nav","url":"#{$ctx}/admin/user/client.php"}, 
-							{"menuname":"充值管理","icon":"icon-nav","url":"#{$ctx}/admin/user/loading.php"},
+						    {"menuname":"充值管理","icon":"icon-nav","url":"#{$ctx}/admin/user/loading.php"},
 							{"menuname":"提现管理","icon":"icon-nav","url":"#{$ctx}/admin/user/withdraw.php"}
 						]
-				 } 
-			,{"menuid":"5","icon":"icon-sys","menuname":"我的工作区间",
+				 },
+			{"menuid":"5","icon":"icon-sys","menuname":"账户管理",
+						"menus":[
+									{"menuname":"账户列表","icon":"icon-nav","url":"#{$ctx}/admin/user/client.php"}, 
+								]
+						 } 	 
+			,{"menuid":"6","icon":"icon-sys","menuname":"我的工作区间",
 				"menus":[
 			        {"menuname":"我的待办","icon":"icon-nav","url":"#{$ctx}/business/workflow!myTask.do"},
 				]
@@ -67,7 +71,6 @@
         function serverLogin() {
             var $newpass = $('#txtNewPass');
             var $rePass = $('#txtRePass');
-
             if ($newpass.val() == '') {
                 msgShow('系统提示', '请输入密码！', 'warning');
                 return false;
@@ -76,12 +79,10 @@
                 msgShow('系统提示', '请在一次输入密码！', 'warning');
                 return false;
             }
-
             if ($newpass.val() != $rePass.val()) {
                 msgShow('系统提示', '两次密码不一至！请重新输入', 'warning');
                 return false;
             }
-
             $.post('/ajax/editpassword.ashx?newpass=' + $newpass.val(), function(msg) {
                 msgShow('系统提示', '恭喜，密码修改成功！<br>您的新密码为：' + msg, 'info');
                 $newpass.val('');
@@ -89,24 +90,18 @@
                 close();
             });
         }
-
         $(function() {
-
             openPwd();
             //
             $('#editpass').click(function() {
                 $('#w').window('open');
             });
-
             $('#btnEp').click(function() {
                 serverLogin();
             });
-
 			$('#btnCancel').click(function(){closePwd();})
-
             $('#loginOut').click(function() {
                 $.messager.confirm('系统提示', '您确定要退出本次登录吗?', function(r) {
-
                     if (r) {
                         location.href = '/ajax/loginout.ashx';
                     }
