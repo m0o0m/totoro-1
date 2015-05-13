@@ -17,7 +17,7 @@
 		
 			$("#booktype_datagrid").datagrid({
 				title:"字典列表",
-				url:"#{$ctx}/admin/code/booktype.php?act=list",
+				url:"#{$ctx}/admin/dictionary/booktype.php?act=list",
 				fitColumns:true,
 				rownumbers:true,
 				pagination:true,
@@ -77,7 +77,7 @@
 				  parm += "," + n.id;
 				}
 			}); 
-			var url = "#{$ctx}/admin/code/booktype.php?act=delete"; 
+			var url = "#{$ctx}/admin/dictionary/booktype.php?act=delete"; 
 			easyUi.del("#booktype_datagrid", "id", url, function (data){
 				$("#booktype_datagrid").datagrid("reload");
 				msgSuccess(data);
@@ -125,7 +125,7 @@
 	<div id="booktype_form_dlg" class="easyui-dialog"  closed="true"
 		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
 		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
-		<form id="booktype_form" action="#{$ctx}/admin/code/booktype.php" method="post" >
+		<form id="booktype_form" action="#{$ctx}/admin/dictionary/booktype.php" method="post" >
 			<input id="booktype_id" name="id" type="hidden"/>
 			<table>
 				<tr>

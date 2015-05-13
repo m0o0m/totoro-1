@@ -20,7 +20,7 @@
 			   
 			$("#Withdraw_datagrid").datagrid({
 				title:"提现记录",
-				url:"#{$ctx}/admin/user/Withdraw.php?act=list",
+				url:"#{$ctx}/admin/finance/Withdraw.php?act=list",
 				fitColumns:true,
 				rownumbers:true,
 				pagination:true,
@@ -81,7 +81,7 @@
 				  parm += "," + n.id;
 				}
 			}); 
-			var url = "#{$ctx}/admin/user/Withdraw.php?act=delete"; 
+			var url = "#{$ctx}/admin/finance/Withdraw.php?act=delete"; 
 			easyUi.del("#Withdraw_datagrid", "id", url, function (data){
 				$("#Withdraw_datagrid").datagrid("reload");
 				msgSuccess(data);
@@ -183,7 +183,7 @@
 	<div id="Withdraw_form_dlg" class="easyui-dialog"  closed="true"
 		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
 		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
-		<form id="Withdraw_form" action="#{$ctx}/admin/user/Withdraw.php" method="post" >
+		<form id="Withdraw_form" action="#{$ctx}/admin/finance/Withdraw.php" method="post" >
 			<input id="Withdraw_id" name="id" type="hidden"/>
 			<table> 
 				<tr>

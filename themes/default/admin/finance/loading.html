@@ -17,7 +17,7 @@
 			   
 			$("#loading_datagrid").datagrid({
 				title:"充值记录",
-				url:"#{$ctx}/admin/user/loading.php?act=list",
+				url:"#{$ctx}/admin/finance/loading.php?act=list",
 				fitColumns:true,
 				rownumbers:true,
 				pagination:true,
@@ -78,7 +78,7 @@
 				  parm += "," + n.id;
 				}
 			}); 
-			var url = "#{$ctx}/admin/user/loading.php?act=delete"; 
+			var url = "#{$ctx}/admin/finance/loading.php?act=delete"; 
 			easyUi.del("#loading_datagrid", "id", url, function (data){
 				$("#loading_datagrid").datagrid("reload");
 				msgSuccess(data);
@@ -153,7 +153,7 @@
 	<div id="loading_form_dlg" class="easyui-dialog"  closed="true"
 		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
 		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
-		<form id="loading_form" action="#{$ctx}/admin/user/loading.php" method="post" >
+		<form id="loading_form" action="#{$ctx}/admin/finance/loading.php" method="post" >
 			<input id="loading_id" name="id" type="hidden"/>
 			<table> 
 				<tr>
