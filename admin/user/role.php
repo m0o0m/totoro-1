@@ -14,7 +14,7 @@ if (empty($act)) {
 
 if ($act == "list") {  
 	$arr = array();
-	$arr['sys_rolename'] = $_REQUEST['sys_rolename']; 
+	$arr['role_name'] = $_REQUEST['role_name']; 
 	$where = " where isdelete = 0 ";
 	
 	foreach ($arr as $ks=>$vs){
@@ -29,30 +29,27 @@ if ($act == "list") {
 	
 }elseif ($act == "save") {
 	$arr = array();
-	$arr['sys_rolename'] = $_REQUEST['sys_rolename'];
-	$arr['sys_role_desc'] = $_REQUEST['sys_role_desc'];
+	$arr['role_name'] = $_REQUEST['role_name'];
+	$arr['role_desc'] = $_REQUEST['role_desc'];
 	$arr['sysuser_id'] = 1;
-	$arr['czdate'] = new time(); 
+	$arr['czdate'] = 'now()';  
 	
 	try {
 		$db->insert("sys_role",$arr);
 		$result->result="1";
-		$result->msg="添加用户".$arr['role_logn']."成功。";
+		$result->msg="添加权限用户组成功。";
 		
 	}catch (Exception $e){
 		$result->result="0";
-		$result->msg="添加用户".$arr['role_logn']."失败。";
+		$result->msg="添加权限用户组失败。";
 	}
 	echo json_encode($result);	
 	
 }elseif ($act == "update") {
 	$arr = array();
-	$arr['role_logn'] = $_REQUEST['role_logn']; 
 	$arr['role_name'] = $_REQUEST['role_name'];
-	$arr['role_email'] = $_REQUEST['role_email'];
-	$arr['role_sex'] = $_REQUEST['role_sex'];
-	$arr['role_mobile'] = $_REQUEST['role_mobile'];
-	$arr['role_status'] = $_REQUEST['role_status'];
+	$arr['role_desc'] = $_REQUEST['role_desc'];
+	$arr['role_status'] = $_REQUEST['role_status']; 
 	$id = $_REQUEST['id'];
 
 	try {
