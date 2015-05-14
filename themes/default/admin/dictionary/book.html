@@ -3,18 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>字典列表</title>
-
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/default/easyui.css">
-	
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/global.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/easyui_tag.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/easyui-lang-zh_CN.js"></script>
-	
-	<script type="text/javascript">
+    #{include file ="jscss.html"};
+ 	<script type="text/javascript">
 		$(function(){
 			   
 			$("#book_datagrid").datagrid({
@@ -110,7 +100,7 @@
 				<td>
 				<input class="easyui-combobox" 
 					name="booktype_code"	data-options="
-					url:'#{$ctx}/admin/code/book.php?act=comboxlist',
+					url:'#{$ctx}/admin/dictionary/book.php?act=comboxlist',
 					method:'get',
 					valueField:'id',
 					textField:'text',
@@ -127,8 +117,8 @@
 		<thead>
 			<tr>
 				<th data-options="field:'id',width:80,checkbox:true" >id</th>
-				<th data-options="field:'sys_book_no',width:80" >字典code</th>
-				<th data-options="field:'sys_book_value',width:180" >字典值</th> 
+				<th data-options="field:'book_no',width:80" >字典code</th>
+				<th data-options="field:'book_value',width:180" >字典值</th> 
 			</tr> 
 		</thead>
 	</table>
@@ -144,20 +134,21 @@
 				<td>
 				<input class="easyui-combobox" 
 					name="booktype_code"	data-options="
-					url:'#{$ctx}/admin/code/book.php?act=comboxlist',
+					url:'#{$ctx}/admin/dictionary/book.php?act=comboxlist',
 					method:'get',
 					valueField:'id',
 					textField:'text',
-					panelHeight:'auto'"></td>
+					panelHeight:'auto',
+					required:true"></td>
 				</tr>
 				<tr>
 					<td>字典code:</td>
-					<td><input class="easyui-validatebox" type="text" name="sys_book_no" data-options="required:true" /></td>
+					<td><input class="easyui-validatebox" type="text" name="book_no" data-options="required:true" /></td>
 				</tr>
 				<tr>
 					<td>字典值:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="sys_book_value" data-options="required:true" />
+						<input class="easyui-validatebox" type="text" name="book_value" data-options="required:true" />
 					</td>
 				</tr> 
 			</table> 

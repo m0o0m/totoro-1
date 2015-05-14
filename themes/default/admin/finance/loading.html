@@ -2,17 +2,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>账户列表</title>
+<title>充值列表</title>
 
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/default/easyui.css">
-	
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/global.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/easyui_tag.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script>
-	<script type="text/javascript">
+	   #{include file ="jscss.html"};
+	  <script type="text/javascript">
 		$(function(){
 			   
 			$("#loading_datagrid").datagrid({
@@ -112,9 +105,18 @@
 						<option value="3">失败</option>
 					</select>
 				</td>
-				<td>账号：</td><td><input name="client_logname" value=""/></td></tr>				
+				<td>玩家：</td><td><input name="client_logname" value=""/></td>
+				<td>申请提交日期：
+				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				
+				</tr>
+					
+				<tr>			
 				<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
-						<a href="#" class="easyui-linkbutton">清空</a></td></tr>
+						<a href="#" class="easyui-linkbutton">清空</a></td>
+				
+				</tr>
 			</table>
 		</form>
 	</div>

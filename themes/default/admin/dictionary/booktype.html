@@ -3,15 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>字典类型</title>
-
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/default/easyui.css">
-	
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/global.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/easyui_tag.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script>
+    #{include file ="jscss.html"};
 	<script type="text/javascript">
 		$(function(){
 		
@@ -103,7 +95,7 @@
 		data-options="iconCls:'icon-save',collapsible:true">
 		<form id="search_form" method="post">
 			<table >
-				<tr><td>字典类型名称</td><td><input name="sys_booktype_name" value=""/></td></tr>
+				<tr><td>字典类型名称</td><td><input name="booktype_name" value=""/></td></tr>
 				
 				<tr><td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
 						<a href="#" class="easyui-linkbutton">清空</a></td></tr>
@@ -116,8 +108,8 @@
 		<thead>
 			<tr>
 				<th data-options="field:'id',width:80,checkbox:true" >id</th>
-				<th data-options="field:'sys_booktype_name',width:80" >字典类型名称</th>
-				<th data-options="field:'sys_booktype_code',width:180" >字典类型code</th> 
+				<th data-options="field:'booktype_name',width:80" >字典类型名称</th>
+				<th data-options="field:'booktype_code',width:180" >字典类型code</th> 
 			</tr> 
 		</thead>
 	</table>
@@ -130,12 +122,12 @@
 			<table>
 				<tr>
 					<td>字典类型名称:</td>
-					<td><input class="easyui-validatebox" type="text" name="sys_booktype_name" data-options="required:true" /></td>
+					<td><input class="easyui-validatebox" type="text" name="booktype_name" data-options="required:true" /></td>
 				</tr>
 				<tr>
 					<td>字典类型code:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="sys_booktype_code" data-options="required:true" />
+						<input class="easyui-validatebox" type="text" name="booktype_code" data-options="required:true" />
 					</td>
 				</tr> 
 			</table>

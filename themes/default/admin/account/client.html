@@ -1,31 +1,24 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html> 
+<html>
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>账户列表</title>
-
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/default/easyui.css">
-	
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/global.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/easyui_tag.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script>
+<title>玩家列表</title> 
+	#{include file ="jscss.html"};
 	<script type="text/javascript">
 		$(function(){
 			   
 			$("#client_datagrid").datagrid({
-				title:"账户列表",
+				title:"玩家列表",
 				url:"#{$ctx}/admin/account/client.php?act=list",
 				fitColumns:true,
 				rownumbers:true,
 				pagination:true,
 				toolbar:easyUi.initButton(
 				[
-					 {name:'add',text:"添加账户",handler:addUser},
-					 {name:'edit',text:"编辑账户",handler:updateUser},
-					 {name:'remove',text:"删除账户",handler:deleteUser},
+					 {name:'add',text:"添加玩家",handler:addUser},
+					 {name:'edit',text:"编辑玩家",handler:updateUser},
+					 {name:'remove',text:"删除玩家",handler:deleteUser},
 				]),
 			}); 
 			
@@ -35,7 +28,7 @@
 		function addUser () {
 			$('#client_form').form('clear');
 			$("#client_form_dlg").dialog({
-				title : "添加账户"
+				title : "添加玩家"
 			}).dialog("open");
 			
 		}
@@ -65,7 +58,7 @@
 				return ;
 			}
 			$("#client_form_dlg").dialog({
-				title : "编辑账户"
+				title : "编辑玩家"
 			}).dialog("open");
 		}
 		function deleteUser () {
@@ -97,12 +90,18 @@
 	</script>
 </head>
 <body>
+
 	<div class="easyui-panel" title="查询" 
 		data-options="iconCls:'icon-save',collapsible:true">
 		<form id="search_form" method="post">
 			<table > 
-				<tr> 
-				<td>
+				<tr>
+			    <td>注册日期：
+				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				
+				</td>		
+				<td>状态:
 					<select id="client_status" class="easyui-combobox" name="client_status" style="width:200px;">
 						<option value="">全部</option>
 						<option value="0">正常</option>
@@ -110,9 +109,12 @@
 						<option value="2">注销</option>
 					</select>
 				</td>
-				<td>账号：</td><td><input name="client_logname" value=""/></td></tr>				
+				<td>玩家：</td><td><input name="client_logname" value=""/></td>
+				</tr>				
+				<tr>
 				<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
-						<a href="#" class="easyui-linkbutton">清空</a></td></tr>
+						<a href="#" class="easyui-linkbutton">清空</a></td>
+				</tr>
 			</table>
 		</form>
 	</div>
@@ -121,7 +123,8 @@
 	<table id= "client_datagrid">
 		<thead>
 			<tr>
-				<th data-options="field:'id',width:80,checkbox:true" >id</th>				
+				<th data-options="field:'id',width:80,checkbox:true" >id</th>		
+				<th data-options="field:'client_type',width:80" >账户类型</th> 		
 				<th data-options="field:'client_status',width:180,
 				formatter:function(value,row){
 											if(value==0)
@@ -132,9 +135,8 @@
 				                return '注销'; 
 				        }	
 				" >状态</th> 
-				<th data-options="field:'client_logname',width:80" >登录名</th>
-				<th data-options="field:'client_pw',width:180" >登录密码</th> 
-				<th data-options="field:'client_nickname',width:180" >昵称</th>
+				<th data-options="field:'client_logn',width:80" >登录名</th> 
+				<th data-options="field:'client_nickn',width:180" >昵称</th>
 				<th data-options="field:'client_balance',width:180" >账户资金</th>  
 				<th data-options="field:'client_freeze',width:180" >冻结资金</th>  
 				<th data-options="field:'client_ip',width:180" >IP地址</th>  
@@ -152,15 +154,15 @@
 				 <tr>  
 					<td>类型:</td>
 					<td>						
-					<select id="client_type" class="easyui-combobox" name="client_type"   style="width:200px;">
+					<select id="client_type" class="easyui-combobox" name="client_type" data-options="required:true"   style="width:200px;">
 						<option value="0">总代理</option>
-						<option value="1">代理</option> 
+						<option value="1">代理</option>  
 					</select>
 					</td>
 				</tr> 
 				<tr>
 					<td>登录名:</td>
-					<td><input class="easyui-validatebox" type="text" name="client_logname" data-options="required:true" /></td>
+					<td><input class="easyui-validatebox" type="text" name="client_logn" data-options="required:true" /></td>
 				</tr>
 				<tr>
 					<td>登录密码:</td>
@@ -171,13 +173,22 @@
 				<tr>
 					<td>昵称:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="client_nickname" data-options="required:true" />
+						<input class="easyui-validatebox" type="text" name="client_nickn" data-options="required:true" />
+					</td>
+				</tr>  
+				<tr>  
+					<td>开户权限:</td>
+					<td>						
+					<select id="status" class="easyui-combobox" data-options="required:true"  name="client_isregister" style="width:200px;">						 
+						<option value="0">否</option>
+						<option value="1">是</option> 
+					</select>
 					</td>
 				</tr>  
 				<tr>  
 					<td>状态:</td>
 					<td>						
-					<select id="status" class="easyui-combobox" name="client_status" style="width:200px;">						 
+					<select id="status" class="easyui-combobox" data-options="required:true"  name="client_status" style="width:200px;">						 
 						<option value="0">正常</option>
 						<option value="1">冻结</option>
 						<option value="2">注销</option>

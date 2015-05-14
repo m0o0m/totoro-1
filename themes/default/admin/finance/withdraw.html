@@ -2,19 +2,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>账户列表</title>
-
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/default/easyui.css">
-	
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/global.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/easyui_tag.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script> 
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/easyui-lang-zh_CN.js"></script>
-	
-	
+<title>提现列表</title>
+	#{include file ="jscss.html"};
 	<script type="text/javascript">
 		$(function(){
 			   
@@ -96,28 +85,7 @@
 			$("#Withdraw_datagrid").datagrid({
 				queryParams:p
 			});
-		}  
-		
-		function formatOper(val,row,index){    
-		    return '<a href="#" onclick="editUser('+row.id+')">审核</a>';  
-		}  
-		
-		function editUser(id){     
-			var row = easyUi.selectDatagrid("#Withdraw_datagrid");
-			var result = easyUi.loadForm("#Withdraw_form", "#Withdraw_datagrid", "");
-			if(!result) {
-				return ;
-			}
-			$("#Withdraw_form_dlg").dialog({
-				title : "审核提现"
-			}).dialog("open");
-		}  
-		 
-		$('#stardate').datetimebox({
-		    value: '3/4/2010 2:3',
-		    required: true,
-		    showSeconds: false
-		});
+		}   
 
 	</script>
 </head>
@@ -138,11 +106,13 @@
 					</select>
 				</td>
 				<td>
-				<td>开始时间：<input id="stardate" name="stardate" class="easyui-datetimebox"   style="width:150px">
-				结束时间：<input id="enddate" name="enddate" class="easyui-datetimebox"     style="width:150px"></td>
-				</td>
-				<td>账号：</td><td><input name="client_logname" value=""/></td></tr>				
-				<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+				
+				<td>申请提交日期：
+				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+
+				<td>玩家：</td><td><input name="client_logname" value=""/></td></tr>				
+				<tr><td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
 						<a href="#" class="easyui-linkbutton">清空</a></td></tr>
 			</table>
 		</form>
@@ -174,9 +144,8 @@
 						 ">状态</th>
 			   
 				<th data-options="field:'Withdraw_shuser',width:180" >审核人</th> 
-				<th data-options="field:'_operate',width:80,align:'center',formatter:formatOper">操作</th> 
-				
-				 </tr>  
+			 
+			 </tr>  
 		</thead>
 	</table>
 	
