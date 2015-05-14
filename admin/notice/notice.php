@@ -34,7 +34,9 @@ if ($act == "list") {
 }elseif ($act == "save") {	
 	
 	foreach($_REQUEST as $k=>$v ) {
-		
+		if () {
+			
+		}
 	}
 	$db->insert("sys_notice");
 	
