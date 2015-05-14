@@ -15,8 +15,7 @@
 	<script type="text/javascript">
 		var _menus = {"menus":[
 			{"menuid":"1","icon":"icon-sys","menuname":"系统管理",
-				"menus":[
-				    {"menuname":"公告管理","icon":"icon-nav","url":"#{$ctx}/admin/notice/notice.php"},
+				"menus":[ 
 			        {"menuname":"用户管理","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
 			        {"menuname":"权限组管理","icon":"icon-nav","url":"#{$ctx}/admin/user/role.php"},
 			        {"menuname":"模块管理","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
@@ -43,7 +42,14 @@
 									{"menuname":"账户列表","icon":"icon-nav","url":"#{$ctx}/admin/account/client.php"}, 
 								]
 						 } 	 
-			,{"menuid":"6","icon":"icon-sys","menuname":"我的工作区间",
+			,
+			{"menuid":"6","icon":"icon-sys","menuname":"公告管理",
+				"menus":[
+							{"menuname":"公告列表","icon":"icon-nav","url":"#{$ctx}/admin/notice/notice.php"}, 
+						]
+				 } 	 
+			,			
+			{"menuid":"7","icon":"icon-sys","menuname":"我的工作区间",
 				"menus":[
 			        {"menuname":"我的待办","icon":"icon-nav","url":"#{$ctx}/business/workflow!myTask.do"},
 				]
