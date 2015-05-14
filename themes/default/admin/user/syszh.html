@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>系统账户列表</title> 
+	#{include file ="jscss.html"};
+	<script type="text/javascript">
+		$(function(){
+			   
+			$("#syszh_datagrid").datagrid({
+				title:"系统账户列表",
+				url:"#{$ctx}/admin/user/syszh.php?act=list",
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true,
+				toolbar:easyUi.initButton(
+				[
+					 {name:'add',text:"添加系统账户",handler:addUser},
+					 {name:'edit',text:"编辑系统账户",handler:updateUser},
+					 {name:'remove',text:"删除系统账户",handler:deleteUser},
+				]),
+			}); 
+			
+ 
+		});
+
+		function addUser () {
+			$('#syszh_form').form('clear');
+			$("#syszh_form_dlg").dialog({
+				title : "添加系统账户"
+			}).dialog("open");
+			
+		}
+		function saveUser () { 
+			var act ="update";
+			if($("#syszh_id").val() == "" || $("#syszh_id").val() == null){
+				act ="save"
+			} 
+			easyUi.formSubmit({
+				formId : "#syszh_form",
+				submit : function() {
+				},
+				success : function(data) {
+					msgSuccess(data);
+					$("#syszh_datagrid").datagrid("reload");
+					$("#syszh_form_dlg").dialog("close");
+				},
+				prefix : "",
+				params : {"act":act}
+			});
+		}
+		function updateUser () {
+
+			var row = easyUi.selectDatagrid("#syszh_datagrid");
+			var result = easyUi.loadForm("#syszh_form", "#syszh_datagrid", "");
+			if(!result) {
+				return ;
+			}
+			$("#syszh_form_dlg").dialog({
+				title : "编辑系统账户"
+			}).dialog("open");
+		}
+		function deleteUser () {
+			var rows = $('#syszh_datagrid').datagrid('getSelections');			 
+			var parm = "";
+			$.each(rows, function (i, n) {
+		    if (i == 0) {
+				  parm = "" + n.id;
+			} else {
+				  parm += "," + n.id;
+				}
+			}); 
+			var url = "#{$ctx}/admin/user/syszh.php?act=delete"; 
+			easyUi.del("#syszh_datagrid", "id", url, function (data){
+				$("#syszh_datagrid").datagrid("reload");
+				msgSuccess(data);
+			});
+		}
+		function search () {
+			var p = {}; 
+			$("#search_form").find("input").each(function(){
+				p[this.name]=this.value;
+			});
+			
+			$("#syszh_datagrid").datagrid({
+				queryParams:p
+			});
+		}  
+	</script>
+</head>
+<body>
+
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table > 
+				<tr>
+			    <td>创建日期：
+				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				
+				</td>		 
+				</tr>				
+				<tr>
+				<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+						<a href="#" class="easyui-linkbutton">清空</a></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	
+	<table id= "syszh_datagrid">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:80,checkbox:true" >id</th>		
+				<th data-options="field:'zh_name',width:80" >账户名称</th> 		
+				<th data-options="field:'zh_iszzh',width:180,
+				formatter:function(value,row){
+											if(value==0)
+				                return '主账户';
+				       		 else if(value==1)
+				                return '子账户'; 
+				        }	
+				" >是否为主账户</th>  
+				<th data-options="field:'zh_balance',width:180" >余额</th>
+				<th data-options="field:'create_date',width:180" >创建时间</th>  
+			</tr> 
+		</thead>
+	</table>
+	
+	<div id="syszh_form_dlg" class="easyui-dialog"  closed="true"
+		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
+		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
+		<form id="syszh_form" action="#{$ctx}/admin/user/syszh.php" method="post" >
+			<input id="syszh_id" name="id" type="hidden"/>
+			<table>  
+				 <tr>  
+					<td>是否为主账户:</td>
+					<td>						
+					<select id="syszh_type" class="easyui-combobox" name="zh_iszzh" data-options="required:true"   style="width:200px;">
+						<option value="0">是</option>
+						<option value="1">否</option>  
+					</select>
+					</td>
+				</tr> 
+				<tr>
+					<td>账户名:</td>
+					<td><input class="easyui-validatebox" type="text" name="zh_name" data-options="required:true" /></td>
+				</tr>
+				<tr>
+					<td>备注:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="zh_desc" data-options="required:true" />
+					</td>
+				</tr> 
+				<tr>
+					<td>余额:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="zh_balance" data-options="required:true" />
+					</td>
+				</tr>   
+			</table> 
+		</form>	
+		<div id="user_form_dlg_buttons">
+			<a href="javascript:saveUser()" class="easyui-linkbutton" >提交</a>
+			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#syszh_form_dlg').dialog('close')">关闭</a>
+		</div>
+	</div>	
+	 
+</body>
+	
+</html>
