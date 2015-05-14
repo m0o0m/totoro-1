@@ -2,77 +2,67 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>模块管理</title>
-
-		<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/default/easyui.css">
-	
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/global.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/easyui_tag.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/easyui-lang-zh_CN.js"></script>
-	
+<title>权限组管理</title>
+	#{include file ="jscss.html"}; 
 	<script type="text/javascript">
 		$(function(){
 		
-			$("#module_datagrid").datagrid({
-				title:"模块列表",
-				url:"#{$ctx}/admin/module/module.php?act=list",
+			$("#role_datagrid").datagrid({
+				title:"权限组列表",
+				url:"#{$ctx}/admin/user/role.php?act=list",
 				fitColumns:true,
 				rownumbers:true,
 				pagination:true,
 				toolbar:easyUi.initButton(
 				[
-					 {name:'add',text:"添加模块",handler:addmodule},
-					 {name:'edit',text:"编辑模块",handler:updatemodule},
-					 {name:'remove',text:"删除模块",handler:deletemodule},
+					 {name:'add',text:"添加权限组",handler:addrole},
+					 {name:'edit',text:"编辑权限组",handler:updaterole},
+					 {name:'remove',text:"删除权限组",handler:deleterole},
 				]),
 			}); 
 		});
 
-		function addmodule () {
-			$('#module_form').form('clear');
-			$("#module_form_dlg").dialog({
-				title : "添加模块"
+		function addrole () {
+			$('#role_form').form('clear');
+			$("#role_form_dlg").dialog({
+				title : "添加权限组"
 			}).dialog("open");
 			
 		}
-		function savemodule () { 
+		function saverole () {  
 			var act ="update";
-			if($("#module_id").val() == "" || $("#module_id").val() == null){
+			if($("#role_id").val() == "" || $("#role_id").val() == null){
 				act ="save"
 			} 
 			
 			easyUi.formSubmit({
-				formId : "#module_form",
+				formId : "#role_form",
 				submit : function() {
 				},
 				success : function(data) {
 					msgSuccess(data);
-					$("#module_datagrid").datagrid("reload");
-					$("#module_form_dlg").dialog("close");
+					$("#role_datagrid").datagrid("reload");
+					$("#role_form_dlg").dialog("close");
 				},
 				prefix : "",
 				params : {"act": act}
 			});
 		}
-		function updatemodule () {
-			$("#module_pw").hide();
-			var row = easyUi.selectDatagrid("#module_datagrid");
-			var result = easyUi.loadForm("#module_form", "#module_datagrid", "");
+		function updaterole () {
+			$("#role_pw").hide();
+			var row = easyUi.selectDatagrid("#role_datagrid");
+			var result = easyUi.loadForm("#role_form", "#role_datagrid", "");
 			if(!result) {
 				return ;
 			}
-			$("#module_form_dlg").dialog({
-				title : "编辑模块"
+			$("#role_form_dlg").dialog({
+				title : "编辑权限组"
 			}).dialog("open");
 		}
-		function deletemodule () {
-			var url = "#{$ctx}/admin/module/module.php?act=delete";
-			easyUi.del("#module_datagrid", "id", url, function (data){
-				$("#module_datagrid").datagrid("reload");
+		function deleterole () {
+			var url = "#{$ctx}/admin/user/role.php?act=delete";
+			easyUi.del("#role_datagrid", "id", url, function (data){
+				$("#role_datagrid").datagrid("reload");
 				msgSuccess(data);
 			});
 		}
@@ -82,7 +72,7 @@
 				p[this.name]=this.value;
 			});
 			
-			$("#module_datagrid").datagrid({
+			$("#role_datagrid").datagrid({
 				queryParams:p
 			});
 		}
@@ -96,16 +86,7 @@
 		data-options="iconCls:'icon-save',collapsible:true">
 		<form id="search_form" method="post">
 			<table >
-				<tr><td>登陆名</td><td><input name="module_logn" value=""/>
-				<td>状态</td>
-				<td>
-					<select id="module_status" class="easyui-combobox" name="module_status" style="width:200px;">
-						<option value="">全部</option>
-						<option value="0">正常</option>
-						<option value="1">暂停</option>
-						<option value="2">作废</option> 
-					</select>
-				</td>
+				<tr><td>权限组名称</td><td><input name="role_name" value=""/> 
 				</tr>
 				<tr><td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
 						<a href="#" class="easyui-linkbutton">清空</a></td></tr>
@@ -114,72 +95,45 @@
 	</div>
 	
 	
-	<table id="module_datagrid">
+	<table id="role_datagrid">
 		<thead>
 			<tr>
 				<th data-options="field:'id',width:80,checkbox:true" >id</th>
-				<th data-options="field:'module_logn',width:80" >登录名</th> 
-				<th data-options="field:'module_name',width:180" >昵称</th> 
-				<th data-options="field:'module_mobile',width:180" >电话</th> 
-				<th data-options="field:'module_email'" >邮箱</th> 
-				<th data-options="field:'module_status',
+				<th data-options="field:'role_name',width:80" >权限组</th> 
+				<th data-options="field:'role_desc',width:180" >备注</th>   
+				<th data-options="field:'role_status',
 						formatter:function(value,row){
 							 if(value == 0)
 				                return '正常';
 				       		 else if(value == 1)
 				                return '暂停';
 				             else
-				             	 return '注销';
+				             	 return '作废';
 				        }
 				" >状态</th> 
 			</tr> 
 		</thead>
 	</table>
 	
-	<div id="module_form_dlg" class="easyui-dialog"  closed="true"
+	<div id="role_form_dlg" class="easyui-dialog"  closed="true"
 		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
 		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
-		<form id="module_form" action="#{$ctx}/admin/user/module.php" method="post" >
-			<input id="module_id" name="id" type="hidden"/>
+		<form id="role_form" action="#{$ctx}/admin/user/role.php" method="post" >
+			<input id="role_id" name="id" type="hidden"/>
 			<table>
 				<tr>
-					<td>用户名:</td>
-					<td><input class="easyui-validatebox" type="text" name="module_logn" data-options="required:true" /></td>
+					<td>权限组名称:</td>
+					<td><input class="easyui-validatebox" type="text" name="role_name" data-options="required:true" /></td>
 				</tr>
 				<tr>
-					<td>密码:</td>
+					<td>备注:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" id= "module_pw" name="module_pw" data-options="required:true" />
+						<input class="easyui-validatebox" type="text" id= "role_desc" name="role_desc" data-options="required:true" />
 					</td>
-				</tr>
-				<tr>
-					<td>昵称:</td>
-					<td>
-						<input class="easyui-validatebox" type="text" name="module_name" data-options="required:true" />
-					</td>
-				</tr>
-				<tr>
-					<td>审核:</td>
-					<td> 
-						男：<input class="easyui-validatebox" type="radio" checked="checked"  name="module_sex" value="0" data-options="required:true" />
-						女：<input class="easyui-validatebox" type="radio" name="module_sex" value="1" data-options="required:true" />
-					</td>
-				</tr>  
-				<tr>
-					<td>邮箱:</td>
-					<td>
-						<input class="easyui-validatebox" type="text" name="module_email" data-options="required:true" />
-					</td>
-				</tr>
-				<tr>
-					<td>电话:</td>
-					<td>
-						<input class="easyui-validatebox" type="text" name="module_mobile" data-options="required:true" />
-					</td>
-				</tr>
+				</tr> 
 				<tr>
 					<td>状态:</td> 
-					<td><select id="status" class="easyui-combobox" name="module_status" required:true style="width:200px;">						 
+					<td><select id="status" class="easyui-combobox" name="role_status" data-options="required:true" style="width:200px;">						 
 						<option value="0">正常</option>
 						<option value="1">暂停</option>
 						<option value="2">作废</option>
@@ -187,9 +141,9 @@
 				</tr>
 			</table>
 		</form>	
-		<div id="module_form_dlg_buttons">
-			<a href="javascript:savemodule()" class="easyui-linkbutton" >提交</a>
-			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#module_form_dlg').dialog('close')">关闭</a>
+		<div id="role_form_dlg_buttons">
+			<a href="javascript:saverole()" class="easyui-linkbutton" >提交</a>
+			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#role_form_dlg').dialog('close')">关闭</a>
 		</div>
 	</div>	
 	

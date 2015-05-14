@@ -3,17 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>登陆日志</title>
-
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/default/easyui.css">
-	
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/global.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/easyui_tag.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script>	
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/easyui-lang-zh_CN.js"></script>
-	<script type="text/javascript">
+ 	#{include file ="jscss.html"};
+    <script type="text/javascript">
 		$(function(){
 		
 			$("#sys_logfile_datagrid").datagrid({
@@ -63,8 +54,11 @@
 			<table >
 				
 				<tr>
-				<td>开始时间：<input name="stardate" class="easyui-datetimebox" required style="width:200px"></td>
-				<td>结束时间：<input name="enddate"  class="easyui-datetimebox" required style="width:200px"></td>
+				<td>申请提交日期：
+				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				
+				</td>				
 				<td>登录名称：</td><td><input name="sys_logfile_logn" value=""/></td></tr>
 				
 				<tr><td><a href="javascript:search()" class="easyui-linkbutton">查询</a>

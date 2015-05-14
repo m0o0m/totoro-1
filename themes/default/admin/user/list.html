@@ -3,18 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>用户管理</title>
-
-		<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/icon.css"/>
-	<link rel="stylesheet" type="text/css" href="#{$ctx}/themes/default/js/plugins/ui/themes/default/easyui.css">
-	
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/jquery.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/global.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/ui/easyui_tag.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/json2.js"></script>
-	<script type="text/javascript" src="#{$ctx}/themes/default/js/plugins/easyui-lang-zh_CN.js"></script>
-	
-	<script type="text/javascript">
+ 		#{include file ="jscss.html"};	
+ 		<script type="text/javascript">
 		$(function(){
 		
 			$("#user_datagrid").datagrid({
@@ -178,8 +168,14 @@
 					</td>
 				</tr>
 				<tr>
+					<td>IP:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="user_ip" data-options="required:true" />
+					</td>
+				</tr>
+				<tr>
 					<td>状态:</td> 
-					<td><select id="status" class="easyui-combobox" name="user_status" required:true style="width:200px;">						 
+					<td><select id="status" class="easyui-combobox" name="user_status" data-options="required:true" style="width:200px;">						 
 						<option value="0">正常</option>
 						<option value="1">暂停</option>
 						<option value="2">作废</option>
