@@ -1,10 +1,6 @@
 <?php 
-define('IN_ECS', true);
-
-//require_once '/totoro/commons/init.php';
-
-require_once dirname(__FILE__).'/../../commons/init.php';
-//require_once '../commons/init.php';
+define('IN_ECS', true); 
+require_once dirname(__FILE__).'/../../commons/init.php'; 
 
 $act = $_REQUEST[act];
 
@@ -13,10 +9,9 @@ if (empty($act)) {
 }
 
 if ($act == "list") {
-
-	
+ 
 	$arr = array(); 
-	$arr['sys_book_no'] = $_REQUEST['sys_book_no'];
+	$arr['book_no'] = $_REQUEST['book_no'];
 	$arr['booktype_code'] = $_REQUEST['booktype_code'];
 	
 	$where = " where isdelete = 0 ";
@@ -31,7 +26,7 @@ if ($act == "list") {
 }elseif ($act == "add") {
 	
 }elseif ($act == "comboxlist") { 
-	$sql=" SELECT sys_booktype_code 'id',sys_booktype_name 'text',sys_booktype_desc 'desc'
+	$sql=" SELECT booktype_code 'id',booktype_name 'text',booktype_desc 'desc'
 			 from sys_booktype where isdelete = 0 ";
 	$rs = mysql_query($sql);
 	
@@ -43,10 +38,11 @@ if ($act == "list") {
 	echo json_encode($items); 
 }elseif ($act == "save") {
 	$arr = array();
-	$arr['sys_book_no'] = $_REQUEST['sys_book_no'];
-	$arr['sys_book_value'] = $_REQUEST['sys_book_value'];
+	$arr['book_no'] = $_REQUEST['book_no'];
+	$arr['book_value'] = $_REQUEST['book_value'];
 	$arr['booktype_code'] = $_REQUEST['booktype_code'];
-	$arr['czdate'] = "sysdate";
+	$arr['create_user'] = "1";
+	$arr['create_date'] = date("Y-m-d H:i:s");
 	
 	try {
 		$db->insert("sys_book",$arr);
@@ -59,11 +55,11 @@ if ($act == "list") {
 	}
 	echo json_encode($result);	
 }elseif ($act == "update") {
-	$arr = array();
-	$arr['sys_book_no'] = $_REQUEST['sys_book_no'];
-	$arr['sys_book_value'] = $_REQUEST['sys_book_value'];
+	$arr = array(); 
+	$arr['book_no'] = $_REQUEST['book_no'];
+	$arr['book_value'] = $_REQUEST['book_value'];
 	$arr['booktype_code'] = $_REQUEST['booktype_code'];
-	$arr['czdate'] = "sysdate";	
+	$arr['update_user'] = "1"; 
 	$id = $_REQUEST['id'];
 	 
 	try {

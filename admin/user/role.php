@@ -31,8 +31,10 @@ if ($act == "list") {
 	$arr = array();
 	$arr['role_name'] = $_REQUEST['role_name'];
 	$arr['role_desc'] = $_REQUEST['role_desc'];
-	$arr['sysuser_id'] = 1;
-	$arr['czdate'] = 'now()';  
+	$arr['role_status'] = $_REQUEST['role_status'];
+	$arr['create_user'] = "1";
+	$arr['create_date'] = date("Y-m-d H:i:s");
+	
 	
 	try {
 		$db->insert("sys_role",$arr);
@@ -49,9 +51,9 @@ if ($act == "list") {
 	$arr = array();
 	$arr['role_name'] = $_REQUEST['role_name'];
 	$arr['role_desc'] = $_REQUEST['role_desc'];
-	$arr['role_status'] = $_REQUEST['role_status']; 
-	$id = $_REQUEST['id'];
-
+	$arr['role_status'] = $_REQUEST['role_status'];
+	$arr['update_user'] = "1"; 
+	$id = $_REQUEST['id']; 
 	try {
 		$db->update("sys_role",$arr,"where id=".$id);
 		$result->result="1";

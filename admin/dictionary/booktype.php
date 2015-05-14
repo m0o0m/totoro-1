@@ -16,7 +16,7 @@ if ($act == "list") {
 
 	
 	$arr = array(); 
-	$arr['sys_booktype_name'] = $_REQUEST['sys_booktype_name'];
+	$arr['booktype_name'] = $_REQUEST['booktype_name'];
 	$where = " where isdelete = 0 ";
 	foreach ($arr as $ks=>$vs){
 		if(!empty($vs)){
@@ -30,10 +30,11 @@ if ($act == "list") {
 	
 }elseif ($act == "save") {
 	$arr = array();
-	$arr['sys_booktype_code'] = $_REQUEST['sys_booktype_code'];
-	$arr['sys_booktype_name'] = $_REQUEST['sys_booktype_name'];
-	$arr['sys_booktype_desc'] = $_REQUEST['sys_booktype_desc'];
-	$arr['czdate'] = "sysdate";
+	$arr['booktype_code'] = $_REQUEST['booktype_code'];
+	$arr['booktype_name'] = $_REQUEST['booktype_name'];
+	$arr['booktype_desc'] = $_REQUEST['booktype_desc'];
+	$arr['create_user'] = "1";
+	$arr['create_date'] = date("Y-m-d H:i:s");
 	
 	try {
 		$db->insert("sys_booktype",$arr);
@@ -47,10 +48,10 @@ if ($act == "list") {
 	echo json_encode($result);	
 }elseif ($act == "update") {
 	$arr = array();
-	$arr['sys_booktype_code'] = $_REQUEST['sys_booktype_code'];
-	$arr['sys_booktype_name'] = $_REQUEST['sys_booktype_name'];
-	$arr['sys_booktype_desc'] = $_REQUEST['sys_booktype_desc'];
-	$arr['czdate'] = "sysdate";
+	$arr['booktype_code'] = $_REQUEST['booktype_code'];
+	$arr['booktype_name'] = $_REQUEST['booktype_name'];
+	$arr['booktype_desc'] = $_REQUEST['booktype_desc'];
+	$arr['update_user'] = "1";
 	$id = $_REQUEST['id'];
 	
 	try {

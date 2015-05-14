@@ -26,11 +26,12 @@ if ($act == "list") {
 		} 
 	}
 	if($stardate != ''){
-		$where.= " and logfile_logdate >= '$stardate'";
+		$where.= " and logfile_logdate >= '$stardate 00:00:00'";
 	}
 	if($enddate != ''){
-		$where.= " and logfile_logdate <= '$enddate'";
+		$where.= " and logfile_logdate <= '$enddate 23:59:59'";
 	}
+	 
 	$users = $db->get_page("sys_logfile ",$where); 
 	echo json_encode($users); 
 	

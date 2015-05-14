@@ -12,12 +12,12 @@ if (empty($act)) {
 	$act = "";	
 }
 
-if ($act == "list") {
-
-	
+if ($act == "list") { 
 	$arr = array(); 
 	$arr['client_status'] = $_REQUEST['client_status'];
-	$arr['client_logname'] = $_REQUEST['client_logname'];
+	$arr['client_logn'] = $_REQUEST['client_logn'];
+	$stardate = $_REQUEST['stardate'];
+	$enddate = $_REQUEST['enddate'];
 	
 	$where = " where isdelete = 0 ";
 	foreach ($arr as $ks=>$vs){
@@ -26,26 +26,32 @@ if ($act == "list") {
 		} 
 	}
 	
-	$users = $db->get_page("bns_client",$where); 
+	if($stardate != ''){
+		$where.= " and client_ctime >= '$stardate 00:00:00'";
+	}
+	if($enddate != ''){
+		$where.= " and client_ctime <= '$enddate 23:59:59'";
+	}
+	$users = $db->get_page("player_client",$where); 
+	 
 	echo json_encode($users); 
 }elseif ($act == "add") {
 	
 } elseif ($act == "save") {
 	$arr = array(); 
 	
-	$arr['client_logname'] = $_REQUEST['client_logname'];
+	$arr['client_logn'] = $_REQUEST['client_logn'];
 	$arr['client_pw'] = $_REQUEST['client_pw'];
-	$arr['client_nickname'] = $_REQUEST['client_nickname'];
+	$arr['client_nickn'] = $_REQUEST['client_nickn'];
 	$arr['client_type'] = $_REQUEST['client_type']; 
-	$arr['client_status'] = $_REQUEST['client_status'];
-	$arr['client_freeze'] = $_REQUEST['client_freeze']; 
-	$arr['sysuser_id'] = "1";
-	$arr['client_mac'] = "1";
-	$arr['client_ip'] = "191.23.21.1";
-	$arr['czdate'] = "sysdate"; 
+	$arr['client_status'] = $_REQUEST['client_status'];  
+	$arr['client_register'] = $_REQUEST['client_register'];
+	$arr['client_freeze'] = $_REQUEST['client_freeze'];  
+	$arr['create_user'] = "1"; 
+	$arr['client_ctime'] = date("Y-m-d H:i:s");  
 	
 	try {
-		$db->insert("bns_client",$arr);
+		$db->insert("player_client",$arr);
 		$result->result="1";
 		$result->msg="添加成功。";
 		
@@ -56,20 +62,17 @@ if ($act == "list") {
 	echo json_encode($result);	
 }elseif ($act == "update") {
 	$arr = array();
-	$arr['client_logname'] = $_REQUEST['client_logname'];
-	$arr['client_pw'] = $_REQUEST['client_pw'];
-	$arr['client_nickname'] = $_REQUEST['client_nickname'];
+	$arr['client_logn'] = $_REQUEST['client_logname']; 
+	$arr['client_nickn'] = $_REQUEST['client_nickn'];
 	$arr['client_type'] = $_REQUEST['client_type']; 
-	$arr['client_status'] = $_REQUEST['client_status'];
-	$arr['client_freeze'] = $_REQUEST['client_freeze']; 
-	$arr['sysuser_id'] = "1";
-	$arr['client_mac'] = "1";
-	$arr['client_ip'] = "191.23.21.1";
-	$arr['czdate'] = "sysdate"; 
+	$arr['client_status'] = $_REQUEST['client_status'];  
+	$arr['client_register'] = $_REQUEST['client_register'];
+	$arr['client_freeze'] = $_REQUEST['client_freeze'];  
+	$arr['update_user'] = "1"; 
 	$id = $_REQUEST['id'];
 	 
 	try {
-		$db->update("bns_client",$arr,"where id=".$id);
+		$db->update("player_client",$arr,"where id=".$id);
 		$result->result="1";
 		$result->msg="修改成功。";
 	}catch (Exception $e){
@@ -83,7 +86,7 @@ if ($act == "list") {
 	$arr['isdelete'] = 1; 
 	
 	try {
-		$db->update("bns_client",$arr,"where id=".$id);
+		$db->update("player_client",$arr,"where id=".$id);
 		$result->result="1";
 		$result->msg="删除成功。";
 	}catch (Exception $e){

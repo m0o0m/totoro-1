@@ -38,7 +38,9 @@ if ($act == "list") {
 	$arr['user_sex'] = $_REQUEST['user_sex'];
 	$arr['user_mobile'] = $_REQUEST['user_mobile'];
 	$arr['user_status'] = $_REQUEST['user_status'];
-	$arr['user_createdate'] = 'now()';
+	$arr['user_QQnum'] = $_REQUEST['user_QQnum'];
+	$arr['user_ip'] = $_REQUEST['user_ip']; 
+	$arr['user_createdate'] = date("Y-m-d H:i:s"); 
 	
 	try {
 		$db->insert("sys_user",$arr);
@@ -59,6 +61,8 @@ if ($act == "list") {
 	$arr['user_sex'] = $_REQUEST['user_sex'];
 	$arr['user_mobile'] = $_REQUEST['user_mobile'];
 	$arr['user_status'] = $_REQUEST['user_status'];
+	$arr['user_QQnum'] = $_REQUEST['user_QQnum'];
+	$arr['user_ip'] = $_REQUEST['user_ip']; 
 	$id = $_REQUEST['id'];
 
 	try {

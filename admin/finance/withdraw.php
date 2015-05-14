@@ -19,14 +19,15 @@ if ($act == "list") {
 		if($vs != ""){			
 				$where.= "and $ks = '$vs'";
 		} 
-	}  
+	} 
+
 	if($stardate != ''){
-		$where.= " and Withdraw_date >= '$stardate'";
+		$where.= " and Withdraw_date >= '$stardate 00:00:00'";
 	}
 	if($enddate != ''){
-		$where.= " and Withdraw_date <= '$enddate'";
+		$where.= " and Withdraw_date <= '$enddate 23:59:59'";
 	}
-	
+	 
  	$users = $db->get_page("bns_withdraw",$where); 
 	echo json_encode($users); 
 }elseif ($act == "add") {

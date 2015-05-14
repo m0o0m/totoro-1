@@ -10,13 +10,22 @@ if (empty($act)) {
 if ($act == "list") { 
 	$arr = array(); 
 	$arr['loading_state'] = $_REQUEST['loading_state'];
-	$arr['client_logname'] = $_REQUEST['client_logname'];  
+	$arr['client_logname'] = $_REQUEST['client_logname'];
+	$stardate = $_REQUEST['stardate'];
+	$enddate = $_REQUEST['enddate'];
  	$where = " where isdelete = 0 ";
 	foreach ($arr as $ks=>$vs){
 		if($vs != ""){
 			$where.= "and $ks = '$vs'";
 		} 
 	} 
+	if($stardate != ''){
+		$where.= " and loading_date >= '$stardate 00:00:00'";
+	}
+	if($enddate != ''){
+		$where.= " and loading_date <= '$enddate 23:59:59'";
+	}
+	
 	$users = $db->get_page("bns_loading",$where); 
 	echo json_encode($users); 
 }elseif ($act == "add") {
