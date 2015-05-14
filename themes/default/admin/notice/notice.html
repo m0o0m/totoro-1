@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>公告管理</title>
+
+	#{include file="jscss.html"}
+	<script type="text/javascript">
+		var url = "#{$ctx}/admin/notice/notice.php?act=";
+		$(function(){
+		
+			$("#user_datagrid").datagrid({
+				title:"公告列表",
+				url:url+"list",
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true,
+				toolbar:easyUi.initButton(
+				[
+					 {name:'add',text:"添加公告",handler:addUser},
+					 {name:'edit',text:"编辑公告",handler:updateUser},
+					 {name:'remove',text:"删除公告",handler:deleteUser},
+				]),
+			}); 
+		});
+
+		function addUser () {
+			$('#user_form').form('clear');
+			$("#user_form_dlg").dialog({
+				title : "添加公告"
+			}).dialog("open");
+			
+		}
+		function saveUser () { 
+			var act ="update";
+			if($("#user_id").val() == "" || $("#user_id").val() == null){
+				act ="save";
+			} 
+			
+			easyUi.formSubmit({
+				formId : "#user_form",
+				submit : function() {
+				},
+				success : function(data) {
+					msgSuccess(data);
+					$("#user_datagrid").datagrid("reload");
+					$("#user_form_dlg").dialog("close");
+				},
+				prefix : "",
+				params : {"act": act}
+			});
+		}
+		function updateUser () {
+			$("#user_pw").hide();
+			var row = easyUi.selectDatagrid("#user_datagrid");
+			var result = easyUi.loadForm("#user_form", "#user_datagrid", "");
+			if(!result) {
+				return ;
+			}
+			$("#user_form_dlg").dialog({
+				title : "编辑公告"
+			}).dialog("open");
+		}
+		function deleteUser () {
+			var url = "#{$ctx}/admin/user/user.php?act=delete";
+			easyUi.del("#user_datagrid", "id", url, function (data){
+				$("#user_datagrid").datagrid("reload");
+				msgSuccess(data);
+			});
+		}
+		function search () {
+			var p = {}; 
+			$("#search_form").find("input").each(function(){
+				p[this.name]=this.value;
+			});
+			
+			$("#user_datagrid").datagrid({
+				queryParams:p
+			});
+		}
+		function cleanSearch () {
+
+		}
+	</script>
+</head>
+<body>
+	
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table >
+				<tr><td>登陆名</td><td><input name="user_logn" value=""/>
+				<td>状态</td>
+				<td>
+					<select id="user_status" class="easyui-combobox" name="user_status" style="width:200px;">
+						<option value="">全部</option>
+						<option value="0">正常</option>
+						<option value="1">暂停</option>
+						<option value="2">作废</option> 
+					</select>
+				</td>
+				</tr>
+				<tr><td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+						<a href="#" class="easyui-linkbutton">清空</a></td></tr>
+			</table>
+		</form>
+	</div>
+	
+	
+	<table id="user_datagrid">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:80,checkbox:true" >id</th>
+				<th data-options="field:'title',width:80" >标题</th> 
+				<th data-options="field:'state',width:180" >状态</th> 
+				<th data-options="field:'start_date',width:180" >开始时间</th> 
+				<th data-options="field:'end_date',width:180" >结束时间</th> 
+				<th data-options="field:'is_delete',width:180" >有效</th> 
+				<th data-options="field:'create_user',width:180" >创建时间</th> 
+			</tr> 
+		</thead>
+	</table>
+	
+	<div id="user_form_dlg" class="easyui-dialog"  closed="true"
+		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
+		data-options="resizable:true,buttons:'#user_form_dlg_buttons'">
+		<form id="user_form" action="#{$ctx}/admin/user/user.php" method="post" >
+			<input id="user_id" name="id" type="hidden"/>
+			<table>
+				<tr>
+					<td>标题:</td>
+					<td><input class="easyui-validatebox" type="text" name="title" data-options="required:true" /></td>
+				</tr>
+				<tr>
+					<td>内容:</td>
+					<td>
+						<textarea id= "user_pw" name="content" ></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>开始时间:</td>
+					<td>
+						<input class="Wdate" type="text" onFocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+					</td>
+				</tr>
+				<tr>
+					<td>结束时间:</td>
+					<td>
+						<input class="Wdate" type="text" onFocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+					</td>
+				</tr>
+			</table>
+		</form>	
+		<div id="user_form_dlg_buttons">
+			<a href="javascript:saveUser()" class="easyui-linkbutton" >提交</a>
+			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#user_form_dlg').dialog('close')">关闭</a>
+		</div>
+	</div>	
+	
+</body>
+</html>
