@@ -35,8 +35,27 @@ if ($act == "list") {
 	$users = $db->get_page("player_client",$where); 
 	 
 	echo json_encode($users); 
-}elseif ($act == "add") {
-	
+}elseif ($act == "updatepw") {
+	$arr = array();
+	$oldpw = $_REQUEST['oldpw'];
+	$newpw1 = $_REQUEST['newpw1'];
+	$newpw2 = $_REQUEST['newpw2']; 
+	$id = $_REQUEST['id'];
+	if( $oldpw == $newpw1){
+		$result->result="0";
+		$result->msg="修改失败，新旧密码不能一致";
+    }else{
+    	try { 
+	    	$arr['client_pw'] = $newpw1;
+	    	$db->update("player_client",$arr,"where client_pw = '".$oldpw."' and id=".$id);
+	    	$result->result="1";
+	    	$result->msg="修改密码成功。"; 
+    	}catch (Exception $e){
+    		$result->result="0";
+    		$result->msg="修改密码错误。";
+    	} 
+    } 
+    echo json_encode($result);
 } elseif ($act == "save") {
 	$arr = array(); 
 	
@@ -62,7 +81,7 @@ if ($act == "list") {
 	echo json_encode($result);	
 }elseif ($act == "update") {
 	$arr = array();
-	$arr['client_logn'] = $_REQUEST['client_logname']; 
+	$arr['client_logn'] = $_REQUEST['client_logn']; 
 	$arr['client_nickn'] = $_REQUEST['client_nickn'];
 	$arr['client_type'] = $_REQUEST['client_type']; 
 	$arr['client_status'] = $_REQUEST['client_status'];  

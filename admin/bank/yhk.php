@@ -18,7 +18,7 @@ if ($act == "list") {
 	$stardate = $_REQUEST['stardate'];
 	$enddate = $_REQUEST['enddate'];
 	
- 	$where = " where a.bank_type = b.id and a.isdelete = 0 ";
+ 	//$where = " where isdelete = 0 ";
 	foreach ($arr as $ks=>$vs){
 		if($vs != ""){
 			$where.= "and $ks = '$vs'";
@@ -34,7 +34,7 @@ if ($act == "list") {
 	 
 	$rs = mysql_query($sql);
 	
-	$users = $db->get_page("player_yhk a ,sys_book b",$where); 
+	$users = $db->get_page("yhk_book",$where); 
 	 
 	echo json_encode($users); 
 }elseif ($act == "add") {
@@ -43,6 +43,7 @@ if ($act == "list") {
 	$arr = array(); 
 	$arr['clien_id'] = "1"; 
 	$arr['bank_type'] = $_REQUEST['bank_type'];
+	$arr['yhk_mc'] = $_REQUEST['yhk_mc'];
 	$arr['yhk_num'] = $_REQUEST['yhk_num'];
 	$arr['yhk_name'] = $_REQUEST['yhk_name'];
 	$arr['yhk_adress'] = $_REQUEST['yhk_adress']; 
@@ -62,6 +63,7 @@ if ($act == "list") {
 }elseif ($act == "update") {
 	$arr = array(); 
 	$arr['bank_type'] = $_REQUEST['bank_type'];
+	$arr['yhk_mc'] = $_REQUEST['yhk_mc'];
 	$arr['yhk_num'] = $_REQUEST['yhk_num'];
 	$arr['yhk_name'] = $_REQUEST['yhk_name'];
 	$arr['yhk_adress'] = $_REQUEST['yhk_adress']; 

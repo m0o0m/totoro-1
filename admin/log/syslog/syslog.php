@@ -41,8 +41,20 @@ if ($act == "list") {
 	 
 }elseif ($act == "update") {
 	  
-}elseif ($act == "delete") { 
-	 
+}elseif ($act == "delete") {  
+		$arr = array();
+		$id = $_REQUEST['id'];
+		$arr['isdelete'] = 1;
+	
+		try {
+			$db->update("sys_logfile",$arr,"where id=".$id);
+			$result->result="1";
+			$result->msg="删除成功。";
+		}catch (Exception $e){
+			$result->result="0";
+			$result->msg="删除失败。";
+		} 
+		echo json_encode($result); 
 }else {
 	$smarty->display("admin/log/syslog/syslog.html");
 }

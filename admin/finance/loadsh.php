@@ -9,8 +9,8 @@ if (empty($act)) {
 
 if ($act == "list") { 
 	$arr = array(); 
-	$arr['loading_state'] = $_REQUEST['loading_state'];
-	$arr['client_logname'] = $_REQUEST['client_logname'];
+	$arr['load_fkstate'] = $_REQUEST['load_fkstate'];
+	$arr['client_logn'] = $_REQUEST['client_logn']; 
 	$stardate = $_REQUEST['stardate'];
 	$enddate = $_REQUEST['enddate'];
  	$where = " where isdelete = 0 ";
@@ -20,30 +20,25 @@ if ($act == "list") {
 		} 
 	} 
 	if($stardate != ''){
-		$where.= " and loading_date >= '$stardate 00:00:00'";
+		$where.= " and load_date >= '$stardate 00:00:00'";
 	}
 	if($enddate != ''){
-		$where.= " and loading_date <= '$enddate 23:59:59'";
+		$where.= " and load_date <= '$enddate 23:59:59'";
 	}
 	
-	$users = $db->get_page("bns_loading",$where); 
+	$users = $db->get_page("player_load",$where); 
 	echo json_encode($users); 
 }elseif ($act == "add") {
 	
 }elseif ($act == "save") {
-	$arr = array();   
-	$arr['client_id'] = "1";
-	$arr['client_logname'] = "client_logname";
-	$arr['loading_yhordernum'] = $_REQUEST['loading_yhordernum']; 
-	$arr['loading_amount'] = $_REQUEST['loading_amount'];
-	$arr['loading_bankid'] = $_REQUEST['loading_bankid'];
-	$arr['loading_czaccount'] = $_REQUEST['loading_czaccount'];
-	$arr['loading_czbankacname'] = $_REQUEST['loading_czbankacname'];
-	$arr['loading_ps'] = $_REQUEST['loading_ps'];
-	$arr['loading_date'] = "sysdate"; 
-	
+	$arr = array();     
+	$arr['load_fkstate'] = $_REQUEST['load_fkstate']; 
+	$arr['load_shuser'] = "1";
+	$arr['load_desc'] = $_REQUEST['load_desc']; 
+	$arr['load_sjdz'] = $_REQUEST['load_sjdz'];  
+	$arr['load_sxf'] = $_REQUEST['load_sxf'];
 	try {
-		$db->insert("bns_loading",$arr);
+		$db->insert("player_load",$arr);
 		$result->result="1";
 		$result->msg="添加成功。";
 		
@@ -54,15 +49,14 @@ if ($act == "list") {
 	echo json_encode($result);	
 }elseif ($act == "update") {
 	$arr = array();
-	$arr['loading_state'] = $_REQUEST['loading_state'];
-	$arr['loading_bonusdesc'] = $_REQUEST['loading_bonusdesc'];
-	$arr['loading_sxamount'] = $_REQUEST['loading_sxamount'];
-	$arr['loading_sjamount'] = $_REQUEST['loading_sjamount']; 
-	$arr['loading_shuser'] = $_REQUEST['loading_shuser'];
+	$arr['load_fkstate'] = $_REQUEST['load_fkstate']; 
+	$arr['load_shuser'] = "1";
+	$arr['load_desc'] = $_REQUEST['load_desc']; 
+	$arr['load_sjdz'] = $_REQUEST['load_sjdz'];
 	$id = $_REQUEST['id'];
 	 
 	try {
-		$db->update("bns_loading",$arr,"where id=".$id);
+		$db->update("player_load",$arr,"where id=".$id);
 		$result->result="1";
 		$result->msg="修改成功。";
 	}catch (Exception $e){
@@ -76,7 +70,7 @@ if ($act == "list") {
 	$arr['isdelete'] = 1; 
 	
 	try {
-		$db->update("bns_loading",$arr,"where id=".$id);
+		$db->update("player_load",$arr,"where id=".$id);
 		$result->result="1";
 		$result->msg="删除成功。";
 	}catch (Exception $e){
@@ -86,7 +80,7 @@ if ($act == "list") {
 	 
 	echo json_encode($result);	
 }else {
-	$smarty->display("admin/finance/loading.html");
+	$smarty->display("admin/finance/loadsh.html");
 }
 
 ?>

@@ -8,9 +8,9 @@
 	  <script type="text/javascript">
 		$(function(){
 			   
-			$("#loading_datagrid").datagrid({
+			$("#loadsh_datagrid").datagrid({
 				title:"充值记录",
-				url:"#{$ctx}/admin/finance/loading.php?act=list",
+				url:"#{$ctx}/admin/finance/loadsh.php?act=list",
 				fitColumns:true,
 				rownumbers:true,
 				pagination:true,
@@ -25,44 +25,48 @@
 		});
 
 		function addUser () {
-			$('#loading_form').form('clear');
-			$("#loading_form_dlg").dialog({
+			$('#loadsh_form').form('clear');
+			$("#loadsh_form_dlg").dialog({
 				title : "添加账户"
 			}).dialog("open");
 			
 		}
 		function saveUser () { 
 			var act ="update";
-			if($("#loading_id").val() == "" || $("#loading_id").val() == null){
+			if($("#loadsh_id").val() == "" || $("#loadsh_id").val() == null){
 				act ="save"
 			}
 			
 			easyUi.formSubmit({
-				formId : "#loading_form",
+				formId : "#loadsh_form",
 				submit : function() {
 				},
 				success : function(data) {
 					msgSuccess(data);
-					$("#loading_datagrid").datagrid("reload");
-					$("#loading_form_dlg").dialog("close");
+					$("#loadsh_datagrid").datagrid("reload");
+					$("#loadsh_form_dlg").dialog("close");
 				},
 				prefix : "",
 				params : {"act":act}
 			});
 		}
 		function updateUser () {
-
-			var row = easyUi.selectDatagrid("#loading_datagrid");
-			var result = easyUi.loadForm("#loading_form", "#loading_datagrid", "");
+			
+			var row = easyUi.selectDatagrid("#loadsh_datagrid");			
+			if(row.load_fkstate != "0"){
+				$.messager.alert("审核提示","已审核或已订单取消");
+				return;
+			};
+			var result = easyUi.loadForm("#loadsh_form", "#loadsh_datagrid", "");
 			if(!result) {
 				return ;
 			}
-			$("#loading_form_dlg").dialog({
+			$("#loadsh_form_dlg").dialog({
 				title : "审核"
 			}).dialog("open");
 		}
 		function deleteUser () {
-			var rows = $('#loading_datagrid').datagrid('getSelections');			 
+			var rows = $('#loadsh_datagrid').datagrid('getSelections');			 
 			var parm = "";
 			$.each(rows, function (i, n) {
 		    if (i == 0) {
@@ -71,9 +75,9 @@
 				  parm += "," + n.id;
 				}
 			}); 
-			var url = "#{$ctx}/admin/finance/loading.php?act=delete"; 
-			easyUi.del("#loading_datagrid", "id", url, function (data){
-				$("#loading_datagrid").datagrid("reload");
+			var url = "#{$ctx}/admin/finance/loadsh.php?act=delete"; 
+			easyUi.del("#loadsh_datagrid", "id", url, function (data){
+				$("#loadsh_datagrid").datagrid("reload");
 				msgSuccess(data);
 			});
 		}
@@ -83,11 +87,11 @@
 				p[this.name]=this.value;
 			});
 			
-			$("#loading_datagrid").datagrid({
+			$("#loadsh_datagrid").datagrid({
 				queryParams:p
 			});
 		} 
-		 $("#loading_state  option[value='0'] ").attr("selected",true)
+		 $("#loadsh_state  option[value='0'] ").attr("selected",true)
 	</script>
 </head>
 <body>
@@ -97,7 +101,7 @@
 			<table > 
 				<tr> 
 				<td>
-					<select id="loading_state" class="easyui-combobox" name="loading_state" style="width:200px;">
+					<select id="load_fkstate" class="easyui-combobox" name="load_fkstate" style="width:200px;">
 						<option value="">全部</option>
 						<option value="0">未处理</option>
 						<option value="1">取消</option>
@@ -105,7 +109,7 @@
 						<option value="3">失败</option>
 					</select>
 				</td>
-				<td>玩家：</td><td><input name="client_logname" value=""/></td>
+				<td>玩家：</td><td><input name="client_logn" value=""/></td>
 				<td>申请提交日期：
 				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
 				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
@@ -122,19 +126,20 @@
 	</div>
 	
 	
-	<table id= "loading_datagrid">
+	<table id= "loadsh_datagrid">
 		<thead>
 			<tr>  
 				<th data-options="field:'id',width:80,checkbox:true" >id</th>				
-				<th data-options="field:'client_logname',width:180" >账户名</th> 
-				<th data-options="field:'loading_amount',width:80" >充值金额</th>
-				<th data-options="field:'loading_sjamount',width:80" >实际金额</th>
-				<th data-options="field:'loading_sxamount',width:80" >手续费</th>
-				<th data-options="field:'loading_date',width:180" >充值时间</th> 
-				<th data-options="field:'loading_bankid',width:180" >充值方式</th> 
-				<th data-options="field:'loading_czaccount',width:180" >收款银行账号</th>  
-				<th data-options="field:'loading_czbankacname',width:180" >收款银行账户名称</th> 
-				<th data-options="field:'loading_state',width:100,
+				<th data-options="field:'client_logn',width:180" >账户名</th> 
+				<th data-options="field:'load_num',width:180" >充值编码</th> 
+				<th data-options="field:'load_amount',width:80" >充值金额</th>
+				<th data-options="field:'load_sjdz',width:80" >实际金额</th>
+				<th data-options="field:'load_sxf',width:80" >手续费</th>
+				<th data-options="field:'load_date',width:180" >充值时间</th> 
+				<th data-options="field:'xtyhk_id',width:180" >充值方式</th> 
+				<th data-options="field:'xtyhk_num',width:180" >收款银行账号</th>  
+				<th data-options="field:'xtyhk_name',width:180" >收款银行户名</th> 
+				<th data-options="field:'load_fkstate',width:100,
 						formatter:function(value,row){
 											if(value==0)
 				                return '未处理';
@@ -147,65 +152,65 @@
 				        }						
 						 ">状态</th>
 			   
-				<th data-options="field:'loading_shuser',width:180" >审核人</th> 
+				<th data-options="field:'load_shuser',width:180" >审核人</th> 
 			  </tr>  
 		</thead>
 	</table>
 	
-	<div id="loading_form_dlg" class="easyui-dialog"  closed="true"
+	<div id="loadsh_form_dlg" class="easyui-dialog"  closed="true"
 		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
 		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
-		<form id="loading_form" action="#{$ctx}/admin/finance/loading.php" method="post" >
-			<input id="loading_id" name="id" type="hidden"/>
+		<form id="loadsh_form" action="#{$ctx}/admin/finance/loadsh.php" method="post" >
+			<input id="loadsh_id" name="id" type="hidden"/>
 			<table> 
 				<tr>
 					<td>充值方式:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="loading_bankid"  disabled="disabled"/>
+						<input class="easyui-validatebox" type="text" name="xtyhk_id"  disabled="disabled"/>
 					</td>
 				</tr>  
 			    <tr>
 					<td>充值编号:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="loading_yhordernum"  disabled="disabled" />
+						<input class="easyui-validatebox" type="text" name="load_num"  disabled="disabled" />
 					</td>
 				</tr>   
 				<tr>
 					<td>充值金额:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="loading_amount"  disabled="disabled" />
+						<input class="easyui-validatebox" type="text" name="load_amount"  disabled="disabled" />
 					</td>
 				</tr> 
 				<tr>
 					<td>实际到账金额:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="loading_sjamount" data-options="required:true" />
+						<input class="easyui-validatebox" type="text" name="load_sjdz" data-options="required:true" />
 					</td>
 				</tr> 
 				<tr>
 					<td>手续费:</td>
 					<td>
-						<input class="easyui-validatebox" type="text" name="loading_sxamount" data-options="required:true" />
+						<input class="easyui-validatebox" type="text" name="load_sxf" data-options="required:true" />
 					</td>
 				</tr>  
 				<tr>
 					<td>审核:</td>
 					<td> 
-						成功：<input class="easyui-validatebox" type="radio" name="loading_state" value="2" data-options="required:true" />
-						失败：<input class="easyui-validatebox" type="radio" name="loading_state" value="3" data-options="required:true" />
+						成功：<input class="easyui-validatebox" type="radio" name="load_fkstate" value="2" data-options="required:true" />
+						失败：<input class="easyui-validatebox" type="radio" name="load_fkstate" value="3" data-options="required:true" />
 					</td>
 				</tr>  
 				<tr>
 					<td>审核说明:</td>
 					<td>
-							<input class="easyui-textbox"  data-options="multiline:true,required:true" name="loading_bonusdesc" style="width:300px;height:100px"> 
+							<input class="easyui-textbox"  data-options="multiline:true,required:true" name="load_desc" style="width:300px;height:100px"> 
 					</td> 
 				</tr>  
 			</table> 
 		</form>	
 		<div id="user_form_dlg_buttons">
 			<a href="javascript:saveUser()" class="easyui-linkbutton" >提交</a>
-			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#loading_form_dlg').dialog('close')">关闭</a>
+			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#loadsh_form_dlg').dialog('close')">关闭</a>
 		</div>
 	</div>	
 	 
