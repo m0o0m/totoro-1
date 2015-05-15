@@ -18,37 +18,37 @@
 				"menus":[ 
 			        {"menuname":"用户管理","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
 			        {"menuname":"权限组管理","icon":"icon-nav","url":"#{$ctx}/admin/user/role.php"},
-			        {"menuname":"模块管理","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
-			        {"menuname":"用户权限","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
-					{"menuname":"数据字典类型","icon":"icon-nav","url":"#{$ctx}/admin/dictionary/booktype.php"},
+			        {"menuname":"数据字典类型","icon":"icon-nav","url":"#{$ctx}/admin/dictionary/booktype.php"},
 			        {"menuname":"数据字典","icon":"icon-nav","url":"#{$ctx}/admin/dictionary/book.php"},
-
-				]
+			        {"menuname":"系统账户","icon":"icon-nav","url":"#{$ctx}/admin/user/syszh.php"},
+			        {"menuname":"系统银行卡","icon":"icon-nav","url":"#{$ctx}/admin/bank/xtyhk.php"}, 
+			]
 			},{"menuid":"2","icon":"icon-sys","menuname":"日志管理",
 				"menus":[
-			        {"menuname":"系统日志","icon":"icon-nav","url":"#{$ctx}/base/security/role/role!list.do"},
 			        {"menuname":"操作日志","icon":"icon-nav","url":"#{$ctx}/base/security/user/user!list.do"},
 			        {"menuname":"登陆日志","icon":"icon-nav","url":"#{$ctx}/admin/log/syslog/syslog.php"},
 				]
 			} 
-			,{"menuid":"4","icon":"icon-sys","menuname":"财务",
+			,{"menuid":"4","icon":"icon-sys","menuname":"审核",
 				"menus":[
-						    {"menuname":"充值管理","icon":"icon-nav","url":"#{$ctx}/admin/finance/loading.php"},
-							{"menuname":"提现管理","icon":"icon-nav","url":"#{$ctx}/admin/finance/withdraw.php"}
+						    {"menuname":"充值审核","icon":"icon-nav","url":"#{$ctx}/admin/finance/loadsh.php"},
+							{"menuname":"提现审核","icon":"icon-nav","url":"#{$ctx}/admin/finance/withdraw.php"}
 						]
 				 },
-			{"menuid":"5","icon":"icon-sys","menuname":"玩家管理",
+			{"menuid":"5","icon":"icon-sys","menuname":"账户中心",
 						"menus":[
-									{"menuname":"玩家列表","icon":"icon-nav","url":"#{$ctx}/admin/account/client.php"}, 
+									{"menuname":"玩家信息","icon":"icon-nav","url":"#{$ctx}/admin/account/client.php"}, 
+							        {"menuname":"玩家登陆日志","icon":"icon-nav","url":"#{$ctx}/admin/log/playerlog/logfile.php"},
+									{"menuname":"银行卡管理","icon":"icon-nav","url":"#{$ctx}/admin/bank/yhk.php"}, 
 								]
 						 } 	  
 			,
-			{"menuid":"5","icon":"icon-sys","menuname":"玩家银行卡管理",
+			{"menuid":"6","icon":"icon-sys","menuname":"充值提现",
 				"menus":[
-							{"menuname":"银行卡管理","icon":"icon-nav","url":"#{$ctx}/admin/bank/yhk.php"}, 
+							{"menuname":"充值","icon":"icon-nav","url":"#{$ctx}/admin/cztx/load.php"}, 
 						]
-				 } 	  
-			,
+				 } 	 
+			,	
 			{"menuid":"6","icon":"icon-sys","menuname":"公告管理",
 				"menus":[
 							{"menuname":"公告列表","icon":"icon-nav","url":"#{$ctx}/admin/notice/notice.php"}, 

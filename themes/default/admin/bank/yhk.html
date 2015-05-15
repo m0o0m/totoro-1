@@ -123,7 +123,8 @@
 		<thead>
 			<tr>
 				<th data-options="field:'id',width:80,checkbox:true" >id</th>		
-				<th data-options="field:'book_value',width:80" >类型</th>  
+				<th data-options="field:'book_value',width:80" >类型</th> 
+				<th data-options="field:'yhk_mc',width:80" >提现方式名称</th>  
 				<th data-options="field:'yhk_num',width:80" >银行账号</th> 
 				<th data-options="field:'yhk_name',width:180" >银行账户名称</th> 
 				<th data-options="field:'yhk_status',width:180,
@@ -160,6 +161,10 @@
 					required:true"></td>
 				</tr> 
 				<tr>
+					<td>提现方式名称:</td>
+					<td><input class="easyui-validatebox" type="text" name="yhk_mc" data-options="required:true" /></td>
+				</tr>
+				<tr>
 					<td>银行账号:</td>
 					<td><input class="easyui-validatebox" type="text" name="yhk_num" data-options="required:true" /></td>
 				</tr>
@@ -178,7 +183,7 @@
 				<tr>  
 					<td>状态:</td>
 					<td>						
-					<select id="status" class="easyui-combobox" data-options="required:true"  name="yhk_isregister" style="width:200px;">						 
+					<select id="status" class="easyui-combobox" data-options="required:true"  name="yhk_status" style="width:200px;">						 
 						<option value="0">正常</option>
 						<option value="1">暂停</option> 
 						<option value="2">作废</option> 

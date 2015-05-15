@@ -15,7 +15,8 @@
 				pagination:true,
 				toolbar:easyUi.initButton(
 				[
-					 {name:'add',text:"查看详情",handler:seelog} 
+					 {name:'add',text:"查看详情",handler:seelog} , 
+					 {name:'remove',text:"删除日志",handler:deleteUser}
 				]),
 			}); 
 		});
@@ -42,6 +43,24 @@
 				queryParams:p
 			});
 		}
+		
+		function deleteUser () {
+			var rows = $('#sys_logfile_datagrid').datagrid('getSelections');			 
+			var parm = "";
+			$.each(rows, function (i, n) {
+		    if (i == 0) {
+				  parm = "" + n.id;
+			} else {
+				  parm += "," + n.id;
+				}
+			}); 
+			var url = "#{$ctx}/admin/log/syslog/syslog.php?act=delete"; 
+			easyUi.del("#sys_logfile_datagrid", "id", url, function (data){
+				$("#sys_logfile_datagrid").datagrid("reload");
+				msgSuccess(data);
+			});
+		}
+		
 		function cleanSearch () {
 
 		}
@@ -54,7 +73,7 @@
 			<table >
 				
 				<tr>
-				<td>申请提交日期：
+				<td>登陆日期：
 				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
 				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
 				
@@ -83,6 +102,8 @@
 				        } 
 				">是否在线</th>
 				<th data-options="field:'logfile_logdate',width:180">登录时间</th> 
+				<th data-options="field:'logfile_esctime',width:180">退出时间</th> 
+				
 			</tr> 
 		</thead>
 	</table>
