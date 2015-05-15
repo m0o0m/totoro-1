@@ -31,37 +31,59 @@ if ($act == "list") {
 }elseif ($act == "add") {
 	
 }elseif ($act == "save") {
-	$arr = array();     
-	$arr['load_fkstate'] = $_REQUEST['load_fkstate']; 
-	$arr['load_shuser'] = "1";
-	$arr['load_desc'] = $_REQUEST['load_desc']; 
-	$arr['load_sjdz'] = $_REQUEST['load_sjdz'];  
-	$arr['load_sxf'] = $_REQUEST['load_sxf'];
-	try {
-		$db->insert("player_load",$arr);
-		$result->result="1";
-		$result->msg="添加成功。";
+// 	$arr = array();     
+// 	$arr['load_fkstate'] = $_REQUEST['load_fkstate']; 
+// 	$arr['load_shuser'] = "1";
+// 	$arr['load_desc'] = $_REQUEST['load_desc']; 
+// 	$arr['load_sjdz'] = $_REQUEST['load_sjdz'];  
+// 	$arr['load_sxf'] = $_REQUEST['load_sxf'];
+// 	try {
+// 		$db->insert("player_load",$arr);
+// 		$result->result="1";
+// 		$result->msg="添加成功。";
 		
-	}catch (Exception $e){
-		$result->result="0";
-		$result->msg="添加失败。";
-	}
-	echo json_encode($result);	
+// 	}catch (Exception $e){
+// 		$result->result="0";
+// 		$result->msg="添加失败。";
+// 	}
+// 	echo json_encode($result);	
 }elseif ($act == "update") {
 	$arr = array();
 	$arr['load_fkstate'] = $_REQUEST['load_fkstate']; 
 	$arr['load_shuser'] = "1";
 	$arr['load_desc'] = $_REQUEST['load_desc']; 
-	$arr['load_sjdz'] = $_REQUEST['load_sjdz'];
-	$id = $_REQUEST['id'];
-	 
+	$arr['load_sjdz'] = $_REQUEST['load_sjdz']; 
+	$arr['load_fkdate'] =date("Y-m-d H:i:s"); 
+	$id = $_REQUEST['id']; 
 	try {
-		$db->update("player_load",$arr,"where id=".$id);
+		$db->update("player_load",$arr,"where id=".$id); 
+		if($arr['load_fkstate'] == 2){ 			
+			$db->db->query("update sys_zh  set zh_balance = (zh_balance-".$arr['load_sjdz']." ) where zh_iszzh = 0");
+			
+			$client_balance = mysql_query("select client_balance from player_client  where id=".$_REQUEST['client_id'] );
+			$row = mysql_fetch_array($client_balance); 
+			$balance = $row['client_balance'];
+			$db->db->query("update player_client  set client_balance = (client_balance+".$arr['load_sjdz'].") where id=".$_REQUEST['client_id'] );
+			//写入冲提账变表  
+			$zbarr = array();
+			$zbarr['client_id'] = $_REQUEST['client_id']; 
+			$zbarr['client_logn'] = $_REQUEST['client_logn'];
+			$zbarr['tczb_num'] = $_REQUEST['load_num'];
+			$zbarr['tczb_type'] = "0";
+			$zbarr['tczb_amount'] = $_REQUEST['load_sjdz'];
+			$zbarr['tczb_balance1'] = $balance;
+			$zbarr['tczb_balance2'] = $balance+$arr['load_sjdz']; 
+			$zbarr['xtyhk_id'] = $_REQUEST['xtyhk_id'];
+			$zbarr['xtyhk_num'] = $_REQUEST['xtyhk_num'];
+			$zbarr['xtyhk_name'] = $_REQUEST['xtyhk_name'];
+			$zbarr['czdate'] = date("Y-m-d H:i:s"); 
+			$db->insert("player_tczb",$zbarr);
+		}
 		$result->result="1";
-		$result->msg="修改成功。";
+		$result->msg="审核完毕。";
 	}catch (Exception $e){
 		$result->result="0";
-		$result->msg="修改失败。";
+		$result->msg="审核失败。";
 	}
 	echo json_encode($result);  
 }elseif ($act == "delete") { 
