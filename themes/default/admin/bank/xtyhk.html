@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>系统银行卡管理</title> 
+	#{include file ="jscss.html"};
+	<script type="text/javascript">
+		$(function(){
+			   
+			$("#xtyhk_datagrid").datagrid({
+				title:"玩家列表",
+				url:"#{$ctx}/admin/bank/xtyhk.php?act=list",
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true,
+				toolbar:easyUi.initButton(
+				[
+					 {name:'add',text:"添加银行",handler:addUser},
+					 {name:'edit',text:"编辑银行",handler:updateUser},
+					 {name:'remove',text:"删除银行",handler:deleteUser},
+				]),
+			}); 
+			
+ 
+		});
+
+		function addUser () {
+			$('#xtyhk_form').form('clear');
+			$("#xtyhk_form_dlg").dialog({
+				title : "添加银行卡"
+			}).dialog("open");
+			
+		}
+		function saveUser () { 
+			var act ="update";
+			if($("#xtyhk_id").val() == "" || $("#xtyhk_id").val() == null){
+				act ="save"
+			}   
+			easyUi.formSubmit({
+				formId : "#xtyhk_form",
+				submit : function() {
+				},
+				success : function(data) {
+					msgSuccess(data);
+					$("#xtyhk_datagrid").datagrid("reload");
+					$("#xtyhk_form_dlg").dialog("close");
+				},
+				prefix : "",
+				params : {"act":act}
+			});
+		}
+		function updateUser () { 
+			var row = easyUi.selectDatagrid("#xtyhk_datagrid");
+			var result = easyUi.loadForm("#xtyhk_form", "#xtyhk_datagrid", "");
+			if(!result) {
+				return ;
+			}
+			$("#xtyhk_form_dlg").dialog({
+				title : "编辑银行卡"
+			}).dialog("open");
+		}
+		function deleteUser () {
+			var rows = $('#xtyhk_datagrid').datagrid('getSelections');			 
+			var parm = "";
+			$.each(rows, function (i, n) {
+		    if (i == 0) {
+				  parm = "" + n.id;
+			} else {
+				  parm += "," + n.id;
+				}
+			}); 
+			var url = "#{$ctx}/admin/bank/xtyhk.php?act=delete"; 
+			easyUi.del("#xtyhk_datagrid", "id", url, function (data){
+				$("#xtyhk_datagrid").datagrid("reload");
+				msgSuccess(data);
+			});
+		}
+		function search () {
+			var p = {}; 
+			$("#search_form").find("input").each(function(){
+				p[this.name]=this.value;
+			});
+			
+			$("#xtyhk_datagrid").datagrid({
+				queryParams:p
+			});
+		}  
+	</script>
+</head>
+<body>
+
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table > 
+				<tr>
+			    <td>创建日期：
+				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				
+				</td>		
+				<td>状态:
+					<select id="xtyhk_status" class="easyui-combobox" name="xtyhk_status" style="width:200px;">
+						<option value="">全部</option>
+						<option value="0">正常</option>
+						<option value="1">暂停</option>
+						<option value="2">作废</option>
+					</select>
+				</td>
+				 
+				</tr>				
+				<tr>
+				<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+						<a href="#" class="easyui-linkbutton">清空</a></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	
+	<table id= "xtyhk_datagrid">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:80,checkbox:true" >id</th>		
+				<th data-options="field:'book_value',width:80" >银行类型</th>  
+				<th data-options="field:'xtyhk_mc',width:180" >充值方式名称</th>
+				<th data-options="field:'xtyhk_num',width:80" >银行账号</th> 
+				<th data-options="field:'xtyhk_name',width:180" >银行账户名称</th>
+				<th data-options="field:'xtyhk_type',width:80,
+					formatter:function(value,row){
+											if(value==0)
+				                return '充值';
+				       		 else if(value==1)
+				                return '提现'; 
+				        } 
+				">用途</th>  
+				<th data-options="field:'xtyhk_status',width:180,
+					formatter:function(value,row){
+											if(value==0)
+				                return '正常';
+				       		 else if(value==1)
+				                return '暂停';
+				             else if(value==2)
+				                return '作废'; 
+				        }
+				" >状态</th>   
+				<th data-options="field:'create_date',width:180" >创建时间</th> 
+			</tr> 
+		</thead>
+	</table>
+	
+	<div id="xtyhk_form_dlg" class="easyui-dialog"  closed="true"
+		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
+		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
+		<form id="xtyhk_form" action="#{$ctx}/admin/bank/xtyhk.php" method="post" >
+			<input id="xtyhk_id" name="id" type="hidden"/>
+			<table>  
+				 <tr>  
+					<td>银行类型</td>
+				  <td>
+				  <input class="easyui-combobox" 
+					name="bank_type"	data-options="
+					url:'#{$ctx}/admin/dictionary/book.php?act=booklist&bcode=yhlx',
+					method:'get',
+					valueField:'id',
+					textField:'text',
+					panelHeight:'auto',
+					required:true"></td>
+				</tr> 
+				<tr>  
+					<td>状态:</td>
+					<td>						
+					<select id="status" class="easyui-combobox" data-options="required:true"  name="xtyhk_type" style="width:100px;">						 
+						<option value="0">充值</option>
+						<option value="1">提现</option>  
+					</select>
+					</td>
+				</tr>  
+				<tr>
+					<td>充值方式名称:</td>
+					<td><input class="easyui-validatebox" type="text" name="xtyhk_mc" data-options="required:true" /></td>
+				</tr> 
+				<tr>
+					<td>银行账号:</td>
+					<td><input class="easyui-validatebox" type="text" name="xtyhk_num" data-options="required:true" /></td>
+				</tr>
+				<tr>
+					<td>银行账户名:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="xtyhk_name" data-options="required:true" />
+					</td>
+				</tr> 
+				<tr>
+					<td>开户行地址:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="xtyhk_adress" data-options="required:true" />
+					</td>
+				</tr>  
+				<tr>  
+					<td>状态:</td>
+					<td>						
+					<select id="status" class="easyui-combobox" data-options="required:true"  name="xtyhk_status" style="width:200px;">						 
+						<option value="0">正常</option>
+						<option value="1">暂停</option> 
+						<option value="2">作废</option> 
+					</select>
+					</td>
+				</tr>   
+			</table> 
+		</form>	
+		<div id="user_form_dlg_buttons">
+			<a href="javascript:saveUser()" class="easyui-linkbutton" >提交</a>
+			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#xtyhk_form_dlg').dialog('close')">关闭</a>
+		</div>
+	</div>	
+	 
+</body>
+	
+</html>
