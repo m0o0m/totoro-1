@@ -30,39 +30,46 @@ if ($act == "list") {
 }elseif ($act == "add") {
 	
 }elseif ($act == "save") { 
-		$client_balance = mysql_query("select count(*) from  player_client where id = 1 and client_txpw ='".$_REQUEST['load_pw']."'" );
-		$row = mysql_fetch_array($client_balance); 
-		if($row[0] > 0){ 
-			$arr = array();
-			$arr['client_id'] = "1";
-			$arr['client_logn'] = "liaohan";
-			$arr['load_num'] = "123456"; //充值编号  有系统产生
-			$arr['load_amount'] = $_REQUEST['load_amount'];
-			$arr['load_sxf'] = "10.00";
-			$arr['load_date'] = date("Y-m-d H:i:s");
-			$arr['yhk_id'] = $_REQUEST['yhk_id'];
-			$arr['yhk_num'] = $_REQUEST['yhk_num'];
-			$arr['yhk_name'] = $_REQUEST['yhk_name'];
-			$arr['load_ps'] = $_REQUEST['load_ps'];
-			$arr['xtyhk_id'] = $_REQUEST['xtyhk_id'];
-			$rs = mysql_query("select xtyhk_num,xtyhk_name from sys_xtyhk where id = ".$_REQUEST['xtyhk_id']);
-			while($row = mysql_fetch_array($rs))
-			{
-				$arr['xtyhk_num'] = $row['xtyhk_num'];
-				$arr['xtyhk_name'] = $row['xtyhk_name'];
-			} 
-			try {
-				$db->insert("player_load",$arr);
-				$result->result="1";
-				$result->msg="添加成功。";
-			
-			}catch (Exception $e){
-				$result->result="0";
-				$result->msg="添加失败。";
-			}
-		}else{ 
+		$client_txpw = $_REQUEST['load_pw'];
+		
+		$client_balance = mysql_query("select client_txpw from  player_client where id = 1" );
+		$row = mysql_fetch_array($client_balance);   
+		if($row[0] == '' || $row[0] == null){ //资金密码不存在 
 			$result->result="0";
 			$result->msg="尚未设置资金密码，不能充值。";
+		}else{ 
+			if($client_txpw != $row[0]){
+				$result->result="0";
+				$result->msg="资金密码不正确。";
+			}else{
+				$arr = array();
+				$arr['client_id'] = "1";
+				$arr['client_logn'] = "liaohan";
+				$arr['load_num'] = "123456"; //充值编号  有系统产生
+				$arr['load_amount'] = $_REQUEST['load_amount'];
+				$arr['load_sxf'] = "10.00";
+				$arr['load_date'] = date("Y-m-d H:i:s");
+				$arr['yhk_id'] = "2";
+				$arr['yhk_num'] = "1312313123124324";
+				$arr['yhk_name'] = "李傲寒";
+				$arr['load_ps'] = "充值附言";
+				$arr['xtyhk_id'] = $_REQUEST['xtyhk_id'];
+				$rs = mysql_query("select xtyhk_num,xtyhk_name from sys_xtyhk where id = ".$_REQUEST['xtyhk_id']);
+				while($row = mysql_fetch_array($rs))
+				{
+					$arr['xtyhk_num'] = $row['xtyhk_num'];
+					$arr['xtyhk_name'] = $row['xtyhk_name'];
+				}
+				try {
+					$db->insert("player_load",$arr);
+					$result->result="1";
+					$result->msg="充值提交成功。";
+			
+				}catch (Exception $e){
+					$result->result="0";
+					$result->msg="充值提交失败。";
+				}
+			}
 		} 
 
     	echo json_encode($result);	

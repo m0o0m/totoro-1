@@ -117,16 +117,15 @@ if ($act == "list") {
 } elseif ($act == "updatezjpw") {
 	$arr = array();
 	$oldpw = $_REQUEST['oldzjpw'];
-	$newpw1 = $_REQUEST['newzjpw1'];
-	$newpw2 = $_REQUEST['newzjpw2']; 
+	$arr['client_txpw'] = $_REQUEST['newzjpw1']; 
 	$id = $_REQUEST['id']; 
+	
 	$client_txpw = mysql_query("select client_txpw from player_client  where id=".$id);
 	$row = mysql_fetch_array($client_txpw);
-	$txpw = $row['client_txpw']; 
-	if($txpw == '' || $txpw == null){
-		try {
-			
-			$arr['client_txpw'] = $newpw1;
+	$txpw = $row['client_txpw']; //从数据库中取出当前取现密码
+	
+	if($txpw == '' || $txpw == null){//如果不存在取现密码则直接存入
+		try { 
 			$db->update("player_client",$arr,"where id=".$id);
 			$result->result="1";
 			$result->msg="修改密码成功。";
@@ -135,22 +134,27 @@ if ($act == "list") {
 			$result->result="0";
 			$result->msg="修改密码错误。";
 		}
-	}else{
-		if( $oldpw == $newpw1){
+	}else{ 
+		if($oldpw != $txpw){
 			$result->result="0";
-			$result->msg="修改失败，新旧密码不能一致";
+			$result->msg="旧密码不正确";  
 		}else{
-			try { 
-				$arr['client_txpw'] = $newpw1; 
-				$db->update("player_client",$arr,"where client_txpw = '".$oldpw."' and id=".$id);
-				echo $db;
-				$result->result="1";
-				$result->msg="修改密码成功。";
-			}catch (Exception $e){
+			if( $txpw == $arr['client_txpw']){
 				$result->result="0";
-				$result->msg="修改密码错误。";
-			}
-		}
+				$result->msg="修改失败，新旧密码不能一致";
+			}else{ 
+				try {
+					$db->update("player_client",$arr,"where id=".$id);
+					$result->result="1";
+					$result->msg="修改密码成功。";
+						
+				}catch (Exception $e){
+					$result->result="0";
+					$result->msg="修改密码错误。";
+				}
+			} 
+		} 
+		
 	} 
    echo json_encode($result);
 } 

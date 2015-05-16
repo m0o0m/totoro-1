@@ -26,7 +26,7 @@ if ($act == "list") {
 		$where.= " and load_date <= '$enddate 23:59:59'";
 	}
 	
-	$users = $db->get_page("player_load",$where); 
+	$users = $db->get_page("loadsh_user_xtyh",$where); 
 	echo json_encode($users); 
 }elseif ($act == "add") {
 	
@@ -56,14 +56,19 @@ if ($act == "list") {
 	$arr['load_fkdate'] =date("Y-m-d H:i:s"); 
 	$id = $_REQUEST['id']; 
 	try {
+		$db->db->query('begin '); //开始事务
+		
 		$db->update("player_load",$arr,"where id=".$id); 
-		if($arr['load_fkstate'] == 2){ 			
-			$db->db->query("update sys_zh  set zh_balance = (zh_balance-".$arr['load_sjdz']." ) where zh_iszzh = 0");
+		if($arr['load_fkstate'] == 2){ 	
+			
 			
 			$client_balance = mysql_query("select client_balance from player_client  where id=".$_REQUEST['client_id'] );
 			$row = mysql_fetch_array($client_balance); 
-			$balance = $row['client_balance'];
+			$balance = $row['client_balance'];//当前账户余额
+			
+			$db->db->query("update sys_zh  set zh_balance = (zh_balance+".$arr['load_sjdz']." ) where zh_iszzh = 0");				
 			$db->db->query("update player_client  set client_balance = (client_balance+".$arr['load_sjdz'].") where id=".$_REQUEST['client_id'] );
+			
 			//写入冲提账变表  
 			$zbarr = array();
 			$zbarr['client_id'] = $_REQUEST['client_id']; 
@@ -78,10 +83,12 @@ if ($act == "list") {
 			$zbarr['xtyhk_name'] = $_REQUEST['xtyhk_name'];
 			$zbarr['czdate'] = date("Y-m-d H:i:s"); 
 			$db->insert("player_tczb",$zbarr);
+			$db->db->query('commit');//提交
 		}
 		$result->result="1";
 		$result->msg="审核完毕。";
 	}catch (Exception $e){
+		$db->db->query('rollback'); //回滚
 		$result->result="0";
 		$result->msg="审核失败。";
 	}

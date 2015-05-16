@@ -18,7 +18,7 @@ if ($act == "list") {
 	$stardate = $_REQUEST['stardate'];
 	$enddate = $_REQUEST['enddate'];
 	
- 	//$where = " where isdelete = 0 ";
+ 	$where = " where isdelete = 0 ";
 	foreach ($arr as $ks=>$vs){
 		if($vs != ""){
 			$where.= "and $ks = '$vs'";
@@ -30,16 +30,31 @@ if ($act == "list") {
 	}
 	if($enddate != ''){
 		$where.= " and create_date <= '$enddate 23:59:59'";
-	}
-	 
-	$rs = mysql_query($sql);
+	} 
 	
 	$users = $db->get_page("yhk_book",$where); 
 	 
 	echo json_encode($users); 
-}elseif ($act == "add") {
-	
-} elseif ($act == "save") {
+}elseif ($act == "comboxlist") {
+	$arr = array();
+	$arr['yhk_status'] = $_REQUEST['yhk_status'];  
+	$arr['clien_id'] = $_REQUEST['clien_id']; 
+	$where = " where isdelete = 0 ";
+	foreach ($arr as $ks=>$vs){
+		if($vs != ""){
+			$where.= "and $ks = '$vs'";
+		}
+	}     
+	 
+	$sql=" SELECT id 'id',yhk_mc 'text',yhk_num 'desc'
+	from player_yhk ".$where;
+	$rs = mysql_query($sql);
+	$items = array(); 
+	while($row = mysql_fetch_object($rs)){
+		array_push($items, $row);
+	}  
+	echo json_encode($items);
+}elseif ($act == "save") {
 	$arr = array(); 
 	$arr['clien_id'] = "1"; 
 	$arr['bank_type'] = $_REQUEST['bank_type'];
