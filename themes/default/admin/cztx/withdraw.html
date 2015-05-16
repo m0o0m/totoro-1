@@ -17,13 +17,27 @@
 				toolbar:easyUi.initButton(
 				[
 					 {name:'add',text:"提现",handler:addUser}, 
-					 {name:'remove',text:"删除记录",handler:deleteUser},
+					 {name:'remove',text:"取消提现",handler:esctx},
 				]),
 			}); 
 			
  
 		});
 
+		function esctx () { 	 
+			var row = easyUi.selectDatagrid("#Withdraw_datagrid");			
+			if(row.Withdraw_shstate != "0"){
+				$.messager.alert("取消提示","已被审核或者已经取消");
+				return;
+			};
+			
+			var url = "#{$ctx}/admin/cztx/Withdraw.php?act=esctx"; 
+			easyUi.del("#Withdraw_datagrid", "id", url, function (data){
+				$("#Withdraw_datagrid").datagrid("reload");
+				msgSuccess(data);
+			});
+		}
+		
 		function addUser () {
 			$('#Withdraw_form').form('clear');
 			$("#Withdraw_form_dlg").dialog({
@@ -56,23 +70,15 @@
 				return ;
 			}
 			$("#Withdraw_form_dlg").dialog({
-				title : "修改"
+				title : "取消提现"
 			}).dialog("open");
 		}
 		
 		function deleteUser () {
-			var rows = $('#Withdraw_datagrid').datagrid('getSelections');			 
-			var parm = "";
-			$.each(rows, function (i, n) {
-		    if (i == 0) {
-				  parm = "" + n.id;
-			} else {
-				  parm += "," + n.id;
-				}
-			}); 
+			var rows = $('#Withdraw_datagrid').datagrid('getSelections');		 
 			var url = "#{$ctx}/admin/cztx/Withdraw.php?act=delete"; 
 			easyUi.del("#Withdraw_datagrid", "id", url, function (data){
-				$("#Withdraw_datagrid").datagrid("reWithdraw");
+				$("#Withdraw_datagrid").datagrid("reload");
 				msgSuccess(data);
 			});
 		}

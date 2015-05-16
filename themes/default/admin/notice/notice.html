@@ -2,12 +2,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>公告管理</title>
-
+<title>公告管理</title> 
 	#{include file="jscss.html"}
 	<script type="text/javascript">
 		var url = "#{$ctx}/admin/notice/notice.php?act=";
-		$(function(){
+		$(function(){ 
 		
 			$("#user_datagrid").datagrid({
 				title:"公告列表",
@@ -35,8 +34,7 @@
 			var act ="update";
 			if($("#user_id").val() == "" || $("#user_id").val() == null){
 				act ="save";
-			} 
-			
+			}  
 			easyUi.formSubmit({
 				formId : "#user_form",
 				submit : function() {
@@ -89,10 +87,10 @@
 		data-options="iconCls:'icon-save',collapsible:true">
 		<form id="search_form" method="post">
 			<table >
-				<tr><td>登陆名</td><td><input name="user_logn" value=""/>
+				<tr><td>名称</td><td><input name="user_logn" value=""/>
 				<td>状态</td>
 				<td>
-					<select id="user_status" class="easyui-combobox" name="user_status" style="width:200px;">
+					<select id="state" class="easyui-combobox" name="state" style="width:200px;">
 						<option value="">全部</option>
 						<option value="0">正常</option>
 						<option value="1">暂停</option>
@@ -112,11 +110,19 @@
 			<tr>
 				<th data-options="field:'id',width:80,checkbox:true" >id</th>
 				<th data-options="field:'title',width:80" >标题</th> 
-				<th data-options="field:'state',width:180" >状态</th> 
+				<th data-options="field:'state',width:180,
+					formatter:function(value,row){
+											if(value==0)
+				                return '正常';
+				       		 else if(value==1)
+				                return '暂停';
+				             else if(value==2)
+				                return '作废'; 
+				        }
+				" >状态</th> 
 				<th data-options="field:'start_date',width:180" >开始时间</th> 
-				<th data-options="field:'end_date',width:180" >结束时间</th> 
-				<th data-options="field:'is_delete',width:180" >有效</th> 
-				<th data-options="field:'create_user',width:180" >创建时间</th> 
+				<th data-options="field:'end_date',width:180" >结束时间</th>  
+				<th data-options="field:'create_date',width:180" >创建时间</th> 
 			</tr> 
 		</thead>
 	</table>
@@ -124,7 +130,7 @@
 	<div id="user_form_dlg" class="easyui-dialog"  closed="true"
 		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
 		data-options="resizable:true,buttons:'#user_form_dlg_buttons'">
-		<form id="user_form" action="#{$ctx}/admin/user/user.php" method="post" >
+		<form id="user_form" action="#{$ctx}/admin/notice/notice.php" method="post" >
 			<input id="user_id" name="id" type="hidden"/>
 			<table>
 				<tr>
@@ -134,21 +140,31 @@
 				<tr>
 					<td>内容:</td>
 					<td>
-						<textarea id= "user_pw" name="content" ></textarea>
+						<textarea id= "content" name="content" style="width:300px; height: 150px;"></textarea>
 					</td>
 				</tr>
 				<tr>
 					<td>开始时间:</td>
 					<td>
-						<input class="Wdate" type="text" onFocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+						<input class="Wdate" type="text"  name="start_date"  onFocus="WdatePicker({isShowClear:false,readOnly:true})"/>
 					</td>
 				</tr>
 				<tr>
 					<td>结束时间:</td>
 					<td>
-						<input class="Wdate" type="text" onFocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+						<input class="Wdate" type="text"  name="end_date"  onFocus="WdatePicker({isShowClear:false,readOnly:true})"/>
 					</td>
 				</tr>
+				<tr>  
+					<td>状态:</td>
+					<td>						
+					<select id="state" class="easyui-combobox" data-options="required:true"  name="state" style="width:200px;">						 
+						<option value="0">正常</option>
+						<option value="1">暂停</option> 
+						<option value="1">作废</option> 
+					</select>
+					</td>
+				</tr>  
 			</table>
 		</form>	
 		<div id="user_form_dlg_buttons">

@@ -27,7 +27,7 @@
 		function addUser () {
 			$('#hnzz_form').form('clear');
 			$("#hnzz_form_dlg").dialog({
-				title : "充值"
+				title : "转账"
 			}).dialog("open");
 			
 		}
@@ -71,7 +71,7 @@
 			}); 
 			var url = "#{$ctx}/admin/cztx/hnzz.php?act=delete"; 
 			easyUi.del("#hnzz_datagrid", "id", url, function (data){
-				$("#hnzz_datagrid").datagrid("rehnzz");
+				$("#hnzz_datagrid").datagrid("reload");
 				msgSuccess(data);
 			});
 		}
@@ -108,7 +108,7 @@
 				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
 				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
 				</td> 				
-				<td>转账账号</td><td><input name="zclient_mz" value=""/></td> 
+				<td>转账账号</td><td><input name="zclient_logn" value=""/></td> 
 				</tr>				
 				<tr>
 				<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
@@ -123,8 +123,8 @@
 		<thead>
 			<tr>
 				<th data-options="field:'id',width:80,checkbox:true" >id</th>		
-				<th data-options="field:'zclient_mz',width:80" >转账人</th>  
-				<th data-options="field:'dclient_mz',width:80" >收款人</th> 
+				<th data-options="field:'zclient_logn',width:80" >转账人</th>  
+				<th data-options="field:'dclient_logn',width:80" >收款人</th> 
 				<th data-options="field:'hnzz_amount',width:80" >金额</th>  
 				<th data-options="field:'hnzz_date',width:180" >转账时间</th>  
 				<th data-options="field:'hnzz_desc',width:180" >备注</th> 
@@ -133,8 +133,8 @@
 	</table>
 	
 	<div id="hnzz_form_dlg" class="easyui-dialog"  closed="true"
-		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
-		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
+		style="width:400px; height: 400px; left: 100px; top: 15px; padding: 10px;" 
+		data-options="resizable:true,buttons:'#user_form_dlg_buttons'">
 		<form id="hnzz_form" action="#{$ctx}/admin/cztx/hnzz.php" method="post" >
 			<input id="hnzz_id" name="id" type="hidden"/>
 			<table>
@@ -156,8 +156,13 @@
 						<input class="easyui-validatebox" type="password" validType="length[10,20]" missingMessage="密码不能少于10个或者超过20个字符！" name="load_pw" data-options="required:true" />
 					</td>
 				</tr> 
+				<tr>
+					<td>备注:</td>
+					<td><input class="easyui-validatebox"   type="text" name="transfer_desc" data-options="required:true" /></td>
+				</tr>
+				
 			</table> 
-		</form>	
+		</form>	 
 		<div id="user_form_dlg_buttons">
 			<a href="javascript:saveUser()" class="easyui-linkbutton" >提交</a>
 			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#hnzz_form_dlg').dialog('close')">关闭</a>
