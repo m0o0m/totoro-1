@@ -102,7 +102,7 @@
 		}
 		
 		function upassword () {
-
+			$('#newpwform').form('clear');
 			var row = easyUi.selectDatagrid("#client_datagrid");
 			$("#pwclient_id").val(row.id);
 			var result = easyUi.loadForm("#client_form", "#client_datagrid", "");
@@ -115,6 +115,7 @@
 		}
 		
 		function uzjpassword () { 
+			$('#newzjpwform').form('clear');
 			var row = easyUi.selectDatagrid("#client_datagrid");
 			$("#zjpwclient_id").val(row.id);
 			var result = easyUi.loadForm("#client_form", "#client_datagrid", "");

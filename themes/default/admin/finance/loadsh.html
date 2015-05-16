@@ -136,9 +136,10 @@
 				<th data-options="field:'load_sjdz',width:80" >实际金额</th>
 				<th data-options="field:'load_sxf',width:80" >手续费</th>
 				<th data-options="field:'load_date',width:180" >充值时间</th> 
-				<th data-options="field:'xtyhk_id',width:180" >充值方式</th> 
+				<th data-options="field:'xtyhk_mc',width:180" >充值方式</th> 
 				<th data-options="field:'xtyhk_num',width:180" >收款银行账号</th>  
 				<th data-options="field:'xtyhk_name',width:180" >收款银行户名</th> 
+				
 				<th data-options="field:'load_fkstate',width:100,
 						formatter:function(value,row){
 											if(value==0)
@@ -152,7 +153,7 @@
 				        }						
 						 ">状态</th>
 			   
-				<th data-options="field:'load_shuser',width:180" >审核人</th> 
+				<th data-options="field:'user_logn',width:180" >审核人</th> 
 			  </tr>  
 		</thead>
 	</table>
@@ -204,6 +205,7 @@
 					<td> 
 						成功：<input class="easyui-validatebox" type="radio" name="load_fkstate" value="2" data-options="required:true" />
 						失败：<input class="easyui-validatebox" type="radio" name="load_fkstate" value="3" data-options="required:true" />
+						取消：<input class="easyui-validatebox" type="radio" name="load_fkstate" value="1" data-options="required:true" />
 					</td>
 				</tr>  
 				<tr>
