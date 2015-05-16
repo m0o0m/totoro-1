@@ -112,7 +112,7 @@ if ($act == "list") {
 	$arr['isdelete'] = 1; 
 	
 	try {
-		$db->update("bns_withdraw",$arr,"where id=".$id);
+		$db->update("player_withdraw",$arr,"where id=".$id);
 		$result->result="1";
 		$result->msg="删除成功。";
 	}catch (Exception $e){

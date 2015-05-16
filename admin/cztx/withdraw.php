@@ -28,7 +28,29 @@ if ($act == "list") {
 	$users = $db->get_page("player_withdraw",$where); 
 	echo json_encode($users); 
 	
-}elseif ($act == "save") { 
+}elseif($act == "esctx"){  
+	$txpw= mysql_query("select * from  player_withdraw where id = ". $_REQUEST['id'] );
+	$row = mysql_fetch_array($txpw);
+	
+	try {
+		$db->db->query('begin '); //开始事务
+			
+		$db->db->query("update player_withdraw set Withdraw_shstate = 1 where id = ". $_REQUEST['id']);
+		
+		$db->db->query("update player_client set client_balance= (client_balance + ".$row['Withdraw_amount']."),
+							client_freeze = (client_freeze - ".$row['Withdraw_amount'].")
+							where id=".$row['client_id']);
+		$result->result="1";
+		$result->msg="取消申请成功。";
+		$db->db->query('commit');//提交
+	}catch (Exception $e){
+		$db->db->query('rollback'); //回滚
+		$result->result="0";
+		$result->msg="取消申请失败。";
+	}	 
+	echo json_encode($result);
+}
+elseif ($act == "save") { 
 		$client_txpw = $_REQUEST['Withdraw_pw'];
 		
 		$txpw= mysql_query("select client_txpw from  player_client where id = 1" );
@@ -41,44 +63,49 @@ if ($act == "list") {
 			if($client_txpw != $row[0]){
 				$result->result="0";
 				$result->msg="资金密码不正确。";
-			}else{
-				$arr = array();
-				$arr['client_id'] = "1";
-				$arr['client_logn'] = "liaohan";
-				$arr['withdraw_num'] = "123456"; //充值编号  有系统产生
-				$arr['Withdraw_amount'] = $_REQUEST['Withdraw_amount'];
-				$arr['Withdraw_date'] = date("Y-m-d H:i:s");
-			
-				$txpw= mysql_query("select * from  player_client where id = ".$arr['client_id'] );
+			}else{  
+				$txpw= mysql_query("select * from  player_client where id = 1" );
 				$row = mysql_fetch_array($txpw);
-				$arr['Withdraw_freeze'] = $row["client_freeze"];//提现前冻结金额
-				$arr['Withdraw_balance'] = $row["client_balance"];//提现前冻结金额
-				
-				$arr['yhk_id'] = $_REQUEST['yhk_id'];
-				$rs = mysql_query("select yhk_num,yhk_name,yhk_adress from player_yhk where id = ".$_REQUEST['yhk_id']);
-				while($row = mysql_fetch_array($rs))
-				{
-					$arr['yhk_num'] = $row['yhk_num'];
-					$arr['yhk_name'] = $row['yhk_name'];
-					$arr['yhk_adress'] = $row['yhk_adress'];
-				}
-				
-				try {
-					$db->db->query('begin '); //开始事务
+				if($row["client_freeze"] < $_REQUEST['Withdraw_amount']){
+					$result->result="0";
+					$result->msg="当前账户余额不足";
+				}else{
+					$arr = array();
+					$arr['client_id'] = "1";
+					$arr['client_logn'] = "liaohan";
+					$arr['withdraw_num'] = "123456"; //充值编号  有系统产生
+					$arr['Withdraw_amount'] = $_REQUEST['Withdraw_amount'];
+					$arr['Withdraw_date'] = date("Y-m-d H:i:s");
+					$arr['Withdraw_freeze'] = $row["client_freeze"];//提现前冻结金额
+					$arr['Withdraw_balance'] = $row["client_balance"];//提现前冻结金额
 					
-					$db->insert("player_withdraw",$arr);
-					$db->db->query("update player_client set client_balance= (client_balance - ".$arr['Withdraw_amount']."),
+					
+					$arr['yhk_id'] = $_REQUEST['yhk_id'];
+					$rs = mysql_query("select yhk_num,yhk_name,yhk_adress from player_yhk where id = ".$_REQUEST['yhk_id']);
+					while($row = mysql_fetch_array($rs))
+					{
+						$arr['yhk_num'] = $row['yhk_num'];
+						$arr['yhk_name'] = $row['yhk_name'];
+						$arr['yhk_adress'] = $row['yhk_adress'];
+					}
+					
+					try {
+						$db->db->query('begin '); //开始事务
+							
+						$db->insert("player_withdraw",$arr);
+						$db->db->query("update player_client set client_balance= (client_balance - ".$arr['Withdraw_amount']."),
 							client_freeze = (client_freeze + ".$arr['Withdraw_amount'].")
-							where id=".$arr['client_id']); 
-
-					$result->result="1";
-					$result->msg="提现申请成功。";
-					$db->db->query('commit');//提交
-				}catch (Exception $e){
-				   $db->db->query('rollback'); //回滚
-				   $result->result="0";
-				   $result->msg="提现申请失败。";
-				}
+							where id=".$arr['client_id']);
+					
+						$result->result="1";
+						$result->msg="提现申请成功。";
+						$db->db->query('commit');//提交
+					}catch (Exception $e){
+						$db->db->query('rollback'); //回滚
+						$result->result="0";
+						$result->msg="提现申请失败。";
+					}	
+				} 
 			}
 		} 
 
