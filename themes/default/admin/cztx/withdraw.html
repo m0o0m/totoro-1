@@ -3,20 +3,20 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>充值管理</title> 
+<title>提现管理</title> 
 	#{include file ="jscss.html"};
 	<script type="text/javascript">
 		$(function(){
 			   
-			$("#load_datagrid").datagrid({
-				title:"充值记录",
-				url:"#{$ctx}/admin/cztx/load.php?act=list",
+			$("#Withdraw_datagrid").datagrid({
+				title:"提现记录",
+				url:"#{$ctx}/admin/cztx/Withdraw.php?act=list",
 				fitColumns:true,
 				rownumbers:true,
 				pagination:true,
 				toolbar:easyUi.initButton(
 				[
-					 {name:'add',text:"充值",handler:addUser}, 
+					 {name:'add',text:"提现",handler:addUser}, 
 					 {name:'remove',text:"删除记录",handler:deleteUser},
 				]),
 			}); 
@@ -25,42 +25,43 @@
 		});
 
 		function addUser () {
-			$('#load_form').form('clear');
-			$("#load_form_dlg").dialog({
-				title : "充值"
+			$('#Withdraw_form').form('clear');
+			$("#Withdraw_form_dlg").dialog({
+				title : "提现"
 			}).dialog("open");
 			
 		}
 		function saveUser () { 
 			var act ="update";
-			if($("#load_id").val() == "" || $("#load_id").val() == null){
+			if($("#Withdraw_id").val() == "" || $("#Withdraw_id").val() == null){
 				act ="save"
 			} 
 			easyUi.formSubmit({
-				formId : "#load_form",
+				formId : "#Withdraw_form",
 				submit : function() {
 				},
 				success : function(data) {
-					msgSuccess(data);
-					$("#load_datagrid").datagrid("reload");
-					$("#load_form_dlg").dialog("close");
+					msgSuccess(data); 
+					$("#Withdraw_datagrid").datagrid("reload");
+					$("#Withdraw_form_dlg").dialog("close");
 				},
 				prefix : "",
 				params : {"act":act}
 			});
 		}
 		function updateUser () { 
-			var row = easyUi.selectDatagrid("#load_datagrid");
-			var result = easyUi.loadForm("#load_form", "#load_datagrid", "");
+			var row = easyUi.selectDatagrid("#Withdraw_datagrid");
+			var result = easyUi.WithdrawForm("#Withdraw_form", "#Withdraw_datagrid", "");
 			if(!result) {
 				return ;
 			}
-			$("#load_form_dlg").dialog({
+			$("#Withdraw_form_dlg").dialog({
 				title : "修改"
 			}).dialog("open");
 		}
+		
 		function deleteUser () {
-			var rows = $('#load_datagrid').datagrid('getSelections');			 
+			var rows = $('#Withdraw_datagrid').datagrid('getSelections');			 
 			var parm = "";
 			$.each(rows, function (i, n) {
 		    if (i == 0) {
@@ -69,19 +70,20 @@
 				  parm += "," + n.id;
 				}
 			}); 
-			var url = "#{$ctx}/admin/cztx/load.php?act=delete"; 
-			easyUi.del("#load_datagrid", "id", url, function (data){
-				$("#load_datagrid").datagrid("reload");
+			var url = "#{$ctx}/admin/cztx/Withdraw.php?act=delete"; 
+			easyUi.del("#Withdraw_datagrid", "id", url, function (data){
+				$("#Withdraw_datagrid").datagrid("reWithdraw");
 				msgSuccess(data);
 			});
 		}
+		
 		function search () {
 			var p = {}; 
 			$("#search_form").find("input").each(function(){
 				p[this.name]=this.value;
 			});
 			
-			$("#load_datagrid").datagrid({
+			$("#Withdraw_datagrid").datagrid({
 				queryParams:p
 			});
 		}  
@@ -100,12 +102,14 @@
 				
 				</td>		
 				<td>状态:
-					<select id="load_fkstate" class="easyui-combobox" name="load_fkstate" style="width:200px;">
+					<select id="Withdraw_shstate" class="easyui-combobox" name="Withdraw_shstate" style="width:200px;">
 						<option value="">全部</option>
 						<option value="0">已提交</option>
 						<option value="1">取消</option>
-						<option value="2">成功</option>
-						<option value="3">失败</option>
+						<option value="2">审核成功</option>
+						<option value="3">审核失败</option>
+						<option value="4">到账</option>
+						<option value="5">到账失败</option>
 					</select>
 				</td>
 				 
@@ -119,44 +123,46 @@
 	</div>
 	
 	
-	<table id= "load_datagrid">
+	<table id= "Withdraw_datagrid">
 		<thead>
 			<tr>
 				<th data-options="field:'id',width:80,checkbox:true" >id</th>		
-				<th data-options="field:'load_num',width:80" >充值编码</th>  
-				<th data-options="field:'load_amount',width:80" >充值金额</th> 
-				<th data-options="field:'load_sjdz',width:80" >到账金额</th> 
-				<th data-options="field:'load_sxf',width:80" >手续费</th> 
-				<th data-options="field:'load_date',width:180" >提交时间</th>  
-				<th data-options="field:'load_fkstate',width:80, 
+				<th data-options="field:'Withdraw_num',width:80" >提现编码</th>  
+				<th data-options="field:'Withdraw_amount',width:80" >提现金额</th>  
+				<th data-options="field:'Withdraw_date',width:180" >申请时间</th> 
+				<th data-options="field:'Withdraw_shstate',width:80, 
 					formatter:function(value,row){
 											if(value==0)
 				                return '待审核';
 				       		 else if(value==1)
 				                return '取消';
 				             else if(value==2)
-				                return '成功'; 
+				                return '审核成功'; 
 				             else if(value==3)
-				               return '失败';   
+				               return '审核失败';
+				             else if(value==4)
+				               return '到账';  
+				             else if(value==5)
+				               return '到账失败';    
 				        }
-				" >状态</th>    
-				<th data-options="field:'load_desc',width:180" >备注</th> 
+				" >状态</th>     
+				<th data-options="field:'Withdraw_desc',width:80" >备注</th> 
 			</tr> 
 		</thead>
 	</table>
 	
-	<div id="load_form_dlg" class="easyui-dialog"  closed="true"
+	<div id="Withdraw_form_dlg" class="easyui-dialog"  closed="true"
 		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
 		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
-		<form id="load_form" action="#{$ctx}/admin/cztx/load.php" method="post" >
-			<input id="load_id" name="id" type="hidden"/>
+		<form id="Withdraw_form" action="#{$ctx}/admin/cztx/Withdraw.php" method="post" >
+			<input id="Withdraw_id" name="id" type="hidden"/>
 			<table>  
 				 <tr>  
-					<td>充值类型</td>
+					<td>提现银行</td>
 				  <td>
 				  <input class="easyui-combobox" 
-					name="xtyhk_id"	data-options=" 
-					url:'#{$ctx}/admin/bank/xtyhk.php?act=comboxlist&xtyhk_type=0&xtyhk_status=0',
+					name="yhk_id"	data-options=" 
+					url:'#{$ctx}/admin/bank/yhk.php?act=comboxlist&yhk_status=0&clien_id=1',
 					method:'get',
 					valueField:'id',
 					textField:'text',
@@ -164,20 +170,20 @@
 					"></td>
 				</tr> 
 				<tr>
-					<td>充值金额:</td>
-					<td><input class="easyui-numberbox" min="10.00" max="10000000000.00" precision="2" required="true" missingMessage="充值金额必须大于10"  type="text" name="load_amount" data-options="required:true" /></td>
+					<td>提现金额:</td>
+					<td><input class="easyui-numberbox" min="10.00" max="10000000000.00" precision="2" required="true" missingMessage="充值金额必须大于10"  type="text" name="Withdraw_amount" data-options="required:true" /></td>
 				</tr>
 				<tr>
 					<td>资金密码:</td>
 					<td>
-						<input class="easyui-validatebox" type="password" validType="length[10,20]" missingMessage="密码不能少于10个或者超过20个字符！" name="load_pw" data-options="required:true" />
+						<input class="easyui-validatebox" type="password" validType="length[10,20]" missingMessage="密码不能少于10个或者超过20个字符！" name="Withdraw_pw" data-options="required:true" />
 					</td>
 				</tr> 
 			</table> 
 		</form>	
 		<div id="user_form_dlg_buttons">
 			<a href="javascript:saveUser()" class="easyui-linkbutton" >提交</a>
-			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#load_form_dlg').dialog('close')">关闭</a>
+			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#Withdraw_form_dlg').dialog('close')">关闭</a>
 		</div>
 	</div>	
 	 

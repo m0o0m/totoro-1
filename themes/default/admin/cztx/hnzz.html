@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>转账管理</title> 
+	#{include file ="jscss.html"};
+	<script type="text/javascript">
+		$(function(){
+			   
+			$("#hnzz_datagrid").datagrid({
+				title:"充值记录",
+				url:"#{$ctx}/admin/cztx/hnzz.php?act=list",
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true,
+				toolbar:easyUi.initButton(
+				[
+					 {name:'add',text:"添加转账",handler:addUser}, 
+					 {name:'remove',text:"删除记录",handler:deleteUser},
+				]),
+			}); 
+			
+ 
+		});
+
+		function addUser () {
+			$('#hnzz_form').form('clear');
+			$("#hnzz_form_dlg").dialog({
+				title : "充值"
+			}).dialog("open");
+			
+		}
+		function saveUser () { 
+			var act ="update";
+			if($("#hnzz_id").val() == "" || $("#hnzz_id").val() == null){
+				act ="save"
+			} 
+			easyUi.formSubmit({
+				formId : "#hnzz_form",
+				submit : function() {
+				},
+				success : function(data) {
+					msgSuccess(data);
+					$("#hnzz_datagrid").datagrid("reload");
+					$("#hnzz_form_dlg").dialog("close");
+				},
+				prefix : "",
+				params : {"act":act}
+			});
+		}
+		function updateUser () { 
+			var row = easyUi.selectDatagrid("#hnzz_datagrid");
+			var result = easyUi.loadForm("#hnzz_form", "#hnzz_datagrid", "");
+			if(!result) {
+				return ;
+			}
+			$("#hnzz_form_dlg").dialog({
+				title : "修改"
+			}).dialog("open");
+		}
+		function deleteUser () {
+			var rows = $('#hnzz_datagrid').datagrid('getSelections');			 
+			var parm = "";
+			$.each(rows, function (i, n) {
+		    if (i == 0) {
+				  parm = "" + n.id;
+			} else {
+				  parm += "," + n.id;
+				}
+			}); 
+			var url = "#{$ctx}/admin/cztx/hnzz.php?act=delete"; 
+			easyUi.del("#hnzz_datagrid", "id", url, function (data){
+				$("#hnzz_datagrid").datagrid("rehnzz");
+				msgSuccess(data);
+			});
+		}
+		function search () {
+			var p = {}; 
+			$("#search_form").find("input").each(function(){
+				p[this.name]=this.value;
+			});
+			
+			$("#hnzz_datagrid").datagrid({
+				queryParams:p
+			});
+		}  
+		
+		$.extend($.fn.validatebox.defaults.rules, {  
+		    /*必须和某个字段相等*/
+		    equalTo: {
+		        validator:function(value,param){
+		            return $(param[0]).val() == value;
+		        },
+		        message:'字段不匹配'
+		    } 
+		});
+	</script>
+</head>
+<body>
+
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table > 
+				<tr>
+			    <td>日期：
+				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				</td> 				
+				<td>转账账号</td><td><input name="zclient_mz" value=""/></td> 
+				</tr>				
+				<tr>
+				<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+						<a href="#" class="easyui-linkbutton">清空</a></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	
+	<table id= "hnzz_datagrid">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:80,checkbox:true" >id</th>		
+				<th data-options="field:'zclient_mz',width:80" >转账人</th>  
+				<th data-options="field:'dclient_mz',width:80" >收款人</th> 
+				<th data-options="field:'hnzz_amount',width:80" >金额</th>  
+				<th data-options="field:'hnzz_date',width:180" >转账时间</th>  
+				<th data-options="field:'hnzz_desc',width:180" >备注</th> 
+			</tr> 
+		</thead>
+	</table>
+	
+	<div id="hnzz_form_dlg" class="easyui-dialog"  closed="true"
+		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
+		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
+		<form id="hnzz_form" action="#{$ctx}/admin/cztx/hnzz.php" method="post" >
+			<input id="hnzz_id" name="id" type="hidden"/>
+			<table>
+			    <tr>
+					<td>收款账号:</td>
+					<td><input class="easyui-validatebox"   type="text" id="dclient_logn" name="dclient_logn" data-options="required:true" /></td>
+				</tr>
+				<tr>
+					<td>确认收款账号:</td>
+					<td><input class="easyui-validatebox"  validType="equalTo['#dclient_logn']" type="text" name="dclient_logn" data-options="required:true" /></td>
+				</tr>
+				<tr>
+					<td>金额:</td>
+					<td><input class="easyui-numberbox" min="10.00" max="10000000000.00" precision="2" required="true" missingMessage="充值金额必须大于10"  type="text" name="hnzz_amount" data-options="required:true" /></td>
+				</tr>
+				<tr>
+					<td>资金密码:</td>
+					<td>
+						<input class="easyui-validatebox" type="password" validType="length[10,20]" missingMessage="密码不能少于10个或者超过20个字符！" name="load_pw" data-options="required:true" />
+					</td>
+				</tr> 
+			</table> 
+		</form>	
+		<div id="user_form_dlg_buttons">
+			<a href="javascript:saveUser()" class="easyui-linkbutton" >提交</a>
+			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#hnzz_form_dlg').dialog('close')">关闭</a>
+		</div>
+	</div>	
+	 
+</body>
+	
+</html>
