@@ -33,16 +33,21 @@ if ($act == "list") {
 	$row = mysql_fetch_array($txpw);
 	
 	try {
-		$db->db->query('begin '); //开始事务
+		if($row['Withdraw_shstate'] == 0){
+			$db->db->query('begin '); //开始事务
+				
+			$db->db->query("update player_withdraw set Withdraw_shstate = 1 where id = ". $_REQUEST['id']);
 			
-		$db->db->query("update player_withdraw set Withdraw_shstate = 1 where id = ". $_REQUEST['id']);
-		
-		$db->db->query("update player_client set client_balance= (client_balance + ".$row['Withdraw_amount']."),
+			$db->db->query("update player_client set client_balance= (client_balance + ".$row['Withdraw_amount']."),
 							client_freeze = (client_freeze - ".$row['Withdraw_amount'].")
 							where id=".$row['client_id']);
-		$result->result="1";
-		$result->msg="取消申请成功。";
-		$db->db->query('commit');//提交
+			$result->result="1";
+			$result->msg="取消申请成功。";
+			$db->db->query('commit');//提交
+		}else{
+			$result->result="0";
+			$result->msg="该申请已经被取消过了";
+		} 
 	}catch (Exception $e){
 		$db->db->query('rollback'); //回滚
 		$result->result="0";
