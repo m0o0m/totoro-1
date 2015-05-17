@@ -34,8 +34,16 @@
 						    {"menuname":"充值审核","icon":"icon-nav","url":"#{$ctx}/admin/finance/loadsh.php"},
 							{"menuname":"提现审核","icon":"icon-nav","url":"#{$ctx}/admin/finance/withdrawsh.php"}
 						]
-				 },
-			{"menuid":"5","icon":"icon-sys","menuname":"账户中心",
+			 },
+			 {"menuid":"4","icon":"icon-sys","menuname":"分红管理",
+					"menus":[
+
+								{"menuname":"分红类型","icon":"icon-nav","url":"#{$ctx}/admin/bonus/bonuslx.php"},
+							    {"menuname":"玩家分红设置","icon":"icon-nav","url":"#{$ctx}/admin/bonus/szbonus.php"},
+								{"menuname":"分红审核","icon":"icon-nav","url":"#{$ctx}/admin/bonus/bonus.php"},
+							]
+			 },
+			 {"menuid":"5","icon":"icon-sys","menuname":"账户中心",
 						"menus":[
 									{"menuname":"玩家信息","icon":"icon-nav","url":"#{$ctx}/admin/account/client.php"}, 
 							        {"menuname":"玩家登陆日志","icon":"icon-nav","url":"#{$ctx}/admin/log/playerlog/logfile.php"},
@@ -56,7 +64,13 @@
 							{"menuname":"公告列表","icon":"icon-nav","url":"#{$ctx}/admin/notice/notice.php"}, 
 						]
 				 } 	 
-			,			
+			,
+			{"menuid":"6","icon":"icon-sys","menuname":"报表",
+				"menus":[
+							{"menuname":"公司银行卡报表","icon":"icon-nav","url":"#{$ctx}/admin/report/xtyhkjl.php"}, 
+						]
+				 } 	 
+			,	
 			{"menuid":"7","icon":"icon-sys","menuname":"我的工作区间",
 				"menus":[
 			        {"menuname":"我的待办","icon":"icon-nav","url":"#{$ctx}/business/workflow!myTask.do"},

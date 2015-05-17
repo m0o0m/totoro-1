@@ -36,24 +36,44 @@ if ($act == "list") {
 	 
 	echo json_encode($users); 
 }elseif ($act == "save") {
-	$arr = array(); 
-	
+	$arr = array();  
+	$fharr = array();
+	  
 	$arr['client_logn'] = $_REQUEST['client_logn'];
 	$arr['client_pw'] = $_REQUEST['client_pw'];
 	$arr['client_nickn'] = $_REQUEST['client_nickn'];
 	$arr['client_type'] = $_REQUEST['client_type']; 
 	$arr['client_status'] = $_REQUEST['client_status'];  
 	$arr['client_register'] = $_REQUEST['client_register'];
-	$arr['client_freeze'] = $_REQUEST['client_freeze'];  
+	$arr['client_freeze'] = $_REQUEST['client_freeze'];
+	$arr['bonuslx_id'] = $_REQUEST['bonuslx_id']; 
 	$arr['create_user'] = "1"; 
 	$arr['client_ctime'] = date("Y-m-d H:i:s");  
+	 
 	
 	try {
-		$db->insert("player_client",$arr);
+		$db->db->query('begin '); //开始事务 
+		
+		$bonuslx = mysql_query("select * from player_bonuslx  where id=".$_REQUEST['bonuslx_id'] );
+		$bonuslxrow = mysql_fetch_array($bonuslx); 
+		
+		$db->insert("player_client",$arr); 
+		
+		$fharr['client_id'] = mysql_insert_id();
+		$fharr['client_logn'] = $_REQUEST['client_logn'];
+		$fharr['szbonus_bl'] = $bonuslxrow['bonuslx_bl'];
+		$fharr['szbonus_zq'] = $bonuslxrow['bonuslx_zq'];
+		$fharr['szbonus_qssj'] = date("Y-m-d H:i:s");
+		$fharr['szbonus_ffsj'] = $bonuslxrow['bonuslx_ffsj'];
+		$db->insert("player_szbonus",$fharr);
+		
+		$db->db->query('commit');//提交
+		
 		$result->result="1";
 		$result->msg="添加成功。";
 		
 	}catch (Exception $e){
+		$db->db->query('rollback'); //回滚
 		$result->result="0";
 		$result->msg="添加失败。";
 	}
@@ -66,14 +86,34 @@ if ($act == "list") {
 	$arr['client_status'] = $_REQUEST['client_status'];  
 	$arr['client_register'] = $_REQUEST['client_register'];
 	$arr['client_freeze'] = $_REQUEST['client_freeze'];  
+	$arr['bonuslx_id'] = $_REQUEST['bonuslx_id'];
 	$arr['update_user'] = "1"; 
 	$id = $_REQUEST['id'];
 	 
 	try {
+		$db->db->query('begin '); //开始事务
+		
+		$bonuslx = mysql_query("select * from player_bonuslx  where id=".$_REQUEST['bonuslx_id']);
+		$bonuslxrow = mysql_fetch_array($bonuslx);
+		
+		$szbonus = mysql_query("select * from player_szbonus  where client_id=".$id);
+		$szbonusrow = mysql_fetch_array($szbonus);
+		
+		$fharr = array();    
+		$fharr['szbonus_bl'] = $bonuslxrow['bonuslx_bl'];
+		$fharr['szbonus_zq'] = $bonuslxrow['bonuslx_zq'];
+		$fharr['szbonus_qssj'] = date("Y-m-d H:i:s");
+		$fharr['szbonus_ffsj'] = $bonuslxrow['bonuslx_ffsj'];
+		$szbonusid = $szbonusrow['id'];
+		
 		$db->update("player_client",$arr,"where id=".$id);
+		$db->update("player_szbonus",$fharr,"where id=".$szbonusid);
+		
+		$db->db->query('commit');//提交
 		$result->result="1";
 		$result->msg="修改成功。";
 	}catch (Exception $e){
+		$db->db->query('rollback'); //回滚
 		$result->result="0";
 		$result->msg="修改失败。";
 	}
