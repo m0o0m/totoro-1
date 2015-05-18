@@ -58,20 +58,18 @@ if ($act == "list") {
 elseif ($act == "save") { 
 		$client_txpw = $_REQUEST['Withdraw_pw'];
 		
-		$txpw= mysql_query("select client_txpw from  player_client where id = 1" );
+		$txpw= mysql_query("select * from  player_client where id = 1" );
 		$row = mysql_fetch_array($txpw);  
 		
-		if($row[0] == '' || $row[0] == null){ //资金密码不存在 
+		if($row['client_txpw'] == '' || $row['client_txpw'] == null){ //资金密码不存在 
 			$result->result="0";
 			$result->msg="尚未设置资金密码，不能提现。";
 		}else{ 
-			if($client_txpw != $row[0]){
+			if($client_txpw != $row['client_txpw']){
 				$result->result="0";
 				$result->msg="资金密码不正确。";
-			}else{  
-				$txpw= mysql_query("select * from  player_client where id = 1" );
-				$row = mysql_fetch_array($txpw);
-				if($row["client_freeze"] < $_REQUEST['Withdraw_amount']){
+			}else{   
+				if($row["client_balance"] < $_REQUEST['Withdraw_amount']){
 					$result->result="0";
 					$result->msg="当前账户余额不足";
 				}else{
