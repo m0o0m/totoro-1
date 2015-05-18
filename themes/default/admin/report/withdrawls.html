@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>提现审核</title>
+	#{include file ="jscss.html"};
+	<script type="text/javascript">
+		$(function(){
+			   
+			$("#withdrawsh_datagrid").datagrid({
+				title:"提现审核记录",
+				url:"#{$ctx}/admin/report/withdrawls.php?act=list",
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true,
+				toolbar:easyUi.initButton(
+				[ 
+					 {name:'remove',text:"删除提现记录",handler:deleteUser},
+				]),
+			}); 
+			
+ 
+		});
+  
+		function deleteUser () {
+			var rows = $('#withdrawsh_datagrid').datagrid('getSelections');			 
+			var parm = "";
+			$.each(rows, function (i, n) {
+		    if (i == 0) {
+				  parm = "" + n.id;
+			} else {
+				  parm += "," + n.id;
+				}
+			}); 
+			var url = "#{$ctx}/admin/finance/withdrawsh.php?act=delete"; 
+			easyUi.del("#withdrawsh_datagrid", "id", url, function (data){
+				$("#withdrawsh_datagrid").datagrid("reload");
+				msgSuccess(data);
+			});
+		}
+		
+		function search () {
+			var p = {}; 
+			$("#search_form").find("input").each(function(){
+				p[this.name]=this.value;
+			});
+			
+			$("#withdrawsh_datagrid").datagrid({
+				queryParams:p
+			});
+		}   
+
+	</script>
+</head>
+<body>
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table > 
+				<tr> 
+				<td>
+					<select id="withdraw_shstate" class="easyui-combobox" name="withdraw_shstate" style="width:200px;">
+						<option value="">全部</option>
+						<option value="0">未处理</option>
+						<option value="1">取消</option>
+						<option value="2">成功</option>
+						<option value="3">失败</option>
+						<option value="4">到账</option>
+					</select>
+				</td>
+				<td>
+				
+				<td>申请提交日期：
+				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+
+				<td>玩家：</td><td><input name="client_logn" value=""/></td></tr>				
+				<tr><td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+						<a href="#" class="easyui-linkbutton">清空</a></td></tr>
+			</table>
+		</form>
+	</div>
+	
+	
+	<table id= "withdrawsh_datagrid">
+		<thead>
+			<tr>  
+				<th data-options="field:'id',width:80,checkbox:true" >id</th>				
+				<th data-options="field:'client_logn',width:180" >账户名</th> 
+				<th data-options="field:'Withdraw_num',width:180" >编号</th>
+				<th data-options="field:'yhk_mc',width:180" >提现方式</th>  
+				<th data-options="field:'Withdraw_amount',width:80" >提现金额</th> 
+				<th data-options="field:'Withdraw_date',width:180" >申请时间</th>    
+				<th data-options="field:'Withdraw_shdate',width:80" >处理时间</th>				
+				<th data-options="field:'Withdraw_shstate',width:100,
+						formatter:function(value,row){
+											if(value==0)
+				                return '未处理';
+				       		 else if(value==1)
+				                return '取消';
+				             else if(value==2)
+				                return '审核成功';
+				             else if(value==3)
+				                return '审核失败';
+				             else if(value==4)
+				                return '到账';
+				             else if(value==5)
+				                return '到账失败';
+				        }						
+				" value=1>状态</th>
+			   
+				<th data-options="field:'user_logn',width:180" >审核人</th>  
+			 </tr>  
+		</thead>
+	</table> 
+</body>
+	
+</html>

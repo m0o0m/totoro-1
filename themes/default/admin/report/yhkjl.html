@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>账户银行卡记录</title> 
+	#{include file ="jscss.html"};
+	<script type="text/javascript">
+		$(function(){
+			   
+			$("#yhkjl_datagrid").datagrid({
+				title:"账户银行卡记录",
+				url:"#{$ctx}/admin/report/yhkjl.php?act=list",
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true 
+			});  
+		}); 
+		 
+		function search () {
+			var p = {}; 
+			$("#search_form").find("input").each(function(){
+				p[this.name]=this.value;
+			});
+			
+			$("#yhkjl_datagrid").datagrid({
+				queryParams:p
+			});
+		}  
+	</script>
+</head>
+<body>
+
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table > 
+				<tr>
+			    <td>账变日期：</td>
+			    <td>
+				   <input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				</td>
+				<td>
+				   <input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				</td>		
+			    <td>提现账户名称：</td><td><input name="yhk_mc" value=""/></td>  
+				<td>银行类型</td>
+				    <td>
+				    <input class="easyui-combobox" 
+					name="bank_type"	data-options="
+					url:'#{$ctx}/admin/dictionary/book.php?act=booklist&bcode=yhlx',
+					method:'get',
+					valueField:'id',
+					textField:'text',
+					panelHeight:'auto',
+					required:true">
+					</td>  
+				</tr>	 
+				<tr>
+				<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+						<a href="#" class="easyui-linkbutton">清空</a></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	
+	<table id= "yhkjl_datagrid">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:80,checkbox:true" >id</th>	 
+				<th data-options="field:'yhk_mc',width:180" >充值方式名称</th> 
+				<th data-options="field:'yhk_name',width:180" >银行账户名称</th> 
+				<th data-options="field:'tczb_num',width:180" >编号</th> 
+				<th data-options="field:'client_logn',width:180" >玩家</th> 
+				<th data-options="field:'tczb_amount',width:180" >提现金额</th> 
+				<th data-options="field:'czdate',width:180" >时间</th> 
+			</tr> 
+		</thead>
+	</table> 
+</body>
+	
+</html>
