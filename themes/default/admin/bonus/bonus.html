@@ -16,7 +16,7 @@
 				pagination:true,
 				toolbar:easyUi.initButton(
 				[ 
-					 {name:'add',text:"分红申请",handler:addUser},
+					 {name:'add',text:"计算分红",handler:addUser},
 					 {name:'edit',text:"分红审核",handler:updateUser},
 					 {name:'remove',text:"删除",handler:deleteUser},
 				]),
@@ -25,48 +25,19 @@
  
 		}); 
 		
-		function addUser () {
-			$('#sqbonus_form').form('clear');
-			$("#sqbonus_form_dlg").dialog({
-				title : "添加分红申请"
-			}).dialog("open");
-			
-		}
-		function sqsave() {  
-			act ="sqbonus";
-			
-			easyUi.formSubmit({
-				formId : "#sqbonus_form",
-				submit : function() {
-				},
-				success : function(data) {
-					msgSuccess(data);
-					$("#bonus_datagrid").datagrid("reload");
-					$("#sqbonus_form_dlg").dialog("close");
-				},
-				prefix : "",
-				params : {"act":act}
-			});
-		}
-		
-		function saveUser () { 
-			var act ="update";
-			if($("#bonus_id").val() == "" || $("#bonus_id").val() == null){
-				act ="save"
-			}   
+		function addUser () {  
 			easyUi.formSubmit({
 				formId : "#bonus_form",
 				submit : function() {
 				},
 				success : function(data) {
 					msgSuccess(data);
-					$("#bonus_datagrid").datagrid("reload");
-					$("#bonus_form_dlg").dialog("close");
+					$("#bonus_datagrid").datagrid("reload"); 
 				},
 				prefix : "",
-				params : {"act":act}
-			});
-		}
+				params : {"act":"countbonus"}
+			});			 
+		} 
 		
 		function updateUser () { 
 			var row = easyUi.selectDatagrid("#bonus_datagrid"); 		
@@ -82,6 +53,22 @@
 			$("#bonus_form_dlg").dialog({
 				title : "审核"
 			}).dialog("open");
+		}
+		
+		function saveUser () { 
+			var act ="update"; 
+			easyUi.formSubmit({
+				formId : "#bonus_form",
+				submit : function() {
+				},
+				success : function(data) {
+					msgSuccess(data);
+					$("#bonus_datagrid").datagrid("reload");
+					$("#bonus_form_dlg").dialog("close");
+				},
+				prefix : "",
+				params : {"act":act}
+			});
 		}
 		
 		function deleteUser () {
@@ -151,27 +138,7 @@
 			</tr> 
 		</thead>
 	</table>
-	<div id="sqbonus_form_dlg" class="easyui-dialog"  closed="true"
-		style="width:600px; height:200px; left: 100px; top: 15px; padding: 10px;" 
-		data-options="resizable:true,buttons:'#user_form_dlg_buttons'">
-		<form id="sqbonus_form" action="#{$ctx}/admin/bonus/bonus.php" method="post" > 
-			<table>
-				<tr>
-					<td>玩家名称:</td>
-					<td><input class="easyui-validatebox"   type="text" name="client_logn" data-options="required:true" /></td>
-				</tr>   
-				<tr>
-					<td>盈亏金额:</td>
-					<td><input class="easyui-numberbox" min="0" max="100000000" precision="0" required="true" missingMessage="必须大于0"  type="text" name="bonus_yk" data-options="required:true" /></td>
-				</tr> 
-			</table> 
-		</form>	
-		<div id="sqform_dlg_buttons">
-			<a href="javascript:sqsave()" class="easyui-linkbutton" >提交</a>
-			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#sqbonus_form_dlg').dialog('close')">关闭</a>
-		</div>
-	</div>	
-	
+	 
 	<div id="bonus_form_dlg" class="easyui-dialog"  closed="true"
 		style="width:600px; height: 450px; left: 100px; top: 15px; padding: 10px;" 
 		data-options="resizable:true,buttons:'#user_form_dlg_buttons'">

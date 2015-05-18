@@ -272,19 +272,18 @@
 						<option value="2">注销</option>
 					</select>
 					</td>
-				</tr>  
-				 <tr>  
-					<td>分红类型</td>
-				  <td>
-				  <input class="easyui-combobox" 
-					name="bonuslx_id"	data-options="
-					url:'#{$ctx}/admin/bonus/bonuslx.php?act=lxlist',
-					method:'get',
-					valueField:'id',
-					textField:'text',
-					panelHeight:'auto',
-					required:true"></td>
-				</tr>
+				</tr>   
+				<tr>
+		    		<td>周期</td>
+					<td>
+					<input class="easyui-combobox" 
+						name="bonuszq_id"	data-options="
+						url:'#{$ctx}/admin/bonus/bonuszq.php?act=zqlist',
+						method:'get',
+						valueField:'id',
+						textField:'text',
+						panelHeight:'auto'"></td>
+			    <tr>
 			</table> 
 		</form>	
 		<div id="user_form_dlg_buttons">

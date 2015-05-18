@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>分类类型</title> 
+	#{include file ="jscss.html"};
+	<script type="text/javascript">
+		$(function(){
+			   
+			$("#bonusbl_datagrid").datagrid({
+				title:"分红类型列表",
+				url:"#{$ctx}/admin/bonus/bonusbl.php?act=list",
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true,
+				toolbar:easyUi.initButton(
+				[ 
+					 {name:'add',text:"添加分红类型",handler:addUser},
+					 {name:'edit',text:"修改分红类型",handler:updateUser},
+					 {name:'remove',text:"删除分红类型",handler:deleteUser},
+				]),
+			}); 
+			
+ 
+		}); 
+		
+		function addUser () {
+			$('#bonusbl_form').form('clear');
+			$("#bonusbl_form_dlg").dialog({
+				title : "添加分红类型"
+			}).dialog("open");
+			
+		}
+		
+		function saveUser () { 
+			var act ="update";
+			if($("#bonusbl_id").val() == "" || $("#bonusbl_id").val() == null){
+				act ="save"
+			}   
+			easyUi.formSubmit({
+				formId : "#bonusbl_form",
+				submit : function() {
+				},
+				success : function(data) {
+					msgSuccess(data);
+					$("#bonusbl_datagrid").datagrid("reload");
+					$("#bonusbl_form_dlg").dialog("close");
+				},
+				prefix : "",
+				params : {"act":act}
+			});
+		}
+		function updateUser () { 
+			var row = easyUi.selectDatagrid("#bonusbl_datagrid");
+			var result = easyUi.loadForm("#bonusbl_form", "#bonusbl_datagrid", "");
+			if(!result) {
+				return ;
+			}
+			$("#bonusbl_form_dlg").dialog({
+				title : "编辑分红类型"
+			}).dialog("open");
+		}
+		function deleteUser () {
+			var rows = $('#bonusbl_datagrid').datagrid('getSelections');	 
+			var url = "#{$ctx}/admin/bonus/bonusbl.php?act=delete"; 
+			easyUi.del("#bonusbl_datagrid", "id", url, function (data){
+				$("#bonusbl_datagrid").datagrid("reload");
+				msgSuccess(data);
+			});
+		}
+		function search () {
+			var p = {}; 
+			$("#search_form").find("input").each(function(){
+				p[this.name]=this.value;
+			});
+			
+			$("#bonusbl_datagrid").datagrid({
+				queryParams:p
+			});
+		}  
+	</script>
+</head>
+<body>
+
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table > 
+				<tr>  
+				<td>比例：</td><td><input name="bonusbl_bl" value=""/></td>  
+				</tr>				
+				<tr>
+				<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+						<a href="#" class="easyui-linkbutton">清空</a></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	
+	<table id= "bonusbl_datagrid">
+		<thead>
+			<tr>
+			    <th data-options="field:'bonuszq_zq',width:80,checkbox:true" >id</th>	
+				<th data-options="field:'id',width:80,checkbox:true" >id</th>	
+				<th data-options="field:'bonusbl_name',width:180" >分红名称</th> 
+				<th data-options="field:'bonusbl_bl',width:180" >分红比例</th>  
+				<th data-options="field:'bonusbl_zjxx',width:80" >资金下限</th>  
+				<th data-options="field:'bonusbl_zjsx',width:80" >资金上限</th>
+				<th data-options="field:'bonuszq_kssj',width:80" >周期开始时间</th>  
+				<th data-options="field:'bonuszq_jssj',width:80" >周期结束时间</th>   
+			</tr> 
+		</thead>
+	</table>
+	
+	<div id="bonusbl_form_dlg" class="easyui-dialog"  closed="true"
+		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
+		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
+		<form id="bonusbl_form" action="#{$ctx}/admin/bonus/bonusbl.php" method="post" >
+			<input id="bonusbl_id" name="id" type="hidden"/>
+			<table>
+			    <tr>
+		    		<td>周期</td>
+					<td>
+					<input class="easyui-combobox" 
+						name="bonuszq_id"	data-options="
+						url:'#{$ctx}/admin/bonus/bonuszq.php?act=zqlist',
+						method:'get',
+						valueField:'id',
+						textField:'text',
+						panelHeight:'auto'"></td>
+			    <tr>
+				<tr>
+					<td>名称:</td>
+					<td><input class="easyui-validatebox"   type="text" name="bonusbl_name" data-options="required:true" /></td>
+				</tr>   
+				<tr>
+					<td>分红比例:</td>
+					<td><input class="easyui-numberbox" min="0" max="100" precision="0" required="true" missingMessage="必须0到100之间"  type="text" name="bonusbl_bl" data-options="required:true" /></td>
+				</tr>
+			    <tr>
+					<td>分红下限:</td>
+					<td><input class="easyui-numberbox" min="0"   precision="0" required="true" missingMessage="必须大于0"  type="text" name="bonusbl_zjxx" data-options="required:true" /></td>
+				</tr> 
+				<tr>
+					<td>分红上限:</td>
+					<td><input class="easyui-numberbox" min="0"  precision="0" required="true" missingMessage="必须大于0"  type="text" name="bonusbl_zjsx" data-options="required:true" /></td>
+				</tr> 
+			</table> 
+		</form>	
+		<div id="user_form_dlg_buttons">
+			<a href="javascript:saveUser()" class="easyui-linkbutton" >提交</a>
+			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#bonusbl_form_dlg').dialog('close')">关闭</a>
+		</div>
+	</div>	
+	 
+</body>
+	
+</html>
