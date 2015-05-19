@@ -79,8 +79,8 @@ if ($act == "list") {
 			$zbarr['tczb_amount'] = $_REQUEST['load_sjdz'];
 			$zbarr['tczb_balance1'] = $balance;
 			$zbarr['tczb_balance2'] = $balance+$arr['load_sjdz'];
-			$zbarr['tczb_djje1'] = $balance;
-			$zbarr['tczb_djje2'] = $balance+$arr['load_sjdz'];
+			$zbarr['tczb_djje1'] = $freeze;
+			$zbarr['tczb_djje1'] = $freeze;
 			$zbarr['xtyhk_id'] = $_REQUEST['xtyhk_id'];
 			$zbarr['xtyhk_num'] = $_REQUEST['xtyhk_num'];
 			$zbarr['xtyhk_name'] = $_REQUEST['xtyhk_name'];

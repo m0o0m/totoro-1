@@ -87,9 +87,9 @@ if ($act == "list") {
 			$zbarr['client_id'] = $_REQUEST['client_id'];
 			$zbarr['client_logn'] = $_REQUEST['client_logn'];
 			$zbarr['tczb_num'] = $_REQUEST['Withdraw_num'];
-			$zbarr['tczb_type'] = "4";提现
-			$zbarr['tczb_amount'] = $amount['Withdraw_amount'];
-			$zbarr['tczb_balance1'] = $_REQUEST['Withdraw_balance'];
+			$zbarr['tczb_type'] = "4";
+			$zbarr['tczb_amount'] = -$amount['Withdraw_amount'];
+			$zbarr['tczb_balance1'] = $balance;
 			$zbarr['tczb_balance2'] = $balance;
 			$zbarr['tczb_djje1'] = $freeze;
 			$zbarr['tczb_djje2'] = $freeze - $amount['Withdraw_amount'];

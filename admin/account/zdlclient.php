@@ -19,7 +19,7 @@ if ($act == "list") {
 	$stardate = $_REQUEST['stardate'];
 	$enddate = $_REQUEST['enddate'];
 	
-	$where = " where isdelete = 0 ";
+	$where = " where isdelete = 0 and fid= 1";
 	foreach ($arr as $ks=>$vs){
 		if($vs != ""){
 			$where.= "and $ks = '$vs'";
@@ -42,13 +42,12 @@ if ($act == "list") {
 	$arr['client_logn'] = $_REQUEST['client_logn'];
 	$arr['client_pw'] = $_REQUEST['client_pw'];
 	$arr['client_nickn'] = $_REQUEST['client_nickn'];
-	$arr['client_type'] = $_REQUEST['client_type']; 
+	$arr['client_type'] = "1"; //代理
 	$arr['client_status'] = $_REQUEST['client_status'];  
-	$arr['client_register'] = $_REQUEST['client_register'];
-	$arr['client_freeze'] = $_REQUEST['client_freeze'];
-	$arr['bonuszq_id'] = $_REQUEST['bonuszq_id']; 
-	$arr['create_user'] = "1"; 
+	$arr['client_register'] = "0";//无开户权限  
 	$arr['client_ctime'] = date("Y-m-d H:i:s");  
+	$arr['fid'] = "1";//当前登录人
+	$arr['flogn'] = "liaohan"; //当前登录名
 	
 	try { 
 		$db->insert("player_client",$arr);  
@@ -63,12 +62,8 @@ if ($act == "list") {
 }elseif ($act == "update") {
 	$arr = array();
 	$arr['client_logn'] = $_REQUEST['client_logn']; 
-	$arr['client_nickn'] = $_REQUEST['client_nickn'];
-	$arr['client_type'] = $_REQUEST['client_type']; 
-	$arr['client_status'] = $_REQUEST['client_status'];  
-	$arr['client_register'] = $_REQUEST['client_register'];
-	$arr['client_freeze'] = $_REQUEST['client_freeze'];  
-	$arr['bonuszq_id'] = $_REQUEST['bonuszq_id'];
+	$arr['client_nickn'] = $_REQUEST['client_nickn']; 
+	$arr['client_status'] = $_REQUEST['client_status'];   
 	$arr['update_user'] = "1"; 
 	$id = $_REQUEST['id'];
 	 
@@ -99,7 +94,7 @@ if ($act == "list") {
 	 
 	echo json_encode($result);	
 }else {
-	$smarty->display("admin/account/client.html");
+	$smarty->display("admin/account/zdlclient.html");
 }
 
 ?>
