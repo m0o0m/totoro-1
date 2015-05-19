@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>在线下级</title>
+	#{include file ="jscss.html"};
+	<script type="text/javascript">
+		$(function(){
+			   
+			$("#zxclient_datagrid").datagrid({
+				title:"在线下级",
+				url:"#{$ctx}/admin/account/zxclient.php?act=list",
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true, 
+			}); 
+			
+ 
+		}); 
+		
+		function search () {
+			var p = {}; 
+			$("#search_form").find("input").each(function(){
+				p[this.name]=this.value;
+			});
+			
+			$("#zxclient_datagrid").datagrid({
+				queryParams:p
+			});
+		}   
+
+	</script>
+</head>
+<body>
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table > 
+				<tr>  
+				<td>登陆日期：
+				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+
+				<td>玩家：</td><td><input name="logfile_logn" value=""/></td></tr>				
+				<tr><td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+						<a href="#" class="easyui-linkbutton">清空</a></td></tr>
+			</table>
+		</form>
+	</div>
+	
+	
+<table id= "zxclient_datagrid">
+		<thead>
+			<tr> 
+				<th data-options="field:'logfile_logn',width:80" >登录名 </th>
+				<th data-options="field:'logfile_ip',width:180" >IP</th> 
+				<th data-options="field:'logfile_logdate',width:180">登录时间</th>  
+			</tr> 
+		</thead>
+	</table>
+</body>
+	
+</html>

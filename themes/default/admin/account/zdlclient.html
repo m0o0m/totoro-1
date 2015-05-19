@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>玩家列表</title> 
+	#{include file ="jscss.html"};
+	<script type="text/javascript">
+		$(function(){
+			   
+			$("#client_datagrid").datagrid({
+				title:"玩家列表",
+				url:"#{$ctx}/admin/account/zdlclient.php?act=list",
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true,
+				toolbar:easyUi.initButton(
+				[
+					 {name:'add',text:"添加玩家",handler:addUser},
+					 {name:'edit',text:"编辑玩家",handler:updateUser},
+					 {name:'remove',text:"删除玩家",handler:deleteUser} 
+				]),
+			}); 
+			
+ 
+		});
+
+		function addUser () {
+			$('#client_form').form('clear');
+			$('#password').show();
+			$("#client_form_dlg").dialog({
+				title : "添加玩家"
+			}).dialog("open");
+			
+		}
+		function saveUser () { 
+			var act ="update";
+			if($("#client_id").val() == "" || $("#client_id").val() == null){
+				act ="save"
+			} 
+			easyUi.formSubmit({
+				formId : "#client_form",
+				submit : function() {
+				},
+				success : function(data) {
+					msgSuccess(data);
+					$("#client_datagrid").datagrid("reload");
+					$("#client_form_dlg").dialog("close");
+				},
+				prefix : "",
+				params : {"act":act}
+			});
+		}
+		
+		function savepw () { 
+			var act ="updatepw";
+			 
+			easyUi.formSubmit({
+				formId : "#newpwform",
+				submit : function() {
+				},
+				success : function(data) {
+					msgSuccess(data);
+					$("#client_datagrid").datagrid("reload");
+					$("#newpwform_dlg").dialog("close");
+				},
+				prefix : "",
+				params : {"act":act}
+			});
+			
+		}
+		
+		function savezjpw () { 
+			var act ="updatezjpw";
+			 
+			easyUi.formSubmit({
+				formId : "#newzjpwform",
+				submit : function() {
+				},
+				success : function(data) {
+					msgSuccess(data);
+					$("#client_datagrid").datagrid("reload");
+					$("#newzjpwform_dlg").dialog("close");
+				},
+				prefix : "",
+				params : {"act":act}
+			});
+			
+		}
+		
+		function updateUser () {
+			$('#newpwform').form('clear');
+			$('#password').hide();
+			var row = easyUi.selectDatagrid("#client_datagrid");
+			var result = easyUi.loadForm("#client_form", "#client_datagrid", "");
+			if(!result) {
+				return ;
+			}
+			$("#client_form_dlg").dialog({
+				title : "编辑玩家"
+			}).dialog("open");
+		}
+		
+		function upassword () {
+			$('#newpwform').form('clear');
+			var row = easyUi.selectDatagrid("#client_datagrid");
+			$("#pwclient_id").val(row.id);
+			var result = easyUi.loadForm("#client_form", "#client_datagrid", "");
+			if(!result) {
+				return ;
+			}
+			$("#newpwform_dlg").dialog({
+				title : "修改密码"
+			}).dialog("open");
+		}
+		
+		function uzjpassword () { 
+			$('#newzjpwform').form('clear');
+			var row = easyUi.selectDatagrid("#client_datagrid");
+			$("#zjpwclient_id").val(row.id);
+			var result = easyUi.loadForm("#client_form", "#client_datagrid", "");
+			if(!result) {
+				return ;
+			}
+			$("#newzjpwform_dlg").dialog({
+				title : "修改密码"
+			}).dialog("open");
+		}
+		
+		function deleteUser () {
+			var rows = $('#client_datagrid').datagrid('getSelections');			 
+			var parm = "";
+			$.each(rows, function (i, n) {
+		    if (i == 0) {
+				  parm = "" + n.id;
+			} else {
+				  parm += "," + n.id;
+				}
+			}); 
+			var url = "#{$ctx}/admin/account/zdlclient.php?act=delete"; 
+			easyUi.del("#client_datagrid", "id", url, function (data){
+				$("#client_datagrid").datagrid("reload");
+				msgSuccess(data);
+			});
+		}
+		function search () {
+			var p = {}; 
+			$("#search_form").find("input").each(function(){
+				p[this.name]=this.value;
+			});
+			
+			$("#client_datagrid").datagrid({
+				queryParams:p
+			});
+		}  
+		
+		$.extend($.fn.validatebox.defaults.rules, {  
+		    /*必须和某个字段相等*/
+		    equalTo: {
+		        validator:function(value,param){
+		            return $(param[0]).val() == value;
+		        },
+		        message:'字段不匹配'
+		    } 
+		});
+		
+	 
+		
+	</script>
+</head>
+<body>
+
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table > 
+				<tr>
+			    <td>注册日期：
+				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				
+				</td>		
+				<td>状态:
+					<select id="client_status" class="easyui-combobox" name="client_status" style="width:200px;">
+						<option value="">全部</option>
+						<option value="0">正常</option>
+						<option value="1">冻结</option>
+						<option value="2">注销</option>
+					</select>
+				</td>
+				<td>玩家：</td><td><input name="client_logname" value=""/></td>
+				</tr>				
+				<tr>
+				<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+						<a href="#" class="easyui-linkbutton">清空</a></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	
+	<table id= "client_datagrid">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:80,checkbox:true" >id</th>		
+				<th data-options="field:'client_type',width:80" >账户类型</th> 		
+				<th data-options="field:'client_status',width:180,
+				formatter:function(value,row){
+											if(value==0)
+				                return '正常';
+				       		 else if(value==1)
+				                return '冻结';
+				             else if(value==2)
+				                return '注销'; 
+				        }	
+				" >状态</th> 
+				<th data-options="field:'client_logn',width:80" >名称</th> 
+				<th data-options="field:'client_nickn',width:180" >昵称</th>
+				<th data-options="field:'client_balance',width:180" >账户资金</th>  
+				<th data-options="field:'client_freeze',width:180" >冻结资金</th> 
+				<th data-options="field:'client_ctime',width:180" >注册日期</th>  
+			</tr> 
+		</thead>
+	</table>
+	
+	<div id="client_form_dlg" class="easyui-dialog"  closed="true"
+		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
+		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
+		<form id="client_form" action="#{$ctx}/admin/account/zdlclient.php" method="post" >
+			<input id="client_id" name="id" type="hidden"/>  
+			<table>   
+				<tr>
+					<td>名称:</td>
+					<td><input class="easyui-validatebox" type="text" name="client_logn"   validType="length[4,10]" missingMessage="密码不能 超4个或者超过10个字符！"  data-options="required:true" /></td>
+				</tr>
+				<tr id="password">
+					<td>登录密码:</td>
+					<td>
+						<input class="easyui-validatebox" type="password" validType="length[10,20]" missingMessage="密码不能少于10个或者超过20个字符！" name="client_pw" data-options="required:true" />
+					</td>
+				</tr> 
+				<tr>
+					<td>昵称:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="client_nickn" validType="length[4,10]" missingMessage="密码不能 超4个或者超过10个字符！" data-options="required:true" />
+					</td>
+				</tr>   
+				<tr>  
+					<td>状态:</td>
+					<td>						
+					<select id="status" class="easyui-combobox" data-options="required:true"  name="client_status" style="width:200px;">						 
+						<option value="0">正常</option>
+						<option value="1">冻结</option>
+						<option value="2">注销</option>
+					</select>
+					</td>
+				</tr>    
+			</table> 
+		</form>	
+		<div id="user_form_dlg_buttons">
+			<a href="javascript:saveUser()" class="easyui-linkbutton" >提交</a>
+			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#client_form_dlg').dialog('close')">关闭</a>
+		</div>
+	</div>	 
+	 
+</body>
+	
+</html>
