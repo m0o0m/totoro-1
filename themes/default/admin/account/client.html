@@ -3,24 +3,22 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>玩家列表</title> 
+<title>代理列表</title> 
 	#{include file ="jscss.html"};
 	<script type="text/javascript">
 		$(function(){
 			   
 			$("#client_datagrid").datagrid({
-				title:"玩家列表",
+				title:"代理列表",
 				url:"#{$ctx}/admin/account/client.php?act=list",
 				fitColumns:true,
 				rownumbers:true,
 				pagination:true,
 				toolbar:easyUi.initButton(
 				[
-					 {name:'add',text:"添加玩家",handler:addUser},
-					 {name:'edit',text:"编辑玩家",handler:updateUser},
-					 {name:'remove',text:"删除玩家",handler:deleteUser},
-					 {name:'rest',text:"修改密码",handler:upassword},
-					 {name:'setting',text:"修改资金密码",handler:uzjpassword}
+					 {name:'add',text:"添加代理",handler:addUser},
+					 {name:'edit',text:"编辑代理",handler:updateUser},
+					 {name:'remove',text:"删除代理",handler:deleteUser}, 
 				]),
 			}); 
 			
@@ -52,43 +50,7 @@
 				params : {"act":act}
 			});
 		}
-		
-		function savepw () { 
-			var act ="updatepw";
-			 
-			easyUi.formSubmit({
-				formId : "#newpwform",
-				submit : function() {
-				},
-				success : function(data) {
-					msgSuccess(data);
-					$("#client_datagrid").datagrid("reload");
-					$("#newpwform_dlg").dialog("close");
-				},
-				prefix : "",
-				params : {"act":act}
-			});
-			
-		}
-		
-		function savezjpw () { 
-			var act ="updatezjpw";
-			 
-			easyUi.formSubmit({
-				formId : "#newzjpwform",
-				submit : function() {
-				},
-				success : function(data) {
-					msgSuccess(data);
-					$("#client_datagrid").datagrid("reload");
-					$("#newzjpwform_dlg").dialog("close");
-				},
-				prefix : "",
-				params : {"act":act}
-			});
-			
-		}
-		
+		 
 		function updateUser () {
 			$('#newpwform').form('clear');
 			var row = easyUi.selectDatagrid("#client_datagrid");
@@ -101,32 +63,7 @@
 			}).dialog("open");
 		}
 		
-		function upassword () {
-			$('#newpwform').form('clear');
-			var row = easyUi.selectDatagrid("#client_datagrid");
-			$("#pwclient_id").val(row.id);
-			var result = easyUi.loadForm("#client_form", "#client_datagrid", "");
-			if(!result) {
-				return ;
-			}
-			$("#newpwform_dlg").dialog({
-				title : "修改密码"
-			}).dialog("open");
-		}
-		
-		function uzjpassword () { 
-			$('#newzjpwform').form('clear');
-			var row = easyUi.selectDatagrid("#client_datagrid");
-			$("#zjpwclient_id").val(row.id);
-			var result = easyUi.loadForm("#client_form", "#client_datagrid", "");
-			if(!result) {
-				return ;
-			}
-			$("#newzjpwform_dlg").dialog({
-				title : "修改密码"
-			}).dialog("open");
-		}
-		
+		  
 		function deleteUser () {
 			var rows = $('#client_datagrid').datagrid('getSelections');			 
 			var parm = "";
@@ -290,70 +227,7 @@
 			<a href="javascript:saveUser()" class="easyui-linkbutton" >提交</a>
 			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#client_form_dlg').dialog('close')">关闭</a>
 		</div>
-	</div>	
+	</div>	 
 	
-	
-	 <div id="newpwform_dlg" class="easyui-dialog"  closed="true"
-		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
-		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
-		<form id="newpwform" action="#{$ctx}/admin/account/client.php" method="post" >
-			<input id="pwclient_id" name="id" type="hidden"/>
-			<table> 
-				<tr>
-					<td>输入旧密码:</td>
-					<td><input class="easyui-validatebox" required="true"  validType="length[10,20]" invalidMessage="密码不能少于10个或者超过20个字符！"  type="password" id="oldpw" name="oldpw" /></td>
-				</tr>
-				<tr>
-					<td>新密码:</td>
-					<td>
-						<input class="easyui-validatebox" required="true"  validType="length[10,20]" invalidMessage="密码不能少于10个或者超过20个字符！"  type="password"  id= "newpw1" name="newpw1" />
-					</td>
-				</tr> 
-				<tr>
-					<td>确认新密码:</td>
-					<td>
-						<input class="easyui-validatebox" required="true" validType="equalTo['#newpw1']" required="true"  type="password"  name="newpw2"  />
-					</td>
-				</tr>   
-			</table> 
-		</form>	
-		<div id="pw_form_dlg_buttons">
-			<a href="javascript:savepw()" class="easyui-linkbutton" >提交</a>
-			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#newpwform_dlg').dialog('close')">关闭</a>
-		</div>
-	</div>	
-	
-	
-	 <div id="newzjpwform_dlg" class="easyui-dialog"  closed="true"
-		style="width:600px; height: 500px; left: 100px; top: 15px; padding: 10px;" 
-		data-options="resizable:true,buttons:'#dic_form_dlg_buttons'">
-		<form id="newzjpwform" action="#{$ctx}/admin/account/client.php" method="post" >
-			<input id="zjpwclient_id" name="id" type="hidden"/>
-			<table> 
-				<tr>
-					<td>输入旧密码:</td>
-					<td><input class="easyui-validatebox" type="password" id="oldzjpw" name="oldzjpw" /></td>
-					<td><label class="easyui-validatebox">如果未设置过资金密码，可以不填写</label> <td>
-				</tr>
-				<tr>
-					<td>新密码:</td>
-					<td>
-						<input class="easyui-validatebox" required="true"  validType="length[10,20]" invalidMessage="密码不能少于10个或者超过20个字符！"  type="password"  id= "newzjpw1" name="newzjpw1" />
-					</td>
-				</tr> 
-				<tr>
-					<td>确认新密码:</td>
-					<td>
-						<input class="easyui-validatebox" required="true" validType="equalTo['#newzjpw1']" required="true"  type="password"  name="newzjpw2"  />
-					</td>
-				</tr>   
-			</table> 
-		</form>	
-		<div id="pw_form_dlg_buttons">
-			<a href="javascript:savezjpw()" class="easyui-linkbutton" >提交</a>
-			<a href="#" class="easyui-linkbutton" onclick="javascript:$('#newzjpwform_dlg').dialog('close')">关闭</a>
-		</div>
-	</div>	
-</body>
-	
+</body> 
 </html>

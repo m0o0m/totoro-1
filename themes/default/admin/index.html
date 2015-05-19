@@ -21,8 +21,9 @@
 			        {"menuname":"数据字典类型","icon":"icon-nav","url":"#{$ctx}/admin/dictionary/booktype.php"},
 			        {"menuname":"数据字典","icon":"icon-nav","url":"#{$ctx}/admin/dictionary/book.php"},
 			        {"menuname":"系统账户","icon":"icon-nav","url":"#{$ctx}/admin/user/syszh.php"},
-			        {"menuname":"系统银行卡","icon":"icon-nav","url":"#{$ctx}/admin/bank/xtyhk.php"}, 
-			]
+			        {"menuname":"系统银行卡","icon":"icon-nav","url":"#{$ctx}/admin/bank/xtyhk.php"},
+			        {"menuname":"代理管理","icon":"icon-nav","url":"#{$ctx}/admin/account/client.php"}
+				]
 			},{"menuid":"2","icon":"icon-sys","menuname":"日志管理",
 				"menus":[
 			        {"menuname":"操作日志","icon":"icon-nav","url":"#{$ctx}/base/security/user/user!list.do"},
@@ -45,12 +46,10 @@
 			 },
 			 {"menuid":"5","icon":"icon-sys","menuname":"账户中心",
 						"menus":[
-									{"menuname":"玩家信息","icon":"icon-nav","url":"#{$ctx}/admin/account/client.php"}, 
-							        {"menuname":"玩家登陆日志","icon":"icon-nav","url":"#{$ctx}/admin/log/playerlog/logfile.php"},
+									{"menuname":"个人信息","icon":"icon-nav","url":"#{$ctx}/admin/account/clientzx.php"}, 
+							        {"menuname":"登陆日志","icon":"icon-nav","url":"#{$ctx}/admin/log/playerlog/logfile.php"},
 							        {"menuname":"在线下级","icon":"icon-nav","url":"#{$ctx}/admin/account/zxclient.php"},
-									{"menuname":"银行卡管理","icon":"icon-nav","url":"#{$ctx}/admin/bank/yhk.php"}, 
-									{"menuname":"分红记录","icon":"icon-nav","url":"#{$ctx}/admin/account/wjbonus.php"},
-									{"menuname":"账变记录","icon":"icon-nav","url":"#{$ctx}/admin/account/transfer.php"}
+									{"menuname":"银行管理","icon":"icon-nav","url":"#{$ctx}/admin/bank/yhk.php"}, 
 								]
 						 } 	  
 			,
@@ -61,14 +60,20 @@
 							{"menuname":"转账","icon":"icon-nav","url":"#{$ctx}/admin/cztx/hnzz.php"}
 						]
 				 } 	 
-			,	
-			{"menuid":"6","icon":"icon-sys","menuname":"公告管理",
+			,
+			{"menuid":"7","icon":"icon-sys","menuname":"团队管理",
+  				"menus":[
+  			        {"menuname":"下级账号管理","icon":"icon-nav","url":"#{$ctx}/admin/account/zdlclient.php"},
+  			        {"menuname":"团队余额","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  				]
+  			},
+			{"menuid":"8","icon":"icon-sys","menuname":"公告管理",
 				"menus":[
 							{"menuname":"公告列表","icon":"icon-nav","url":"#{$ctx}/admin/notice/notice.php"}, 
 						]
 				 } 	 
 			,
-			{"menuid":"6","icon":"icon-sys","menuname":"报表",
+			{"menuid":"6","icon":"icon-sys","menuname":"公司报表",
 				"menus":[
 							{"menuname":"公司银行卡报表","icon":"icon-nav","url":"#{$ctx}/admin/report/xtyhkjl.php"}, 
 							{"menuname":"玩家银行卡报表","icon":"icon-nav","url":"#{$ctx}/admin/report/yhkjl.php"}, 
@@ -76,7 +81,15 @@
 							{"menuname":"提现记录","icon":"icon-nav","url":"#{$ctx}/admin/report/withdrawls.php"},  
 						]
 				 } 	 
-			,	
+			,
+			{"menuid":"1","icon":"icon-sys","menuname":"玩家报表",
+  				"menus":[
+						{"menuname":"分红记录","icon":"icon-nav","url":"#{$ctx}/admin/account/wjbonus.php"},
+						{"menuname":"账变记录","icon":"icon-nav","url":"#{$ctx}/admin/account/transfer.php"},
+  	  			        {"menuname":"自己盈亏","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  	  			        {"menuname":"下级盈亏","icon":"icon-nav","url":"#{$ctx}/admin/user/user.php"},
+  	  				]
+  	  		},	
 			{"menuid":"7","icon":"icon-sys","menuname":"我的工作区间",
 				"menus":[
 			        {"menuname":"我的待办","icon":"icon-nav","url":"#{$ctx}/business/workflow!myTask.do"},
