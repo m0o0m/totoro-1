@@ -14,7 +14,7 @@ if ($act == "list") {
 	$stardate = $_REQUEST['stardate'];
 	$enddate = $_REQUEST['enddate'];
 	
- 	$where = " where isdelete = 0 "; 
+ 	$where = " where isdelete = 0 and bonus_state = 0 "; 
 	foreach ($arr as $ks=>$vs){
 		if($vs != ""){
 			$where.= "and $ks = '$vs'";
@@ -63,9 +63,9 @@ if ($act == "list") {
 				$zqarr['bonuszq_jssj'] =  date('Y-m-d',strtotime ("+".$row['bonuszq_zq']." day", strtotime($row['bonuszq_jssj']))) ;
 				$db->update("player_bonuszq",$zqarr,"where id=".$row["id"]);
 			}
-			$result->result="1";
-			$result->msg="成功";
 			$db->db->query('commit');//提交
+			$result->result="1";
+			$result->msg="成功"; 
 	}catch (Exception $e){
 		$db->db->query('rollback'); //回滚
 		$result->result="0";
@@ -86,15 +86,33 @@ if ($act == "list") {
 	if($bonusrow['bonus_state'] == 0){
 		
 		if($arr['bonus_state'] == 1){
-			try {
+			try {   
 				$db->db->query('begin '); //开始事务
+				
+				$player_client = mysql_query("select * from player_client  where id=".$bonusrow['client_id']);
+				$clientrow = mysql_fetch_array($player_client);
+				$balance = $clientrow['client_balance'];//账户当前余额
+				$freeze = $clientrow['client_freeze'];//账户冻结余额  
+				//写入账变表
+				$zbarr = array();
+				$zbarr['transfer_type'] = 1;
+				$zbarr['bonus_id'] = $id; 
+				$zbarr['client_id'] = $bonusrow['client_id'] ;
+				$zbarr['client_logn'] = $bonusrow['client_logn'] ;
+				$zbarr['transfer_je'] = $bonus_je;
+				$zbarr['transfer_ye1'] = $balance;
+				$zbarr['transfer_ye2'] = $balance + $bonus_je; 
+				$zbarr['transfer_djje1'] = $freeze;
+				$zbarr['transfer_djje2'] = $freeze;
+				$zbarr['transfer_date'] = date("Y-m-d H:i:s"); 
+				
 				$db->update("player_bonus",$arr,"where id=".$id);
 				$db->db->query("update player_client  set client_balance = (client_balance + $bonus_je) where id=".$bonusrow['client_id'] );
-		
+				$db->insert("player_transfer",$zbarr); 
+				
 				$db->db->query('commit');//提交
 				$result->result="1";
-				$result->msg="审核成功。";
-					
+				$result->msg="审核成功。"; 
 			}catch (Exception $e){
 				$db->db->query('rollback'); //回滚
 				$result->result="0";

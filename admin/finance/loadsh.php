@@ -65,6 +65,7 @@ if ($act == "list") {
 			$client_balance = mysql_query("select client_balance from player_client  where id=".$_REQUEST['client_id'] );
 			$row = mysql_fetch_array($client_balance); 
 			$balance = $row['client_balance'];//当前账户余额
+			$freeze = $row['client_freeze'];//当前冻结余额
 			
 			$db->db->query("update sys_zh  set zh_balance = (zh_balance+".$arr['load_sjdz']." ) where zh_iszzh = 0");				
 			$db->db->query("update player_client  set client_balance = (client_balance+".$arr['load_sjdz'].") where id=".$_REQUEST['client_id'] );
@@ -74,10 +75,12 @@ if ($act == "list") {
 			$zbarr['client_id'] = $_REQUEST['client_id']; 
 			$zbarr['client_logn'] = $_REQUEST['client_logn'];
 			$zbarr['tczb_num'] = $_REQUEST['load_num'];
-			$zbarr['tczb_type'] = "0";
+			$zbarr['tczb_type'] = "3";//充值
 			$zbarr['tczb_amount'] = $_REQUEST['load_sjdz'];
 			$zbarr['tczb_balance1'] = $balance;
-			$zbarr['tczb_balance2'] = $balance+$arr['load_sjdz']; 
+			$zbarr['tczb_balance2'] = $balance+$arr['load_sjdz'];
+			$zbarr['tczb_djje1'] = $balance;
+			$zbarr['tczb_djje2'] = $balance+$arr['load_sjdz'];
 			$zbarr['xtyhk_id'] = $_REQUEST['xtyhk_id'];
 			$zbarr['xtyhk_num'] = $_REQUEST['xtyhk_num'];
 			$zbarr['xtyhk_name'] = $_REQUEST['xtyhk_name'];

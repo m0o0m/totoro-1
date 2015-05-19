@@ -49,7 +49,10 @@ if ($act == "list") {
 	$arr['bonuszq_id'] = $_REQUEST['bonuszq_id']; 
 	$arr['create_user'] = "1"; 
 	$arr['client_ctime'] = date("Y-m-d H:i:s");  
-	 
+	if($arr['client_type'] == 1){
+		$arr['fid'] = "1";
+		$arr['flogn'] = "liaohan";
+	} 
 	
 	try { 
 		$db->insert("player_client",$arr);  
