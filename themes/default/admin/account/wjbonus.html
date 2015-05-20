@@ -19,60 +19,7 @@
  
 		}); 
 		
-		function addUser () {  
-			easyUi.formSubmit({
-				formId : "#bonus_form",
-				submit : function() {
-				},
-				success : function(data) {
-					msgSuccess(data);
-					$("#bonus_datagrid").datagrid("reload"); 
-				},
-				prefix : "",
-				params : {"act":"countbonus"}
-			});			 
-		} 
-		
-		function updateUser () { 
-			var row = easyUi.selectDatagrid("#bonus_datagrid"); 		
-			if(row.bonus_state != "0"){
-				$.messager.alert("审核提示","不能重复审核");
-				return;
-			};
-			
-			var result = easyUi.loadForm("#bonus_form", "#bonus_datagrid", "");
-			if(!result) {
-				return ;
-			}
-			$("#bonus_form_dlg").dialog({
-				title : "审核"
-			}).dialog("open");
-		}
-		
-		function saveUser () { 
-			var act ="update"; 
-			easyUi.formSubmit({
-				formId : "#bonus_form",
-				submit : function() {
-				},
-				success : function(data) {
-					msgSuccess(data);
-					$("#bonus_datagrid").datagrid("reload");
-					$("#bonus_form_dlg").dialog("close");
-				},
-				prefix : "",
-				params : {"act":act}
-			});
-		}
-		
-		function deleteUser () {
-			var rows = $('#bonus_datagrid').datagrid('getSelections');	 
-			var url = "#{$ctx}/admin/bonus/bonus.php?act=delete"; 
-			easyUi.del("#bonus_datagrid", "id", url, function (data){
-				$("#bonus_datagrid").datagrid("reload");
-				msgSuccess(data);
-			});
-		}
+		   
 		function search () {
 			var p = {}; 
 			$("#search_form").find("input").each(function(){

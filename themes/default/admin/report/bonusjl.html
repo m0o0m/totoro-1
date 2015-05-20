@@ -3,22 +3,20 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>分类审核</title> 
+<title>分红记录</title> 
 	#{include file ="jscss.html"};
 	<script type="text/javascript">
 		$(function(){
 			   
-			$("#bonusjl_datagrid").datagrid({
-				title:"分红类型列表",
+			$("#bonus_datagrid").datagrid({
+				title:"分红记录",
 				url:"#{$ctx}/admin/report/bonusjl.php?act=list",
 				fitColumns:true,
 				rownumbers:true,
-				pagination:true 
-			}); 
-			
- 
+				pagination:true, 
+			});   
 		}); 
-	 
+		  
 		function search () {
 			var p = {}; 
 			$("#search_form").find("input").each(function(){
@@ -54,7 +52,7 @@
 	</div>
 	
 	
-	<table id= "bonusjl_datagrid">
+	<table id= "bonus_datagrid">
 		<thead>
 			<tr> 
 				<th data-options="field:'client_logn',width:80" >分红账号</th>  
@@ -76,7 +74,7 @@
 				" >状态</th>   
 			</tr> 
 		</thead>
-	</table>  
+	</table> 
 </body>
 	
 </html>

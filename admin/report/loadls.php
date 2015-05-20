@@ -8,12 +8,11 @@ if (empty($act)) {
 }
 
 if ($act == "list") { 
-	$arr = array(); 
-	$arr['load_fkstate'] = $_REQUEST['load_fkstate'];
+	$arr = array();  
 	$arr['client_logn'] = $_REQUEST['client_logn']; 
 	$stardate = $_REQUEST['stardate'];
 	$enddate = $_REQUEST['enddate'];
- 	$where = " where isdelete = 0 ";
+ 	$where = " where isdelete = 0 and load_fkstate != 0 ";
 	foreach ($arr as $ks=>$vs){
 		if($vs != ""){
 			$where.= "and $ks = '$vs'";
@@ -24,8 +23,7 @@ if ($act == "list") {
 	}
 	if($enddate != ''){
 		$where.= " and load_date <= '$enddate 23:59:59'";
-	}
-	
+	} 
 	$users = $db->get_page("loadsh_user_xtyh",$where); 
 	echo json_encode($users);  
 }else {

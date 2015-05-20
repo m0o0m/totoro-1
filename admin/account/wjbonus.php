@@ -14,7 +14,7 @@ if ($act == "list") {
 	$stardate = $_REQUEST['stardate'];
 	$enddate = $_REQUEST['enddate'];
 	
- 	$where = " where isdelete = 0 and bonus_state != 0"; 
+ 	$where = " where isdelete = 0 and bonus_state != 0 "; 
 	foreach ($arr as $ks=>$vs){
 		if($vs != ""){
 			$where.= "and $ks = '$vs'";

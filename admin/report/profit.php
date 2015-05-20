@@ -14,7 +14,7 @@ if ($act == "list") {
 	$enddate = $_REQUEST['enddate'];
 	$arr['client_logn'] = $_REQUEST['client_logn'];
 	
-	$where = "where 1=1";
+	$where = "where 1=1 ";
 	foreach ($arr as $ks=>$vs){
 		if($vs != ""){
 			$where.= "and $ks = '$vs'";

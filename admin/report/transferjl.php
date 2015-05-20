@@ -17,7 +17,7 @@ if ($act == "list") {
 	$je2 = $_REQUEST['transfer_je2'];
 	$arr['transfer_type']  = $_REQUEST['transfer_type'];
 	
- 	$where = " where isdelete = 0 and client_id = 1 "; 
+ 	$where = " where isdelete = 0 "; 
 	foreach ($arr as $ks=>$vs){
 		if($vs != ""){
 			$where.= "and $ks = '$vs'";
@@ -40,7 +40,7 @@ if ($act == "list") {
 	$users = $db->get_page("allzb",$where);  
 	echo json_encode($users); 
 }else {
-	$smarty->display("admin/account/transfer.html");
+	$smarty->display("admin/report/transferjl.html");
 }
 
 ?>

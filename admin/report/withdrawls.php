@@ -8,12 +8,11 @@ if (empty($act)) {
 }
 
 if ($act == "list") { 
-	$arr = array(); 
-	$arr['withdraw_shstate'] = $_REQUEST['withdraw_shstate'];
+	$arr = array();  
 	$arr['client_logn'] = $_REQUEST['client_logn'];    
 	$stardate = $_REQUEST['stardate'];
 	$enddate = $_REQUEST['enddate'];
- 	$where = " where isdelete = 0 and Withdraw_shstate != 0"; 
+ 	$where = " where isdelete = 0 and Withdraw_shstate != 0 "; 
  	
 	foreach ($arr as $ks=>$vs){
 		if($vs != ""){			

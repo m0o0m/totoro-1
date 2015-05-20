@@ -38,7 +38,7 @@ if ($act == "list") {
 	echo json_encode($items); 
 }elseif ($act == "booklist") {  
 	$bcode = $_REQUEST['bcode'];
-	$sql=" SELECT b.id 'id',b.book_value 'text',b.book_no 'desc'
+	$sql=" SELECT b.book_no 'id',b.book_value 'text',b.book_no 'desc'
 	from sys_booktype a,sys_book b where b.booktype_id = a.id 
     and a.isdelete = 0 and b.isdelete = 0 and booktype_code= '$bcode'";
 	$rs = mysql_query($sql);

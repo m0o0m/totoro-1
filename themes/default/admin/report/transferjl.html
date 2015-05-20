@@ -3,14 +3,14 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>分类审核</title> 
+<title>账变记录</title> 
 	#{include file ="jscss.html"};
 	<script type="text/javascript">
 		$(function(){
 			   
 			$("#bonus_datagrid").datagrid({
-				title:"分红类型列表",
-				url:"#{$ctx}/admin/account/transfer.php?act=list",
+				title:"账变记录",
+				url:"#{$ctx}/admin/report/transferjl.php?act=list",
 				fitColumns:true,
 				rownumbers:true,
 				pagination:true, 
@@ -48,16 +48,20 @@
 						panelHeight:'auto'">
 				</td>
 				<td>账变金额：</td><td><input name="transfer_je1" value=""/> 
-				--<input name="transfer_je2" value=""/></td>   
+				--<input name="transfer_je2" value=""/></td> 
+				  
 				<td>账变日期：
-				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
-				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+					<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+					--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				 
+				</td> 
 				
-				
-				</td>
-				</tr>				
+				</tr> 
 				<tr>
-				<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+					<td>玩家：<input name="client_logn" value=""/></td>
+				</tr>	
+				<tr>
+						<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
 						<a href="#" class="easyui-linkbutton">清空</a></td>
 				</tr>
 			</table>
@@ -84,6 +88,7 @@
 				           return '转账-入';
 				        }
 				" >状态</th>   
+				<th data-options="field:'client_logn',width:80" >账户</th>
 				<th data-options="field:'transfer_je',width:80" >账变金额</th>
 				<th data-options="field:'transfer_ye1',width:80" >账变前余额</th>  
 				<th data-options="field:'transfer_ye2',width:80" >账变后余额</th>  
