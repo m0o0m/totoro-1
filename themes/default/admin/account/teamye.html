@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>个人信息中心</title> 
+	#{include file ="jscss.html"}
+	<script type="text/javascript">  
+	$('#isbh').combobox({    
+		$('#isbh').change(function(n,o){    
+            alert("改变值!"); //不能触发    
+        });  
+	 });    
+ 
+	
+      
+	 function savezjpw () { 
+			var act ="updatezjpw";
+			 
+			easyUi.formSubmit({
+				formId : "#newzjpwform",
+				submit : function() {
+				},
+				success : function(data) {
+					msgSuccess(data);
+					$("#client_datagrid").datagrid("reload");
+					$("#newzjpwform_dlg").dialog("close");
+				},
+				prefix : "",
+				params : {"act":act}
+			}); 
+		}  
+		
+	      
+	</script>
+</head> 
+<div class="easyui-panel">
+	
+	    <form id="teamye_form" method="post">
+	    	<table  width="100%"  style="font-family:'宋体'; font-size:20px;" border='01' cellspacing="0" cellpadding="0">   
+				<tr>
+					<td  width="20%" ><label class="easyui-validatebox" >团队余额</label></td>
+					<td><label class="easyui-validatebox" > #{$teamye1.client_balances}</label></td> 
+				</tr> 
+				 <tr>
+					<td width="20%"><label class="easyui-validatebox" >冻结金额</label></td>
+					<td><label class="easyui-validatebox" > #{$teamye1.client_freezes}</label></td> 
+				</tr>  
+					<tr>
+					<td  width="20%" ><label class="easyui-validatebox" >团队余额(包含自己)</label></td>
+					<td><label class="easyui-validatebox" > #{$teamye2.client_balances}</label></td> 
+				</tr> 
+				 <tr>
+					<td width="20%"><label class="easyui-validatebox" >冻结金额(包含自己)</label></td>
+					<td><label class="easyui-validatebox" > #{$teamye2.client_freezes}</label></td> 
+				</tr>   
+		    </table> 
+	    </form>
+	</div> 
+</body>
+	
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>下级盈亏</title> 
+	#{include file ="jscss.html"};
+	<script type="text/javascript">
+		$(function(){
+			   
+			$("#profitxj_datagrid").datagrid({
+				title:"下级盈亏列表",
+				url:"#{$ctx}/admin/account/profitxj.php?act=list",
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true, 
+			}); 
+			
+ 
+		});  
+	 
+		function search () {
+			var p = {}; 
+			$("#search_form").find("input").each(function(){
+				p[this.name]=this.value;
+			});
+			
+			$("#profitself_datagrid").datagrid({
+				queryParams:p
+			});
+		}  
+	</script>
+</head>
+<body>
+
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table > 
+				<tr>  
+					<td>账变日期：
+					<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+					--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+					</td>
+				 
+				<td>玩家：</td><td><input name="client_logn" value=""/></td></tr>		
+				<tr>
+					<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+							<a href="#" class="easyui-linkbutton">清空</a></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	
+	<table id= "profitxj_datagrid">
+		<thead>
+			<tr>  
+				<th data-options="field:'client_logn',width:80" >账号</th>
+				<th data-options="field:'cz',width:80" >充值金额</th>
+				<th data-options="field:'tx',width:80" >提现金额</th>
+				<th data-options="field:'fh',width:80" >分红金额</th>
+				<th data-options="field:'yh',width:80" >优惠金额</th>
+				<th data-options="field:'zc',width:80" >转账-出</th>
+				<th data-options="field:'zr',width:80" >转账-入</th> 
+				<th data-options="field:'yk',width:80" >盈亏</th>  
+				<th data-options="field:'date',width:80" >时间</th>   
+			</tr> 
+		</thead>
+	</table> 
+</body>
+	
+</html>

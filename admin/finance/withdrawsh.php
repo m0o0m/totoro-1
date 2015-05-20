@@ -88,7 +88,8 @@ if ($act == "list") {
 			$zbarr['client_logn'] = $_REQUEST['client_logn'];
 			$zbarr['tczb_num'] = $_REQUEST['Withdraw_num'];
 			$zbarr['tczb_type'] = "4";
-			$zbarr['tczb_amount'] = -$amount['Withdraw_amount'];
+			$zbarr['tczb_amount'] = $amount['Withdraw_amount'];
+			$zbarr['tczb_sxf'] = $_REQUEST['Withdraw_sxf'];
 			$zbarr['tczb_balance1'] = $balance;
 			$zbarr['tczb_balance2'] = $balance;
 			$zbarr['tczb_djje1'] = $freeze;

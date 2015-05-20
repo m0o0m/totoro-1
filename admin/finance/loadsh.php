@@ -53,6 +53,7 @@ if ($act == "list") {
 	$arr['load_shuser'] = "1";
 	$arr['load_desc'] = $_REQUEST['load_desc']; 
 	$arr['load_sjdz'] = $_REQUEST['load_sjdz']; 
+	$arr['load_sxf'] = $_REQUEST['load_sxf'];
 	$arr['load_fkdate'] =date("Y-m-d H:i:s"); 
 	$id = $_REQUEST['id']; 
 	try {
@@ -77,6 +78,7 @@ if ($act == "list") {
 			$zbarr['tczb_num'] = $_REQUEST['load_num'];
 			$zbarr['tczb_type'] = "3";//充值
 			$zbarr['tczb_amount'] = $_REQUEST['load_sjdz'];
+			$zbarr['tczb_sxf'] = $_REQUEST['load_sxf'];
 			$zbarr['tczb_balance1'] = $balance;
 			$zbarr['tczb_balance2'] = $balance+$arr['load_sjdz'];
 			$zbarr['tczb_djje1'] = $freeze;

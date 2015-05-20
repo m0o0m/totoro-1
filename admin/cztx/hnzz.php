@@ -76,7 +76,7 @@ if ($act == "list") {
 						$zbarr['transfer_type'] = 5;//户内转账人转账
 						$zbarr['client_id'] = "1";
 						$zbarr['client_logn'] = "liaohan";
-						$zbarr['transfer_je'] = -$_REQUEST['hnzz_amount'];
+						$zbarr['transfer_je'] = $_REQUEST['hnzz_amount'];
 						$zbarr['transfer_ye1'] = $zzr_balance;
 						$zbarr['transfer_ye2'] = $zzr_balance - $_REQUEST['hnzz_amount'];
 						$zbarr['transfer_djje1'] = $zzr_freeze;
@@ -84,7 +84,7 @@ if ($act == "list") {
 						$zbarr['transfer_date'] = date("Y-m-d H:i:s");
 							
 						$sarr = array();
-						$sarr['transfer_type'] = 5;//户内收款人转账
+						$sarr['transfer_type'] = 6;//户内收款人转账
 						$sarr['client_id'] = $skrrow['id'];
 						$sarr['client_logn'] = $skrrow['client_logn'];
 						$sarr['transfer_je'] = $_REQUEST['hnzz_amount'];
