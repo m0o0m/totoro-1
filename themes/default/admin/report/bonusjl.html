@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>分类审核</title> 
+	#{include file ="jscss.html"};
+	<script type="text/javascript">
+		$(function(){
+			   
+			$("#bonusjl_datagrid").datagrid({
+				title:"分红类型列表",
+				url:"#{$ctx}/admin/report/bonusjl.php?act=list",
+				fitColumns:true,
+				rownumbers:true,
+				pagination:true 
+			}); 
+			
+ 
+		}); 
+	 
+		function search () {
+			var p = {}; 
+			$("#search_form").find("input").each(function(){
+				p[this.name]=this.value;
+			});
+			
+			$("#bonus_datagrid").datagrid({
+				queryParams:p
+			});
+		}  
+	</script>
+</head>
+<body>
+
+	<div class="easyui-panel" title="查询" 
+		data-options="iconCls:'icon-save',collapsible:true">
+		<form id="search_form" method="post">
+			<table > 
+				<tr> 
+				<td>玩家：</td><td><input name="client_logn" value=""/></td>  
+				<td>周期开始日期：
+				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+				
+				</td>
+				</tr>				
+				<tr>
+				<td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
+						<a href="#" class="easyui-linkbutton">清空</a></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	
+	<table id= "bonusjl_datagrid">
+		<thead>
+			<tr> 
+				<th data-options="field:'client_logn',width:80" >分红账号</th>  
+				<th data-options="field:'bonus_bl',width:80" >分红比例</th>
+				<th data-options="field:'bonus_zq',width:80" >分红周期</th>  
+				<th data-options="field:'bonus_kssj',width:80" >周期开始时间</th>  
+				<th data-options="field:'bonus_jssj',width:80" >周期结束时间</th>  
+				<th data-options="field:'bonus_yk',width:80" >周期盈亏</th>  
+				<th data-options="field:'bonus_je',width:80" >红利金额</th>  
+				<th data-options="field:'bonus_state',width:80,
+					formatter:function(value,row){
+											if(value==0)
+				                return '待审核';
+				       		 else if(value==1)
+				                return '通过';
+				             else if(value==2)
+				                return '取消'; 
+				        }
+				" >状态</th>   
+			</tr> 
+		</thead>
+	</table>  
+</body>
+	
+</html>
