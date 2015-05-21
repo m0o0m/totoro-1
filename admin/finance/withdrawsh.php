@@ -9,7 +9,7 @@ if (empty($act)) {
 
 if ($act == "list") { 
 	$arr = array(); 
-	$arr['withdraw_shstate'] = $_REQUEST['withdraw_shstate'];
+	//$arr['withdraw_shstate'] = $_REQUEST['withdraw_shstate'];
 	$arr['client_logn'] = $_REQUEST['client_logn'];    
 	$stardate = $_REQUEST['stardate'];
 	$enddate = $_REQUEST['enddate'];

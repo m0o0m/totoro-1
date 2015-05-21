@@ -9,7 +9,7 @@ if (empty($act)) {
 
 if ($act == "list") { 
 	$arr = array(); 
-	$arr['load_fkstate'] = $_REQUEST['load_fkstate'];
+	//$arr['load_fkstate'] = $_REQUEST['load_fkstate'];
 	$arr['client_logn'] = $_REQUEST['client_logn']; 
 	$stardate = $_REQUEST['stardate'];
 	$enddate = $_REQUEST['enddate'];

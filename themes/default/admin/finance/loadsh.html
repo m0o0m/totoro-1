@@ -22,15 +22,8 @@
 			}); 
 			
  
-		});
-
-		function addUser () {
-			$('#loadsh_form').form('clear');
-			$("#loadsh_form_dlg").dialog({
-				title : "添加账户"
-			}).dialog("open");
-			
-		}
+		}); 
+		
 		function saveUser () { 
 			var act ="update";
 			if($("#loadsh_id").val() == "" || $("#loadsh_id").val() == null){
@@ -100,7 +93,7 @@
 		<form id="search_form" method="post">
 			<table > 
 				<tr> 
-				<td>
+				<!-- <td>
 					<select id="load_fkstate" class="easyui-combobox" name="load_fkstate" style="width:200px;">
 						<option value="">全部</option>
 						<option value="0">未处理</option>
@@ -108,7 +101,7 @@
 						<option value="2">成功</option>
 						<option value="3">失败</option>
 					</select>
-				</td>
+				</td> -->
 				<td>玩家：</td><td><input name="client_logn" value=""/></td>
 				<td>申请提交日期：
 				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>

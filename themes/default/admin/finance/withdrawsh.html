@@ -93,7 +93,8 @@
 		<form id="search_form" method="post">
 			<table > 
 				<tr> 
-				<td>
+				<td>玩家：</td><td><input name="client_logn" value=""/></td>	
+				<!-- <td>
 					<select id="withdraw_shstate" class="easyui-combobox" name="withdraw_shstate" style="width:200px;">
 						<option value="">全部</option>
 						<option value="0">未处理</option>
@@ -102,14 +103,14 @@
 						<option value="3">失败</option>
 						<option value="4">到账</option>
 					</select>
-				</td>
+				</td>-->
 				<td>
 				
 				<td>申请提交日期：
 				<input type="text" class="Wdate" name="stardate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
 				--<input type="text" class="Wdate" name="enddate" onfocus="WdatePicker({isShowClear:false,readOnly:true})"/>
-
-				<td>玩家：</td><td><input name="client_logn" value=""/></td></tr>				
+</tr>
+							
 				<tr><td><a href="javascript:search()" class="easyui-linkbutton">查询</a>
 						<a href="#" class="easyui-linkbutton">清空</a></td></tr>
 			</table>
