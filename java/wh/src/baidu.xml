@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config charset="UTF-8">
+
+	<var-def name="targetPage">
+		<xpath expression="//div[@id='s_tab']">
+
+			<html-to-xml>
+				<http url="http://www.baidu.com" />
+			</html-to-xml>
+		</xpath>
+	</var-def>
+	
+  	<var-def name="products">    
+  		
+    </var-def>
+
+
+</config>

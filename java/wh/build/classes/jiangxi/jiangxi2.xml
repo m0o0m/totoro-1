@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config charset="UTF-8">
+
+	<var-def name="targetPage">
+		<xpath expression='//*[@id="cqssc_draw_list_tbody"]'>
+		<!--
+		//*[@id="cqssc_draw_list_tbody"] 
+		/html/body/div[5]
+		 -->
+
+			<html-to-xml>
+				<http url="http://baidu.lecai.com/lottery/draw/view/202" />
+				
+			</html-to-xml>
+		</xpath>
+	</var-def>
+	
+
+
+</config>

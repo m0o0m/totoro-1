@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config charset="UTF-8">
+
+	<var-def name="targetPage">
+		<xpath expression="//*[@id='ssc_tb']">
+		<!-- 
+		/html/body/center/form/div[4]/div[2]/div[2]/div
+		//*[@id='lotteryList']	
+		//*[@id='ssc_tb']	
+		 -->
+
+			<html-to-xml>
+				<http url="http://www.tjflcpw.com/report/SSC_WinMessage.aspx" />
+				
+			</html-to-xml>
+		</xpath>
+	</var-def>
+	
+
+
+</config>
